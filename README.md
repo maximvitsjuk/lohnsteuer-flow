@@ -40,12 +40,30 @@ It is an estimate, not tax advice. One-off payments (13th salary, bonuses) are t
 ## Build
 
 ```sh
-pip install playwright && playwright install chromium
+pip install -r requirements-dev.txt && python3 -m playwright install chromium
 python3 build.py && python3 build_site.py   # optional: pass your own base URL to build_site.py
 python3 tests/qa.py
 ```
 
 `dist/` is committed and is what the host serves.
+
+## Workflow
+
+`main` is what is live. Changes go through a branch and a pull request:
+
+```sh
+git switch -c my-change          # new branch
+# …edit sources…
+python3 build.py && python3 build_site.py && python3 tests/qa.py
+git add . && git commit -m "Describe the change"
+git push -u origin my-change
+gh pr create --fill              # open a pull request
+gh pr checks --watch             # wait for CI
+gh pr merge --squash --delete-branch
+git switch main && git pull
+```
+
+CI (`.github/workflows/ci.yml`) rebuilds the site, fails if the committed `dist/` does not match the sources, and runs `tests/qa.py`. Only after a merge to `main` passes CI is statichost.eu asked to publish `dist/` (`statichost.yml`).
 
 ## Updating the data
 

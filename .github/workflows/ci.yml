@@ -1,0 +1,52 @@
+name: CI
+
+# Pull requests: build and check. Pushes to main: build, check, then deploy to statichost.eu.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Playwright
+        run: |
+          pip install -r requirements-dev.txt
+          python -m playwright install --with-deps chromium
+
+      - name: Build the site
+        run: python build.py && python build_site.py
+
+      - name: dist/ must match the sources
+        run: |
+          if ! git diff --quiet -- dist past.html; then
+            echo "::error::dist/ is out of date. Run 'python3 build.py && python3 build_site.py' and commit the result."
+            git diff --stat -- dist past.html
+            exit 1
+          fi
+
+      - name: Quality checks
+        run: python tests/qa.py
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger statichost.eu build
+        env:
+          STATICHOST_TOKEN: ${{ secrets.STATICHOST_TOKEN }}
+        run: |
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $STATICHOST_TOKEN" \
+            https://builder.statichost.eu/wohin-geht-mein-gehalt
