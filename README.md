@@ -57,4 +57,10 @@ All figures link to their sources on the site itself (Bundestag, BMF, Deutsche R
 
 ## License
 
-Code: MIT – see [LICENSE](LICENSE). Contact: maximvitsuk@proton.me
+Copyright (C) 2026 Maxim Vitsuk.
+
+Code: **GNU Affero General Public License v3.0** – see [LICENSE](LICENSE). You may use, change and share it; if you run a modified version as a website, you must publish your source code under the same license.
+
+The map of German states is derived from [svg-maps](https://github.com/VictorCazanave/svg-maps) by Victor Cazanave, licensed under CC BY 4.0.
+
+Contact: maximvitsuk@proton.me
