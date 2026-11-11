@@ -66,3 +66,71 @@ window.switchLang=function(l){if(!window.FORCE_LANG||l===window.FORCE_LANG)retur
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 })();
+// Settings drawer: the calculator's own settings (index.html?embed=1) opened over Overview/Future,
+// so every setting can be changed from any page. Same tab and origin, so it shares sessionStorage.
+(function(){
+ if(/[?&]embed=1\b/.test(location.search))document.documentElement.classList.add('embed');
+ var LBL={en:{t:'Settings',c:'Close',d:'Done'},de:{t:'Einstellungen',c:'Schließen',d:'Fertig'}};
+ var st=document.createElement('style');
+ st.textContent='.sdrawer{position:fixed;inset:0;z-index:1000;display:flex;justify-content:flex-end}.sdrawer .sbk{position:absolute;inset:0;background:rgba(0,0,0,.45)}'+
+ '.sdrawer .spanel{position:relative;width:min(760px,100%);height:100%;background:var(--bg);display:flex;flex-direction:column;box-shadow:-8px 0 24px rgba(0,0,0,.25)}'+
+ '.sdrawer .shead{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.sdrawer .shead b{font-size:17px}'+
+ '.sdrawer .shead button{background:var(--accent,#534AB7);color:#fff;border:0;border-radius:8px;padding:7px 16px;font:inherit;font-size:14px;cursor:pointer}'+
+ '.sdrawer iframe{flex:1;width:100%;border:0;background:var(--bg)}html.sdopen,html.sdopen body{overflow:hidden}'+
+ '.setbtn{background:transparent;border:1px solid var(--accent,#534AB7);color:var(--accent,#534AB7);border-radius:999px;padding:3px 12px;font:inherit;font-size:12px;cursor:pointer}'+
+ '.setbtn:hover{background:var(--accent,#534AB7);color:#fff}.chips span{cursor:pointer}.embed #setFab,.embed #topSum{display:none!important}';
+ (document.head||document.documentElement).appendChild(st);
+ var dr=null,fr=null,lastFocus=null;
+ function close(){if(!dr)return;dr.remove();dr=null;fr=null;document.documentElement.classList.remove('sdopen');window.dispatchEvent(new Event('settingschange'));if(lastFocus)lastFocus.focus();}
+ window.openSettings=function(){
+  if(dr)return;lastFocus=document.activeElement;var l=LBL[(document.documentElement.lang||'en').slice(0,2)]||LBL.en;
+  dr=document.createElement('div');dr.className='sdrawer';dr.setAttribute('role','dialog');dr.setAttribute('aria-modal','true');dr.setAttribute('aria-label',l.t);
+  dr.innerHTML='<div class="sbk"></div><div class="spanel"><div class="shead"><b></b><button type="button"></button></div><iframe title=""></iframe></div>';
+  dr.querySelector('b').textContent=l.t;var btn=dr.querySelector('button');btn.textContent=l.d;btn.setAttribute('aria-label',l.c);
+  fr=dr.querySelector('iframe');fr.title=l.t;fr.src='index.html?embed=1';
+  dr.querySelector('.sbk').onclick=close;btn.onclick=close;
+  document.body.appendChild(dr);document.documentElement.classList.add('sdopen');btn.focus();
+ };
+ window.addEventListener('message',function(e){if(fr&&e.source===fr.contentWindow&&e.data&&e.data.type==='salary-settings')window.dispatchEvent(new Event('settingschange'));});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dr)close();});
+ document.addEventListener('click',function(e){var t=e.target;if(!t.closest)return;if(t.closest('.setbtn')||t.closest('.chips span')){e.preventDefault();window.openSettings();}});
+})();
+window.STATE_NAMES={BW:'Baden-Württemberg',BY:'Bayern',BE:'Berlin',BB:'Brandenburg',HB:'Bremen',HH:'Hamburg',HE:'Hessen',MV:'Mecklenburg-Vorpommern',NI:'Niedersachsen',NW:'Nordrhein-Westfalen',RP:'Rheinland-Pfalz',SL:'Saarland',SN:'Sachsen',ST:'Sachsen-Anhalt',SH:'Schleswig-Holstein',TH:'Thüringen'};
+// Summary bar above the menu (salary + chosen settings) and a settings tab fixed to the right edge.
+(function(){
+ if(document.documentElement.classList.contains('embed'))return;
+ var L={en:{gross:'gross',net:'take-home',m:'/ month',y:'/ year',cls:'Class',k1:'child',kn:'children',pub:'public insurance',priv:'private insurance',stud:'student',beamt:'civil servant',ki:'church tax',adv:'advanced options',btn:'Settings',edit:'Change'},
+        de:{gross:'brutto',net:'netto',m:'/ Monat',y:'/ Jahr',cls:'Klasse',k1:'Kind',kn:'Kinder',pub:'gesetzlich versichert',priv:'privat versichert',stud:'Student/in',beamt:'Beamt/in',ki:'Kirchensteuer',adv:'erweiterte Optionen',btn:'Einstellungen',edit:'Ändern'}};
+ var st=document.createElement('style');
+ st.textContent='.topsum{display:flex;width:100%;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin:10px 0 4px;font:inherit;font-size:13px;color:var(--muted);cursor:pointer;gap:4px 10px;align-items:center;flex-wrap:wrap}'+
+ '.topsum b{color:var(--text);font-weight:600;font-size:14px}.topsum .ts-edit{margin-left:auto;color:var(--accent,#534AB7);white-space:nowrap}.topsum:hover{border-color:var(--accent,#534AB7)}'+
+ '.setfab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;writing-mode:vertical-rl;background:var(--accent,#534AB7);color:#fff;border:0;border-radius:10px 0 0 10px;padding:16px 9px;font:inherit;font-size:14px;letter-spacing:.02em;cursor:pointer;box-shadow:-2px 2px 12px rgba(0,0,0,.25)}'+
+ '.setfab:hover{padding-right:13px}html.sdopen .setfab{display:none}'+
+ '@media (max-width:600px){.setfab{writing-mode:horizontal-tb;top:auto;bottom:16px;right:16px;transform:none;border-radius:999px;padding:12px 18px}}';
+ (document.head||document.documentElement).appendChild(st);
+ function state(){try{return JSON.parse(sessionStorage.getItem('salaryState')||'{}');}catch(e){return {};}}
+ function esc(x){return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+ window.updateTopSummary=function(){
+  var bar=document.getElementById('topSum'),fab=document.getElementById('setFab');if(!bar)return;
+  var lg=(document.documentElement.lang||'en').slice(0,2),l=L[lg]||L.en,s=state(),y=s.grossUnit==='y',f=y?12:1;
+  var money=function(v){return new Intl.NumberFormat(lg==='de'?'de-DE':'en-IE',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);};
+  var g=+(s.gross!=null?s.gross:2000)||0,first=s.netMode&&s.netTarget!=null?'<b>'+money(+s.netTarget*f)+'</b> '+l.net+' '+(y?l.y:l.m):'<b>'+money(g*f)+'</b> '+l.gross+' '+(y?l.y:l.m);
+  var kids=+(s.kids||0),status=s.status||'emp',hi=s.hi||'pub',adv=s.adv&&(s.adv.fb||s.adv.bav||s.adv.fac||s.adv.sj);
+  var parts=[l.cls+' '+['I','II','III','IV','V','VI'][(+(s.cls||1))-1],kids+' '+(kids===1?l.k1:l.kn),(window.STATE_NAMES||{})[s.state||'BW']||s.state||'',
+   status==='stud'?l.stud:status==='beamt'?l.beamt:(hi==='priv'?l.priv:l.pub),s.c_ki?l.ki:'',adv?l.adv:''].filter(Boolean);
+  bar.innerHTML=first+' · '+parts.map(esc).join(' · ')+'<span class="ts-edit">⚙ '+l.edit+'</span>';
+  bar.setAttribute('aria-label',l.btn);if(fab){fab.textContent='⚙ '+l.btn;fab.setAttribute('aria-label',l.btn);}
+ };
+ function mount(){
+  var nav=document.querySelector('nav.topnav');if(!nav)return;
+  var bar=document.getElementById('topSum');
+  if(!bar){bar=document.createElement('button');bar.type='button';bar.id='topSum';bar.className='topsum';nav.parentNode.insertBefore(bar,nav);}
+  var fab=document.getElementById('setFab');
+  if(!fab){fab=document.createElement('button');fab.type='button';fab.id='setFab';fab.className='setfab';document.body.appendChild(fab);}
+  bar.onclick=fab.onclick=function(){window.openSettings();};
+  window.updateTopSummary();
+  new MutationObserver(window.updateTopSummary).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  window.addEventListener('settingschange',window.updateTopSummary);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
+})();

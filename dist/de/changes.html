@@ -21,7 +21,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Was sich 2027 bei Steuern und Sozialabgaben ändert – und was es für dein Netto bedeutet</title>
-<script src="../common.js"></script><style>.themebtn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;margin:0 8px 0 auto;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;vertical-align:middle}.themebtn:hover{color:var(--text)}</style><style>.gu{display:flex;gap:6px;align-items:center;min-width:0}.gu input{flex:1;min-width:0}.guseg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex:none}.guseg button{background:transparent;border:0;color:var(--muted);padding:7px 9px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}.guseg button.on{background:var(--accent,#534AB7);color:#fff}div.grossrow,div.sal{grid-template-columns:1fr!important;gap:10px!important}.gu{max-width:380px}.gu input{min-width:120px}.topnav{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}.topnav::-webkit-scrollbar{display:none}.topnav a{white-space:nowrap;flex:none}@media (max-width:600px){nav.topnav a{padding:8px 8px;font-size:13px}}@media (max-width:360px){nav.topnav a{padding:8px 6px;font-size:12.5px}}</style>
+<script src="../common.js"></script><style>.themebtn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;margin:0 8px 0 auto;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;vertical-align:middle}.themebtn:hover{color:var(--text)}</style><style>.gu{display:flex;gap:6px;align-items:center;min-width:0}.gu input{flex:1;min-width:0}.guseg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex:none}.guseg button{background:transparent;border:0;color:var(--muted);padding:7px 9px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}.guseg button.on{background:var(--accent,#534AB7);color:#fff}div.grossrow,div.sal{grid-template-columns:1fr!important;gap:10px!important}.gu{max-width:380px}.gu input{min-width:120px}.topnav{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}.topnav::-webkit-scrollbar{display:none}.topnav a{white-space:nowrap;flex:none}@media (max-width:600px){nav.topnav a{padding:8px 8px;font-size:13px}}@media (max-width:360px){nav.topnav a{padding:8px 6px;font-size:12.5px}}</style><style>.sdrawer{position:fixed;inset:0;z-index:1000;display:flex;justify-content:flex-end}.sdrawer .sbk{position:absolute;inset:0;background:rgba(0,0,0,.45)}.sdrawer .spanel{position:relative;width:min(760px,100%);height:100%;background:var(--bg);display:flex;flex-direction:column;box-shadow:-8px 0 24px rgba(0,0,0,.25)}.sdrawer .shead{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}.sdrawer .shead b{font-size:17px}.sdrawer .shead button{background:var(--accent,#534AB7);color:#fff;border:0;border-radius:8px;padding:7px 16px;font:inherit;font-size:14px;cursor:pointer}.sdrawer iframe{flex:1;width:100%;border:0;background:var(--bg)}html.sdopen,html.sdopen body{overflow:hidden}.setbtn{background:transparent;border:1px solid var(--accent,#534AB7);color:var(--accent,#534AB7);border-radius:999px;padding:3px 12px;font:inherit;font-size:12px;cursor:pointer}.setbtn:hover{background:var(--accent,#534AB7);color:#fff}.chips span{cursor:pointer}.embed #setFab,.embed #topSum{display:none!important}</style><style>.topsum{display:flex;width:100%;text-align:left;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin:10px 0 4px;font:inherit;font-size:13px;color:var(--muted);cursor:pointer;gap:4px 10px;align-items:center;flex-wrap:wrap}.topsum b{color:var(--text);font-weight:600;font-size:14px}.topsum .ts-edit{margin-left:auto;color:var(--accent,#534AB7);white-space:nowrap}.topsum:hover{border-color:var(--accent,#534AB7)}.setfab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;writing-mode:vertical-rl;background:var(--accent,#534AB7);color:#fff;border:0;border-radius:10px 0 0 10px;padding:16px 9px;font:inherit;font-size:14px;letter-spacing:.02em;cursor:pointer;box-shadow:-2px 2px 12px rgba(0,0,0,.25)}.setfab:hover{padding-right:13px}html.sdopen .setfab{display:none}@media (max-width:600px){.setfab{writing-mode:horizontal-tb;top:auto;bottom:16px;right:16px;transform:none;border-radius:999px;padding:12px 18px}}</style>
 <style>
 :root{color-scheme:light dark}:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 :root{--bg:#faf9f5;--card:#fff;--text:#1f1e1d;--muted:#6b6a65;--border:#e3e1d9;--accent:#534AB7;--ok:#0F6E56;--okbg:#E1F5EE;--draft:#854F0B;--draftbg:#FAEEDA;--plan:#5F5E5A;--planbg:#F1EFE8}
@@ -71,12 +71,13 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 .mine{font-size:14px;font-weight:500;margin:6px 0 4px;font-variant-numeric:tabular-nums}
 .mine.none{font-weight:400;color:var(--muted)}
 @media (max-width:640px){.sal{grid-template-columns:1fr}}
+#hideSal,.sal,#chips{display:none!important}
 </style>
 <script src="../engine.js"></script>
 </head>
 <body>
 <main>
-<nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview">Überblick</a><a href="past.html" data-nav="past">Vergangenheit</a><a href="index.html" data-nav="now">Heute</a><a href="changes.html" data-nav="future" class="on">Zukunft</a></nav>
+<button type="button" id="topSum" class="topsum" aria-label="Einstellungen"><b>2.000&nbsp;€</b> brutto / Monat · Klasse I · 0 Kinder · Baden-Württemberg · gesetzlich versichert<span class="ts-edit">⚙ Ändern</span></button><nav class="topnav" aria-label="Pages"><a href="past.html" data-nav="past">Vergangenheit</a><a href="index.html" data-nav="now">Heute</a><a href="changes.html" data-nav="future" class="on">Zukunft</a><a href="summary.html" data-nav="overview">Überblick</a></nav>
 <header>
   <div><h1 id="title">Was sich ändert</h1><p class="sub" id="sub">Beschlossene Gesetze, Gesetzentwürfe und politische Pläne, die deine Lohnabrechnung verändern</p></div>
   <button id="themeBtn" type="button" class="themebtn" title="Farbschema: Auto" aria-label="Farbschema: Auto">◐ Auto</button><div class="seg" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="de" class="on">DE</button></div>
@@ -84,8 +85,8 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 <div class="card">
   <div class="sal"><div><label for="grossV" id="salL" style="font-size:13px;color:var(--muted)">Dein Bruttogehalt (€)</label><div class="gu"><input type="number" id="grossV" min="0" step="any" inputmode="decimal" max="30000"><div class="guseg" role="group" aria-label="Brutto pro Monat oder pro Jahr eingeben"><button type="button" data-u="m" class="on" aria-pressed="true">/ Monat</button><button type="button" data-u="y" aria-pressed="false">/ Jahr</button></div></div><input type="number" id="gross" min="0" max="30000" step="50" tabindex="-1" aria-hidden="true" style="display: none;"></div>
   <input type="range" id="grossR" min="0" max="10000" step="50" aria-labelledby="salL"></div>
-  <div class="chips" id="chips"><span>Klasse I</span><span>0 Kinder</span><span>BE</span><span>gesetzlich versichert</span><a href="index.html" style="font-size:12px;margin-left:4px">Weitere Einstellungen im Rechner ändern →</a></div>
-  <div class="tot" id="tot"><div><div class="l">Heute (2026)</div><div class="v">2.333,25&nbsp;€</div><div class="d ">Netto / Monat</div></div><div><div class="l">2027 – beschlossen</div><div class="v">2.333,25&nbsp;€</div><div class="d ">0,00&nbsp;€ / Monat</div></div><div><div class="l">2027 – inkl. Gesetzentwürfe</div><div class="v">2.339,09&nbsp;€</div><div class="d up">+5,84&nbsp;€ / Monat</div></div><div><div class="l">+ Pläne (2028)</div><div class="v">2.321,50&nbsp;€</div><div class="d down">-11,75&nbsp;€ / Monat</div></div></div>
+  <div class="chips" id="chips"><span>Klasse I</span><span>0 Kinder</span><span>Baden-Württemberg</span><span>gesetzlich versichert</span><button type="button" class="setbtn">⚙ Einstellungen ändern</button></div>
+  <div class="tot" id="tot"><div><div class="l">Heute (2026)</div><div class="v">1.476,84&nbsp;€</div><div class="d ">Netto / Monat</div></div><div><div class="l">2027 – beschlossen</div><div class="v">1.476,84&nbsp;€</div><div class="d ">0,00&nbsp;€ / Monat</div></div><div><div class="l">2027 – inkl. Gesetzentwürfe</div><div class="v">1.478,34&nbsp;€</div><div class="d up">+1,50&nbsp;€ / Monat</div></div><div><div class="l">+ Pläne (2028)</div><div class="v">1.467,50&nbsp;€</div><div class="d down">-9,34&nbsp;€ / Monat</div></div></div>
   <p class="note" id="totNote" style="margin:8px 0 0">Berechnet mit deinen Einstellungen aus dem Rechner. Entwürfe und Pläne können sich noch ändern; der neue Steuertarif ist noch nicht veröffentlicht, seine Wirkung ist daher geschätzt.</p>
 </div>
 <div class="card">
@@ -94,7 +95,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 </div>
 <div class="filters" id="filters"><button data-c="all" class="on">Alle</button><button data-c="tax" class="">Lohnsteuer</button><button data-c="sv" class="">Sozialversicherung</button><button data-c="mini" class="">Minijobs &amp; Mindestlohn</button><button data-c="future" class="">Weiter in der Zukunft</button></div>
 <div id="list"><h2>Lohnsteuer</h2><div class="card item"><div class="when">geplant 2027 / 2028<br><span class="badge b-draft" style="margin-top:6px">Gesetzentwurf</span></div><div>
-   <h3>Einkommensteuerreform: höherer Grundfreibetrag</h3><div class="chg">12.348 € → <b>12.564 €</b> (2027) → <b>12.900 €</b> (2028)</div><div class="mine up">Für dich bei 3.500,00&nbsp;€: +13,34&nbsp;€ / Monat</div>
+   <h3>Einkommensteuerreform: höherer Grundfreibetrag</h3><div class="chg">12.348 € → <b>12.564 €</b> (2027) → <b>12.900 €</b> (2028)</div><div class="mine up">Für dich bei 2.000,00&nbsp;€: +6,08&nbsp;€ / Monat</div>
    <p>Teil eines Entlastungspakets von rund 10 Mrd. € in zwei Stufen. Der Steuersatz von 42 % soll erst ab 70.601 € zu versteuerndem Einkommen greifen. Erste Lesung im Oktober 2026; Bundesrat steht aus.</p><div class="impact"><b style="font-weight:500">Typische Wirkung:</b> Kleine Entlastung für die meisten Beschäftigten – für Ledige grob im niedrigen dreistelligen Bereich pro Jahr.</div>
    <div class="src">Quelle: <a href="https://www.berliner-zeitung.de/article/10495032" target="_blank" rel="noopener">Berliner Zeitung</a> · <a href="https://www.ihre-vorsorge.de/finanzen/nachrichten/koalition-einigt-sich-auf-steuerentlastungen" target="_blank" rel="noopener">Ihre Vorsorge (DRV)</a></div></div></div><h2>Sozialversicherung</h2><div class="card item"><div class="when">1.1.2027<br><span class="badge b-ok" style="margin-top:6px">Beschlossen</span></div><div>
    <h3>Beitragsbemessungsgrenze Krankenversicherung steigt</h3><div class="chg">5.812,50 € → <b>6.375 €</b> / Monat</div><div class="mine none">Keine Änderung für dich mit deinen aktuellen Einstellungen.</div>
@@ -103,7 +104,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
    <h3>Beitragsbemessungsgrenze Renten- und Arbeitslosenversicherung</h3><div class="chg">8.450 € → <b>8.850 €</b> / Monat</div><div class="mine none">Keine Änderung für dich mit deinen aktuellen Einstellungen.</div>
    <p>Vom Kabinett am 7. Oktober 2026 beschlossen (jährliche Verordnung; wird in der Regel unverändert übernommen).</p><div class="impact"><b style="font-weight:500">Typische Wirkung:</b> Nur relevant über 8.450 € im Monat.</div>
    <div class="src">Quelle: <a href="https://industrie-fachwissen.de/data/was-aendert-sich-2027-betriebe-stichtage-ueberblick" target="_blank" rel="noopener">industrie-fachwissen.de (DRV values)</a></div></div></div><div class="card item"><div class="when">geplant 1.1.2027<br><span class="badge b-draft" style="margin-top:6px">Gesetzentwurf</span></div><div>
-   <h3>Pflegeversicherung: höherer Kinderlosenzuschlag</h3><div class="chg">+0,6 → <b>+0,9</b> Punkte; Grenze → 6.375 €</div><div class="mine down">Für dich bei 3.500,00&nbsp;€: -7,41&nbsp;€ / Monat</div>
+   <h3>Pflegeversicherung: höherer Kinderlosenzuschlag</h3><div class="chg">+0,6 → <b>+0,9</b> Punkte; Grenze → 6.375 €</div><div class="mine down">Für dich bei 2.000,00&nbsp;€: -4,59&nbsp;€ / Monat</div>
    <p>Regierungsentwurf des Pflegeneuordnungsgesetzes; Bundestag und Bundesrat stehen aus.</p><div class="impact"><b style="font-weight:500">Typische Wirkung:</b> Kinderlose ab 23 würden 0,3 % vom Brutto mehr zahlen – bei 3.500 € rund 10 € im Monat.</div>
    <div class="src">Quelle: <a href="https://www.deutschland-rechner.de/beitragsbemessungsgrenze-2027" target="_blank" rel="noopener">deutschland-rechner.de</a></div></div></div><div class="card item"><div class="when">2027<br><span class="badge b-ok" style="margin-top:6px">Beschlossen</span></div><div>
    <h3>Durchschnittlicher Zusatzbeitrag bleibt</h3><div class="chg"><b>2,9 %</b></div><div class="mine none">Nicht Teil der Berechnung – siehe Hinweis.</div>
@@ -118,7 +119,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
    <h3>Pauschalsteuer im Minijob steigt</h3><div class="chg">2 % → <b>5 %</b></div><div class="mine none">Keine Änderung für dich mit deinen aktuellen Einstellungen.</div>
    <p>Im Juli 2026 von der Koalition als Teil des Einkommensteuer-Pakets vereinbart; Bundestag und Bundesrat müssen zustimmen.</p><div class="impact"><b style="font-weight:500">Typische Wirkung:</b> Zahlt meist der Arbeitgeber – wälzt dein Vertrag sie auf dich ab, kostet ein voller Minijob 31,65 € statt 12,66 € im Monat.</div>
    <div class="src">Quelle: <a href="https://www.ihre-vorsorge.de/finanzen/nachrichten/koalition-einigt-sich-auf-steuerentlastungen" target="_blank" rel="noopener">dpa via Ihre-Vorsorge</a> · <a href="https://www.berliner-zeitung.de/article/10495032" target="_blank" rel="noopener">Berliner Zeitung</a></div></div></div><h2>Weiter in der Zukunft</h2><div class="card item"><div class="when">2028<br><span class="badge b-plan" style="margin-top:6px">Plan / Vorschlag</span></div><div>
-   <h3>Rentenbeitrag soll steigen</h3><div class="chg">18,6 % → <b>≈ 20 %</b></div><div class="mine down">Für dich bei 3.500,00&nbsp;€: -17,41&nbsp;€ / Monat</div>
+   <h3>Rentenbeitrag soll steigen</h3><div class="chg">18,6 % → <b>≈ 20 %</b></div><div class="mine down">Für dich bei 2.000,00&nbsp;€: -10,67&nbsp;€ / Monat</div>
    <p>Prognose der Rentenversicherung; der Haushaltsentwurf 2027 kürzt zudem den Bundeszuschuss um 1 Mrd. €.</p><div class="impact"><b style="font-weight:500">Typische Wirkung:</b> Dein Anteil stiege von 9,3 % auf rund 10 % – bei 3.500 € etwa 25 € mehr im Monat.</div>
    <div class="src">Quelle: <a href="https://www.berliner-zeitung.de/article/beitraege-vor-anstieg-rentenversicherung-warnt-vor-kuerzungen-im-bundeshaushalt-10084983" target="_blank" rel="noopener">Berliner Zeitung</a></div></div></div><div class="card item"><div class="when">bis 2030<br><span class="badge b-plan" style="margin-top:6px">Plan / Vorschlag</span></div><div>
    <h3>Steuerklassen III/V sollen wegfallen</h3><div class="chg">III/V → <b>IV mit Faktor</b></div><div class="mine none">Nicht Teil der Berechnung – siehe Hinweis.</div>
@@ -136,7 +137,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 <script>
 const STATUS={ok:'b-ok',draft:'b-draft',plan:'b-plan'};
 const L={
-en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"Your gross salary (€)",settings:"Change other settings in the calculator →",
+en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"Your gross salary (€)",settings:"⚙ Change settings",
  totNow:"Now (2026)",totDec:"2027 – decided",totDraft:"2027 – incl. draft laws",totPlan:"+ plans (2028)",perMonth:"take-home / month",
  totNote:"Calculated with your settings from the calculator. Draft laws and plans may still change; the new income tax tariff isn’t published yet, so its effect is estimated.",
  mineFor:"For you at {g}:",mineNone:"No change for you with your current settings.",mineInfo:"Not part of the calculation – see note.",
@@ -148,7 +149,7 @@ en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"
  impactL:"Typical effect:",srcL:"Source",
  howUpd:"<b>How this page is kept up to date.</b> Germany changes most payroll values on 1 January: the tax tariff, contribution ceilings, the minimum wage and the mini-job limit. Health insurers can change their extra contribution in any month. This page and the calculator are reviewed every month and whenever a law is passed; items move from <i>Plan</i> to <i>Draft</i> to <i>Decided</i> as they progress.",
  foot:"Not legal or tax advice. Status as reported by the linked sources."},
-de:{navOverview:"Überblick",navPast:"Vergangenheit",navNow:"Heute",navFuture:"Zukunft",salL:"Dein Bruttogehalt (€)",settings:"Weitere Einstellungen im Rechner ändern →",
+de:{navOverview:"Überblick",navPast:"Vergangenheit",navNow:"Heute",navFuture:"Zukunft",salL:"Dein Bruttogehalt (€)",settings:"⚙ Einstellungen ändern",
  totNow:"Heute (2026)",totDec:"2027 – beschlossen",totDraft:"2027 – inkl. Gesetzentwürfe",totPlan:"+ Pläne (2028)",perMonth:"Netto / Monat",
  totNote:"Berechnet mit deinen Einstellungen aus dem Rechner. Entwürfe und Pläne können sich noch ändern; der neue Steuertarif ist noch nicht veröffentlicht, seine Wirkung ist daher geschätzt.",
  mineFor:"Für dich bei {g}:",mineNone:"Keine Änderung für dich mit deinen aktuellen Einstellungen.",mineInfo:"Nicht Teil der Berechnung – siehe Hinweis.",
@@ -231,8 +232,8 @@ function inputsFrom(st){
  let f;if(status==='stud')f={kv:false,pv:false,rv:true,av:false,priv:false,subsidy:false};
  else if(status==='beamt')f={kv:false,pv:false,rv:false,av:false,priv:true,subsidy:false};
  else f={kv:pub,pv:pub,rv:true,av:true,priv:!pub,subsidy:true};
- const stt=st.state||'BE';
- return {g:Math.max(0,+(st.gross??3500)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
+ const stt=st.state||'BW';
+ return {g:Math.max(0,+(st.gross??2000)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
   zb:+(st.zbResolved??2.9),age23:st.c_23!==false,pkv:+(st.pkv||0),status,...f,ki:!!st.c_ki,ag:false,
   adv:st.adv||{fb:false,fbAmt:0,bav:false,bavAmt:0,fac:false,sg:0,sj:false,sjg:0,sj2:false,sjrv:false}};}
 function personal(o){
@@ -258,7 +259,7 @@ function render(){
  const sg=v=>(v>0?'+':'')+fm(v);
  document.querySelectorAll('[data-nav]').forEach(a=>a.textContent={overview:t.navOverview,past:t.navPast,now:t.navNow,future:t.navFuture}[a.dataset.nav]);
  $('salL').textContent=t.salL;if(document.activeElement!==$('gross'))$('gross').value=o.g;$('grossR').value=o.g;
- const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<a href="index.html" style="font-size:12px;margin-left:4px">${t.settings}</a>`;
+ const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,(window.STATE_NAMES&&STATE_NAMES[o.state])||o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<button type="button" class="setbtn">${t.settings}</button>`;
  const cell=(l,v,dv)=>`<div><div class="l">${l}</div><div class="v">${fm(v)}</div><div class="d ${dv>0.004?'up':(dv<-0.004?'down':'')}">${dv==null?t.perMonth:sg(dv)+' / '+(lang==='de'?'Monat':'month')}</div></div>`;
  $('tot').innerHTML=cell(t.totNow,R.base,null)+cell(t.totDec,R.dec,E.r2(R.dec-R.base))+cell(t.totDraft,R.draft,E.r2(R.draft-R.base))+cell(t.totPlan,R.plan,E.r2(R.plan-R.base));
  $('totNote').textContent=t.totNote;
@@ -281,7 +282,8 @@ document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(window.swi
 $('gross').addEventListener('input',()=>{saveGross(Math.max(0,+$('gross').value||0));render();});
 $('grossR').addEventListener('input',()=>{$('gross').value=$('grossR').value;saveGross(+$('grossR').value);render();});
 render();
+window.addEventListener('settingschange',()=>{render();if(window.updateTopSummary)updateTopSummary();});
 </script>
 
 
-</body></html>
+<button type="button" id="setFab" class="setfab" aria-label="Einstellungen">⚙ Einstellungen</button></body></html>

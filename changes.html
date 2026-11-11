@@ -54,12 +54,13 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 .mine{font-size:14px;font-weight:500;margin:6px 0 4px;font-variant-numeric:tabular-nums}
 .mine.none{font-weight:400;color:var(--muted)}
 @media (max-width:640px){.sal{grid-template-columns:1fr}}
+#hideSal,.sal,#chips{display:none!important}
 </style>
 <script src="engine.js"></script>
 </head>
 <body>
 <main>
-<nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview"></a><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future" class="on"></a></nav>
+<nav class="topnav" aria-label="Pages"><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future" class="on"></a><a href="summary.html" data-nav="overview"></a></nav>
 <header>
   <div><h1 id="title"></h1><p class="sub" id="sub"></p></div>
   <div class="seg" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="de">DE</button></div>
@@ -83,7 +84,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 <script>
 const STATUS={ok:'b-ok',draft:'b-draft',plan:'b-plan'};
 const L={
-en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"Your gross salary (€)",settings:"Change other settings in the calculator →",
+en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"Your gross salary (€)",settings:"⚙ Change settings",
  totNow:"Now (2026)",totDec:"2027 – decided",totDraft:"2027 – incl. draft laws",totPlan:"+ plans (2028)",perMonth:"take-home / month",
  totNote:"Calculated with your settings from the calculator. Draft laws and plans may still change; the new income tax tariff isn’t published yet, so its effect is estimated.",
  mineFor:"For you at {g}:",mineNone:"No change for you with your current settings.",mineInfo:"Not part of the calculation – see note.",
@@ -95,7 +96,7 @@ en:{navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",salL:"
  impactL:"Typical effect:",srcL:"Source",
  howUpd:"<b>How this page is kept up to date.</b> Germany changes most payroll values on 1 January: the tax tariff, contribution ceilings, the minimum wage and the mini-job limit. Health insurers can change their extra contribution in any month. This page and the calculator are reviewed every month and whenever a law is passed; items move from <i>Plan</i> to <i>Draft</i> to <i>Decided</i> as they progress.",
  foot:"Not legal or tax advice. Status as reported by the linked sources."},
-de:{navOverview:"Überblick",navPast:"Vergangenheit",navNow:"Heute",navFuture:"Zukunft",salL:"Dein Bruttogehalt (€)",settings:"Weitere Einstellungen im Rechner ändern →",
+de:{navOverview:"Überblick",navPast:"Vergangenheit",navNow:"Heute",navFuture:"Zukunft",salL:"Dein Bruttogehalt (€)",settings:"⚙ Einstellungen ändern",
  totNow:"Heute (2026)",totDec:"2027 – beschlossen",totDraft:"2027 – inkl. Gesetzentwürfe",totPlan:"+ Pläne (2028)",perMonth:"Netto / Monat",
  totNote:"Berechnet mit deinen Einstellungen aus dem Rechner. Entwürfe und Pläne können sich noch ändern; der neue Steuertarif ist noch nicht veröffentlicht, seine Wirkung ist daher geschätzt.",
  mineFor:"Für dich bei {g}:",mineNone:"Keine Änderung für dich mit deinen aktuellen Einstellungen.",mineInfo:"Nicht Teil der Berechnung – siehe Hinweis.",
@@ -178,8 +179,8 @@ function inputsFrom(st){
  let f;if(status==='stud')f={kv:false,pv:false,rv:true,av:false,priv:false,subsidy:false};
  else if(status==='beamt')f={kv:false,pv:false,rv:false,av:false,priv:true,subsidy:false};
  else f={kv:pub,pv:pub,rv:true,av:true,priv:!pub,subsidy:true};
- const stt=st.state||'BE';
- return {g:Math.max(0,+(st.gross??3500)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
+ const stt=st.state||'BW';
+ return {g:Math.max(0,+(st.gross??2000)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
   zb:+(st.zbResolved??2.9),age23:st.c_23!==false,pkv:+(st.pkv||0),status,...f,ki:!!st.c_ki,ag:false,
   adv:st.adv||{fb:false,fbAmt:0,bav:false,bavAmt:0,fac:false,sg:0,sj:false,sjg:0,sj2:false,sjrv:false}};}
 function personal(o){
@@ -205,7 +206,7 @@ function render(){
  const sg=v=>(v>0?'+':'')+fm(v);
  document.querySelectorAll('[data-nav]').forEach(a=>a.textContent={overview:t.navOverview,past:t.navPast,now:t.navNow,future:t.navFuture}[a.dataset.nav]);
  $('salL').textContent=t.salL;if(document.activeElement!==$('gross'))$('gross').value=o.g;$('grossR').value=o.g;
- const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<a href="index.html" style="font-size:12px;margin-left:4px">${t.settings}</a>`;
+ const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,(window.STATE_NAMES&&STATE_NAMES[o.state])||o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<button type="button" class="setbtn">${t.settings}</button>`;
  const cell=(l,v,dv)=>`<div><div class="l">${l}</div><div class="v">${fm(v)}</div><div class="d ${dv>0.004?'up':(dv<-0.004?'down':'')}">${dv==null?t.perMonth:sg(dv)+' / '+(lang==='de'?'Monat':'month')}</div></div>`;
  $('tot').innerHTML=cell(t.totNow,R.base,null)+cell(t.totDec,R.dec,E.r2(R.dec-R.base))+cell(t.totDraft,R.draft,E.r2(R.draft-R.base))+cell(t.totPlan,R.plan,E.r2(R.plan-R.base));
  $('totNote').textContent=t.totNote;
@@ -228,6 +229,7 @@ document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(window.swi
 $('gross').addEventListener('input',()=>{saveGross(Math.max(0,+$('gross').value||0));render();});
 $('grossR').addEventListener('input',()=>{$('gross').value=$('grossR').value;saveGross(+$('grossR').value);render();});
 render();
+window.addEventListener('settingschange',()=>{render();if(window.updateTopSummary)updateTopSummary();});
 </script>
 </body>
 </html>

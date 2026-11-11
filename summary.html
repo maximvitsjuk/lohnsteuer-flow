@@ -51,17 +51,18 @@ a{color:var(--accent)}
 .toggles{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px;font-size:13px;color:var(--muted)}
 footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-height:1.7}footer a{color:inherit}
 @media (max-width:700px){.sal{grid-template-columns:1fr}.big{grid-template-columns:1fr}}
+#hideSal,.sal,#chips{display:none!important}
 </style>
 </head>
 <body>
 <main>
-<nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview" class="on"></a><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a></nav>
+<nav class="topnav" aria-label="Pages"><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a><a href="summary.html" data-nav="overview" class="on"></a></nav>
 <header>
   <div><h1 id="title"></h1><p class="sub" id="sub"></p></div>
   <div class="seg" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="de">DE</button></div>
 </header>
 
-<section class="card">
+<section class="card" id="hideSal">
   <div class="sal"><div><label for="gross" id="salL" style="font-size:13px;color:var(--muted)"></label><input type="number" id="gross" min="0" max="30000" step="50"></div>
   <input type="range" id="grossR" min="0" max="10000" step="50" aria-labelledby="salL"></div>
   <div class="chips" id="chips"></div>
@@ -104,14 +105,14 @@ function inputsFrom(st){
  let f;if(status==='stud')f={kv:false,pv:false,rv:true,av:false,priv:false,subsidy:false};
  else if(status==='beamt')f={kv:false,pv:false,rv:false,av:false,priv:true,subsidy:false};
  else f={kv:pub,pv:pub,rv:true,av:true,priv:!pub,subsidy:true};
- const stt=st.state||'BE';
- return {g:Math.max(0,+(st.gross??3500)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
+ const stt=st.state||'BW';
+ return {g:Math.max(0,+(st.gross??2000)||0),cls:+(st.cls||1),kids:+(st.kids||0),state:stt,kiRate:KI8.includes(stt)?0.08:0.09,
   zb:+(st.zbResolved??2.9),age23:st.c_23!==false,pkv:+(st.pkv||0),status,...f,ki:!!st.c_ki,ag:false,
   adv:st.adv||{fb:false,fbAmt:0,bav:false,bavAmt:0,fac:false,sg:0,sj:false,sjg:0,sj2:false,sjrv:false}};}
 
 const L={
 en:{nav:{overview:"Overview",past:"Past",now:"Now",future:"Future"},title:"Your salary: then, now and next",sub:"A summary of how deductions on a salary like yours have changed since 2010 – and where they are heading",
- salL:"Your gross salary (€)",settings:"Change other settings →",
+ salL:"Your gross salary (€)",settings:"⚙ Change settings",
  bigThen:"2010 – someone in your position kept",bigThenM:{cpi:"2010 – with the same purchasing power",nom:"2010 – with the same euros"},who:{wage:"someone in your position",cpi:"someone with the same purchasing power",nom:"the same euro amount"},bigNow:"Today you keep",bigNext:"2028 – if plans go ahead",ofGross:"of gross",
  hChart:"How your take-home share has changed",ct1:"Take-home, % of gross",ct2:"Social insurance and taxes, % of gross",adjL:"Compare:",adj:{wage:"wage-adjusted",cpi:"inflation-adjusted",nom:"same euros"},
  lgNet:"Take-home",lgTax:"Taxes",lgSv:"Social insurance",lgFut:"Planned / estimated",
@@ -141,7 +142,7 @@ en:{nav:{overview:"Overview",past:"Past",now:"Now",future:"Future"},title:"Your 
   cpiNote:{t:"Watch ‘bracket creep’",p:"Wage-adjusted, someone in your position keeps a smaller share today than in 2010. Tax thresholds rise more slowly than wages, so every raise is taxed a little more. Raises below inflation can mean less purchasing power after deductions.",tag:"trend"}
  }},
 de:{nav:{overview:"Überblick",past:"Vergangenheit",now:"Heute",future:"Zukunft"},title:"Dein Gehalt: früher, heute, morgen",sub:"Zusammenfassung, wie sich die Abzüge bei einem Gehalt wie deinem seit 2010 verändert haben – und wohin es geht",
- salL:"Dein Bruttogehalt (€)",settings:"Weitere Einstellungen ändern →",
+ salL:"Dein Bruttogehalt (€)",settings:"⚙ Einstellungen ändern",
  bigThen:"2010 – bei gleicher Stellung blieben",bigThenM:{cpi:"2010 – bei gleicher Kaufkraft blieben",nom:"2010 – bei gleichem Euro-Betrag blieben"},who:{wage:"einer Person in deiner Stellung",cpi:"bei gleicher Kaufkraft",nom:"beim gleichen Euro-Betrag"},bigNow:"Heute bleiben dir",bigNext:"2028 – wenn die Pläne kommen",ofGross:"vom Brutto",
  hChart:"Wie sich dein Netto-Anteil verändert hat",ct1:"Netto, % vom Brutto",ct2:"Sozialversicherung und Steuern, % vom Brutto",adjL:"Vergleich:",adj:{wage:"lohnbereinigt",cpi:"inflationsbereinigt",nom:"gleiche Euro"},
  lgNet:"Netto",lgTax:"Steuern",lgSv:"Sozialversicherung",lgFut:"Geplant / geschätzt",
@@ -214,7 +215,7 @@ function render(){
  document.querySelectorAll('[data-adj]').forEach(b=>{b.textContent=t.adj[b.dataset.adj];b.classList.toggle('on',b.dataset.adj===ADJ);});
  $('title').textContent=t.title;$('sub').textContent=t.sub;$('salL').textContent=t.salL;$('hChart').textContent=t.hChart;$('adjL').textContent=t.adjL;$('hStory').textContent=t.hStory;$('hRec').textContent=t.hRec;$('recIntro').textContent=t.recIntro;$('foot').innerHTML=t.foot+'<br>'+DATA_LINE[lang];
  if(document.activeElement!==$('gross'))$('gross').value=o.g;$('grossR').value=o.g;
- const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<a href="index.html" style="font-size:12px;margin-left:4px">${t.settings}</a>`;
+ const ch=t.chip;$('chips').innerHTML=[`${ch.cls} ${['I','II','III','IV','V','VI'][o.cls-1]}`,`${o.kids} ${ch.kids}`,(window.STATE_NAMES&&STATE_NAMES[o.state])||o.state,o.status==='stud'?ch.stud:(o.status==='beamt'?ch.beamt:(o.priv?ch.priv:ch.pub)),o.ki?ch.church:'',o.adv.sj&&o.adv.sjg>0?ch.second+' '+fm(o.adv.sjg):''].filter(Boolean).map(x=>`<span>${x}</span>`).join('')+`<button type="button" class="setbtn">${t.settings}</button>`;
  const S=series(o),a=S[0],n=S.find(d=>d.y===2026&&!d.fut),f=S[S.length-1];
  const big=(l,d,extra)=>`<div><div class="l">${l}</div><div class="v">${pc(d.net)} %</div><div class="d">${t.ofGross}${extra?' · '+extra:''}</div></div>`;
  $('big').innerHTML=big(ADJ==='wage'?t.bigThen:t.bigThenM[ADJ],a)+big(t.bigNow,n,fm(n.c.net))+big(t.bigNext,f,fm(f.c.net));
@@ -259,6 +260,7 @@ $('gross').addEventListener('input',()=>{saveSt({gross:String(Math.max(0,+$('gro
 $('grossR').addEventListener('input',()=>{$('gross').value=$('grossR').value;saveSt({gross:$('grossR').value});render();});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render);window.addEventListener('themechange',render);
 render();
+window.addEventListener('settingschange',()=>{render();if(window.updateTopSummary)updateTopSummary();});
 </script>
 </body>
 </html>
