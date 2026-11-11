@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy · Where does my salary go?</title>
+<script src="common.js"></script>
+<style>
+:root{color-scheme:light dark}:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+:root{--bg:#faf9f5;--card:#fff;--text:#1f1e1d;--muted:#6b6a65;--border:#e3e1d9;--accent:#534AB7;--ok:#0F6E56;--okbg:#E1F5EE;--draft:#854F0B;--draftbg:#FAEEDA;--plan:#5F5E5A;--planbg:#F1EFE8}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1f1e1d;--card:#2a2927;--text:#f0eee6;--muted:#a8a69e;--border:#3d3c39;--ok:#9FE1CB;--okbg:#085041;--draft:#FAC775;--draftbg:#633806;--plan:#D3D1C7;--planbg:#444441}}:root[data-theme=dark]{--bg:#1f1e1d;--card:#2a2927;--text:#f0eee6;--muted:#a8a69e;--border:#3d3c39;--ok:#9FE1CB;--okbg:#085041;--draft:#FAC775;--draftbg:#633806;--plan:#D3D1C7;--planbg:#444441}
+.topnav{display:flex;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--border)}
+.topnav a{padding:8px 14px;color:var(--muted);text-decoration:none;font-size:14px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.topnav a.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.top .topnav{flex:1 1 100%}
+.lang button{background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:3px 9px;cursor:pointer;font-size:13px}
+.lang button.on{color:var(--accent);border-color:var(--accent)}
+h1{font-size:26px;margin:8px 0 4px}h2{font-size:17px;margin:26px 0 6px}
+.box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin:14px 0}
+.box ul{margin:4px 0;padding-left:20px}
+.todo{background:var(--draftbg);color:var(--draft);border-radius:6px;padding:2px 6px}
+a{color:var(--accent)}.muted{color:var(--muted);font-size:13px}
+</style>
+</head>
+<body><main>
+<div class="top"><nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview"></a><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a></nav>
+<div class="lang"><button data-lang="en">EN</button> <button data-lang="de">DE</button></div></div>
+<article id="doc"></article>
+</main>
+<script>
+const NAV={en:{overview:"Overview",past:"Past",now:"Now",future:"Future"},de:{overview:"Überblick",past:"Vergangenheit",now:"Heute",future:"Zukunft"}};
+const DOC={
+en:`<h1>Privacy policy</h1><p class="muted">As of 10 November 2026</p>
+<div class="box"><b>In short:</b><ul>
+<li>No account, no login, no cookies, no analytics, no advertising.</li>
+<li>Your salary and all other inputs are calculated <b>only in your browser</b>. They are never sent to us or to any server.</li>
+<li>Your inputs are kept in your browser's <i>session storage</i> only so that the four pages can share them while you click around. They are deleted when you close the tab or window (unless your browser restores the closed tab, e.g. via “reopen closed tab” or session restore).</li>
+<li>We don't count or log visitors. According to our host, it doesn't store data about visits either.</li>
+<li>We know nothing about who you are or what you entered.</li></ul></div>
+<h2>1. Who is responsible</h2>
+<p>Maxim Vitsuk<br>E-mail: <a href="mailto:maximvitsuk@proton.me">maximvitsuk@proton.me</a></p>
+<h2>2. What happens to the data you enter</h2>
+<p>All calculations (taxes, social insurance, charts, the past and future comparisons) run as JavaScript on your own device. No form is submitted and no input is transmitted over the network.</p>
+<p>To keep your inputs when you switch between “Overview”, “Past”, “Now” and “Future”, the site writes them to <code>sessionStorage</code> in your browser (keys <code>salaryState</code> and <code>lang</code>). This storage is not a cookie, is never sent to a server, is only visible to this site in this tab, and is erased by the browser when the tab is closed. Some browsers bring it back if you reopen a closed tab or restore your last session; a private window avoids this.</p>
+<h2>3. No third-party services</h2>
+<p>The site loads no external fonts, scripts, trackers or embedded content. All charts are drawn by the site's own code, and the map of the German states is delivered from this site itself. Links to sources (e.g. the Bundestag or the Federal Ministry of Finance) are only opened when you click them; from then on the privacy policy of that website applies.</p>
+<h2>4. Hosting</h2>
+<p>The site is hosted by statichost.eu (Variable Object Assignment, c/o Knackeriet, Svartmangatan 9, 111 29 Stockholm, Sweden). Processing takes place within the EU/EEA.</p>
+<p>To deliver the pages, the host's servers necessarily process your IP address for the duration of each request. According to the provider, no personal data about website visits is stored. The provider uses two subprocessors: Hetzner Online GmbH (data centre, Germany) and BunnyWay d.o.o. (content delivery network, Slovenia). We therefore have no access logs and do not count or track visitors. All pages are delivered encrypted (HTTPS). The values you type into the calculator are not part of these requests.</p>
+<p>Legal basis for this technically necessary processing: Art. 6(1)(f) GDPR (legitimate interest in providing a working, secure website).</p>
+<h2>5. Your rights</h2>
+<p>Under the GDPR you have the right to access, rectification, erasure, restriction of processing, data portability and objection (Art. 15–21 GDPR). Because we do not store any personal data about you, there is usually nothing we can show or delete. You also have the right to lodge a complaint with a data protection supervisory authority, e.g. the Berlin Commissioner for Data Protection and Freedom of Information.</p>
+<h2>6. Changes</h2>
+<p>If a feature is ever added that sends data to a server or counts visits, this policy will be updated <b>before</b> the feature goes live. Any such transfer would be encrypted, stored only for as long as the calculation needs it and deleted immediately afterwards.</p>`,
+de:`<h1>Datenschutzerklärung</h1><p class="muted">Stand: 10. November 2026</p>
+<div class="box"><b>Kurz gesagt:</b><ul>
+<li>Kein Konto, kein Login, keine Cookies, keine Analyse, keine Werbung.</li>
+<li>Dein Gehalt und alle anderen Eingaben werden <b>nur in deinem Browser</b> berechnet. Sie werden nie an uns oder einen Server gesendet.</li>
+<li>Deine Eingaben liegen nur im <i>Session Storage</i> deines Browsers, damit die vier Seiten sie beim Wechseln teilen können. Beim Schließen des Tabs oder Fensters werden sie gelöscht (außer dein Browser stellt den geschlossenen Tab wieder her, z. B. über „Geschlossenen Tab wieder öffnen“ oder die Sitzungswiederherstellung).</li>
+<li>Wir zählen und protokollieren keine Besucher. Nach Angaben unseres Hosters speichert auch er keine Daten über Besuche.</li>
+<li>Wir wissen nicht, wer du bist oder was du eingegeben hast.</li></ul></div>
+<h2>1. Verantwortlicher</h2>
+<p>Maxim Vitsuk<br>E-Mail: <a href="mailto:maximvitsuk@proton.me">maximvitsuk@proton.me</a></p>
+<h2>2. Was mit deinen Eingaben passiert</h2>
+<p>Alle Berechnungen (Steuern, Sozialversicherung, Diagramme, Vergleiche mit Vergangenheit und Zukunft) laufen als JavaScript auf deinem eigenen Gerät. Es wird kein Formular abgeschickt und keine Eingabe über das Netz übertragen.</p>
+<p>Damit deine Eingaben beim Wechsel zwischen „Überblick“, „Vergangenheit“, „Jetzt“ und „Zukunft“ erhalten bleiben, speichert die Seite sie im <code>sessionStorage</code> deines Browsers (Schlüssel <code>salaryState</code> und <code>lang</code>). Das ist kein Cookie, wird nie an einen Server gesendet, ist nur für diese Seite in diesem Tab sichtbar und wird vom Browser gelöscht, wenn du den Tab schließt. Manche Browser stellen ihn wieder her, wenn du einen geschlossenen Tab erneut öffnest oder die letzte Sitzung wiederherstellst; in einem privaten Fenster passiert das nicht.</p>
+<h2>3. Keine Drittanbieter</h2>
+<p>Die Seite lädt keine externen Schriften, Skripte, Tracker oder eingebetteten Inhalte. Alle Diagramme zeichnet der eigene Code der Seite, und die Karte der Bundesländer wird von dieser Seite selbst ausgeliefert. Links zu Quellen (z. B. Bundestag oder Bundesfinanzministerium) werden erst geöffnet, wenn du sie anklickst; dann gilt die Datenschutzerklärung der jeweiligen Website.</p>
+<h2>4. Hosting</h2>
+<p>Die Seite wird von statichost.eu gehostet (Variable Object Assignment, c/o Knackeriet, Svartmangatan 9, 111 29 Stockholm, Schweden). Die Verarbeitung findet innerhalb der EU/des EWR statt.</p>
+<p>Zur Auslieferung der Seiten verarbeiten die Server des Hosters zwangsläufig deine IP-Adresse für die Dauer des jeweiligen Abrufs. Nach Angaben des Anbieters werden keine personenbezogenen Daten über Website-Besuche gespeichert. Der Anbieter setzt zwei Unterauftragsverarbeiter ein: Hetzner Online GmbH (Rechenzentrum, Deutschland) und BunnyWay d.o.o. (Content-Delivery-Netzwerk, Slowenien). Wir haben daher keine Zugriffsprotokolle und zählen oder verfolgen Besucher nicht. Alle Seiten werden verschlüsselt (HTTPS) übertragen. Was du in den Rechner eingibst, ist nicht Teil dieser Abrufe.</p>
+<p>Rechtsgrundlage für diese technisch notwendige Verarbeitung: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer funktionierenden, sicheren Website).</p>
+<h2>5. Deine Rechte</h2>
+<p>Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch (Art. 15–21 DSGVO). Da wir keine personenbezogenen Daten über dich speichern, gibt es in der Regel nichts, was wir zeigen oder löschen könnten. Du hast außerdem das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren, z. B. bei der Berliner Beauftragten für Datenschutz und Informationsfreiheit.</p>
+<h2>6. Änderungen</h2>
+<p>Sollte jemals eine Funktion hinzukommen, die Daten an einen Server sendet oder Besuche zählt, wird diese Erklärung <b>vorher</b> angepasst. Eine solche Übertragung wäre verschlüsselt, würde nur so lange gespeichert, wie die Berechnung es erfordert, und danach sofort gelöscht.</p>`};
+let lang=window.FORCE_LANG||(()=>{try{const s=sessionStorage.getItem('lang');if(s)return s;}catch(e){}return (navigator.language||'en').toLowerCase().startsWith('de')?'de':'en';})();
+function render(){document.documentElement.lang=lang;document.getElementById('doc').innerHTML=DOC[lang];
+document.title=window.PAGE_TITLE||(lang==='de'?'Datenschutzerklärung · Wohin geht mein Gehalt?':'Privacy policy · Where does my salary go?');
+document.querySelectorAll('[data-nav]').forEach(a=>a.textContent=NAV[lang][a.dataset.nav]);
+document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(window.switchLang&&switchLang(b.dataset.lang))return;lang=b.dataset.lang;try{sessionStorage.setItem('lang',lang);}catch(e){}render();});
+render();
+</script>
+</body></html>

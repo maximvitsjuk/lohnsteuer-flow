@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where does my salary go? · Germany 2026</title>
+<script src="engine.js"></script>
+<script src="common.js"></script>
+<style>
+:root{color-scheme:light dark}:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+:root{--bg:#faf9f5;--card:#fff;--text:#1f1e1d;--muted:#6b6a65;--border:#e3e1d9;--accent:#534AB7;--tax:#7F77DD;--sv:#1D9E75;--net:#888780;--ag:#BA7517;--debt:#D85A30}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1f1e1d;--card:#2a2927;--text:#f0eee6;--muted:#a8a69e;--border:#3d3c39}}:root[data-theme=dark]{--bg:#1f1e1d;--card:#2a2927;--text:#f0eee6;--muted:#a8a69e;--border:#3d3c39}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+h1{font-size:24px;font-weight:500;margin:0}
+h2{font-size:17px;font-weight:500;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:2px 0 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+.groups{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.grp{border:1px solid var(--border);border-radius:10px;padding:10px 14px 12px;margin:0;min-width:0}
+.topnav{display:flex;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--border)}
+.topnav a{padding:8px 14px;color:var(--muted);text-decoration:none;font-size:14px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.topnav a.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.cmp{margin-top:12px;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0;padding:10px 12px;font-size:14px;background:var(--bg)}
+.cmp b{font-weight:500}.cmp .up{color:#0F6E56}.cmp .down{color:#A32D2D}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .cmp .up{color:#5DCAA5}:root:not([data-theme=light]) .cmp .down{color:#F09595}}:root[data-theme=dark] .cmp .up{color:#5DCAA5}:root[data-theme=dark] .cmp .down{color:#F09595}
+.yearrow{display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:end}.lbl2{font-size:13px;color:var(--muted)}#adjSeg button{padding:7px 12px}
+@media (max-width:760px){.yearrow{grid-template-columns:1fr}}
+.g-wide{grid-column:1/-1}
+.staterow{display:flex;gap:8px}.staterow select{flex:1}
+.mapbtn{flex:none;padding:0 12px;border:1px solid var(--accent);border-radius:8px;background:var(--bg);color:var(--accent);font-size:14px;cursor:pointer}
+.mapbtn:hover{background:var(--accent);color:#fff}
+.rescontrols{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.agtoggle .lbl{margin:0}.agtoggle .tipbox{position:absolute;max-width:320px;z-index:5}
+.agtoggle{position:relative}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal[hidden]{display:none}
+.modalbox{background:var(--card);border-radius:12px;max-width:860px;width:100%;max-height:92vh;overflow:auto;padding:18px}
+.modalhead{display:flex;justify-content:space-between;align-items:center}
+.closebtn{border:0;background:none;color:var(--text);font-size:26px;cursor:pointer;line-height:1}
+.mapwrap{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:start}
+#deMap svg{width:100%;height:auto;max-height:70vh}
+#deMap path{stroke:var(--card);stroke-width:1.2;cursor:pointer;transition:opacity .15s}
+#deMap path:hover,#deMap path:focus{opacity:.75;outline:none}
+#deMap path.sel{stroke:var(--text);stroke-width:2.5}
+.legend div{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:6px}
+.legend i{width:14px;height:14px;border-radius:3px;flex:none}
+.stinfo{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px;min-height:120px}
+.stinfo b{font-weight:500}
+.stinfo table td{padding:3px 0;border:0}
+@media (max-width:760px){.mapwrap{grid-template-columns:1fr}}
+.adv summary{cursor:pointer;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px;list-style:none;padding:4px 0}
+.adv summary::-webkit-details-marker{display:none}
+.adv summary::after{content:"▸";margin-left:auto;color:var(--muted)}
+.adv[open] summary::after{content:"▾"}
+.advgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:10px}
+.advitem{border-top:1px solid var(--border);padding-top:8px}
+.advin{margin:6px 0 0 24px}
+.chk2{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+@media (max-width:760px){.advgrid{grid-template-columns:1fr}}
+legend{font-size:14px;font-weight:500;padding:0 6px;display:flex;align-items:center;gap:6px}
+.num{display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;align-items:center;justify-content:center}
+.fld{margin-top:10px}
+.fld.sub{margin-left:24px}
+.lbl{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.lbl>label{font-size:13px;color:var(--muted)}
+.lbl>label.chk{font-size:14px;color:var(--text);display:flex;gap:8px;align-items:center;cursor:pointer}
+.tip{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--bg);color:var(--muted);font-size:12px;cursor:pointer;line-height:1}
+.tip[aria-expanded=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tipbox{font-size:13px;line-height:1.45;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0;padding:8px 10px;margin:4px 0 8px}
+.grossrow{display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:center}
+.grossrow input[type=range]{margin:0}
+@media (max-width:760px){.groups{grid-template-columns:1fr}.grossrow{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+label.f{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+input[type=number],select{width:100%;padding:8px 10px;font-size:16px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)}
+input[type=range]{width:100%;margin-top:8px}
+.checks{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.checks label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.checks small{color:var(--muted);display:block;font-size:12px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.seg button{padding:7px 14px;border:0;background:var(--bg);color:var(--text);font-size:14px;cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.kpi .v{font-size:21px;font-weight:500;font-variant-numeric:tabular-nums}
+.kpi .l,.kpi .p{font-size:12px;color:var(--muted)}
+.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin-top:12px;background:var(--border)}
+.mk{cursor:pointer}.mk:hover rect,.mk:focus rect{stroke-width:2.5}.mk:focus{outline:none}.mk.on rect{stroke-width:3}
+.srcgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 24px}.srcgrid h3{font-size:14px;font-weight:500;margin:6px 0 4px}.srcgrid ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6}.srcgrid a{color:var(--accent)}@media (max-width:760px){.srcgrid{grid-template-columns:1fr}}
+.kpi.click{cursor:pointer;transition:border-color .15s}
+.kpi.click:hover{border-color:var(--accent)}
+.kpi.click.active{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.kpi .more{font-size:11px;color:var(--accent);margin-top:2px}
+.detail{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:12px;background:var(--bg)}
+.detail h3{font-size:15px;font-weight:500;margin:0 0 8px;display:flex;justify-content:space-between}
+.detail table{font-size:13px}
+.detail .sub td{color:var(--muted);padding-left:22px}
+.detail .tot td{font-weight:500;border-top:2px solid var(--border)}
+.notice{font-size:13px;color:var(--ag);margin-top:8px;min-height:1em}
+.viewbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+#sankey{width:100%}#sankey .sk-l:hover{fill-opacity:.6}
+svg text{font-family:inherit}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:7px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.pairrow input.derived{background:transparent;border-style:dashed;color:var(--muted);cursor:default}.pairrow input.derived:focus{outline:none}
+.pairlbl,.pairrow{display:grid;grid-template-columns:1fr 1fr auto;gap:10px 12px;align-items:center}.pairlbl{grid-template-columns:1fr 1fr;margin-bottom:6px}.pairrow .pc{min-width:0}.pairrow .gu{max-width:none}.pairrow input[type=number]{width:100%}
+@media (max-width:600px){.pairlbl .lbl label{font-size:12px}.pairrow{grid-template-columns:1fr 1fr}.pairrow .guseg{grid-column:1/-1;justify-self:start}}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* phones: tables become stacked rows instead of being cut off */
+@media (max-width:600px){
+ #tbl tr:first-child{display:none}
+ #tbl tr{display:grid;grid-template-columns:1fr auto;column-gap:12px;border-bottom:1px solid var(--border);padding:8px 0}
+ #tbl td{border:0;padding:0}
+ #tbl td.n{grid-column:2;grid-row:1}
+ #tbl td.muted{grid-column:1/-1;grid-row:2;font-size:12px;margin-top:2px}
+ #tbl tr.grp{padding-top:14px}#tbl tr.grp td{padding:0}
+ .detail table,.detail tbody,.detail tr,.detail td{display:block;width:100%}
+ .detail tr:first-child{display:none}
+ .detail tr{border-bottom:1px solid var(--border);padding:8px 0}
+ .detail td{border:0;padding:2px 0;text-align:left!important;white-space:normal!important}
+ .detail td:first-child{font-weight:500;padding-bottom:4px}
+ .detail td[data-label]:not(:first-child){display:flex;justify-content:space-between;gap:12px}
+ .detail td[data-label]:not(:first-child)::before{content:attr(data-label);color:var(--muted);font-size:12px;flex:none;max-width:45%}
+ .detail td:empty{display:none}
+ .detail td .cv{flex:1;text-align:right}
+ .detail .sub td{padding-left:0}.detail .sub td:first-child{font-weight:400;color:var(--muted)}
+ .detail .tot{border-top:2px solid var(--border)}.detail .tot td{border:0}
+}
+
+th{font-weight:500;color:var(--muted);font-size:12px}
+tr.grp td{font-weight:500;padding-top:14px}
+.muted{color:var(--muted);font-size:13px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+details summary{cursor:pointer;font-weight:500}
+footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-height:1.7}footer a{color:inherit}
+</style>
+</head>
+<body>
+<main>
+<nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview"></a><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a></nav>
+<header>
+  <div>
+    <h1 id="t_title"></h1>
+    <p class="sub" id="t_sub"></p>
+    <p class="sub" style="margin-top:6px"><span class="asof" id="t_asof"></span></p>
+  </div>
+  <div class="seg" role="group" aria-label="Language">
+    <button data-lang="en">EN</button><button data-lang="de">DE</button>
+  </div>
+</header>
+
+<section class="card">
+  <div class="groups">
+    <fieldset class="grp g-wide">
+      <legend><span class="num">1</span><span data-t="g1"></span></legend>
+      <div class="fld" id="f_year" hidden><div class="yearrow"><div><div class="lbl"><label for="year" data-t="yearL"></label></div><select id="year"></select></div>
+        <div><div class="lbl"><span class="lbl2" data-t="adjL"></span><button class="tip" data-tip="adj" aria-expanded="false">?</button></div>
+        <div class="seg" role="group" id="adjSeg"><button data-adj="wage"></button><button data-adj="cpi"></button><button data-adj="nom"></button></div></div></div>
+        <div class="tipbox" id="tip-adj" hidden></div><p class="muted" id="adjOut" style="margin:8px 0 0"></p></div>
+      <div class="fld">
+        <div class="seg" id="srcSeg" role="group" style="margin-bottom:12px"><button type="button" data-s="g"></button><button type="button" data-s="n"></button></div>
+        <div class="pairlbl"><div class="lbl"><label for="gross" data-t="gross"></label><button class="tip" data-tip="gross" aria-expanded="false">?</button></div><div class="lbl" id="netLbl"><label for="netIn" id="netL"></label></div></div>
+        <div class="tipbox" id="tip-gross" hidden></div>
+        <div class="pairrow" id="pairRow"><div class="pc"><input type="number" id="gross" min="0" max="30000" step="any" value="3500"></div><div class="pc" id="netCol"><input type="number" id="netIn" min="0" step="any" inputmode="decimal"></div></div>
+        <input type="range" id="grossR" min="0" max="10000" step="50" value="3500" aria-label="gross" style="width:100%;margin-top:10px">
+        <p class="muted" id="netOut" style="margin:6px 0 0;font-size:12px"></p>
+      </div>
+    </fieldset>
+    <fieldset class="grp">
+      <legend><span class="num">2</span><span data-t="g2"></span></legend>
+            <div class="fld"><div class="lbl"><label class="chk"><input type="checkbox" id="c_23" checked><span data-t="age"></span></label><button class="tip" data-tip="age" aria-expanded="false">?</button></div><div class="tipbox" id="tip-age" hidden></div></div>
+      <div class="fld"><div class="lbl"><label for="cls" data-t="cls"></label><button class="tip" data-tip="cls" aria-expanded="false">?</button></div><div class="tipbox" id="tip-cls" hidden></div><select id="cls"></select></div>
+      <div class="fld"><div class="lbl"><label for="state" data-t="state"></label><button class="tip" data-tip="state" aria-expanded="false">?</button></div><div class="tipbox" id="tip-state" hidden></div><div class="staterow"><select id="state"></select><button type="button" class="mapbtn" id="openMap"><span data-t="mapBtn"></span></button></div></div>
+      <div class="fld"><div class="lbl"><label class="chk"><input type="checkbox" id="c_ki"><span data-t="ki"></span></label><button class="tip" data-tip="ki" aria-expanded="false">?</button></div><div class="tipbox" id="tip-ki" hidden></div></div>
+      <div class="fld"><div class="lbl"><label for="kids" data-t="kids"></label><button class="tip" data-tip="kids" aria-expanded="false">?</button></div><div class="tipbox" id="tip-kids" hidden></div>
+        <select id="kids"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
+    </fieldset>
+    <fieldset class="grp">
+      <legend><span class="num">3</span><span data-t="g3"></span></legend>
+      <div class="fld"><div class="lbl"><label for="status" data-t="status"></label><button class="tip" data-tip="status" aria-expanded="false">?</button></div><div class="tipbox" id="tip-status" hidden></div>
+        <select id="status"><option value="emp"></option><option value="stud"></option><option value="beamt"></option></select></div>
+      <div class="fld" id="f_hi"><div class="lbl"><label for="hi" data-t="hi"></label><button class="tip" data-tip="hi" aria-expanded="false">?</button></div><div class="tipbox" id="tip-hi" hidden></div>
+        <select id="hi"><option value="pub"></option><option value="priv"></option></select></div>
+      <div class="fld sub" id="f_zb"><div class="lbl"><label for="kasse" data-t="kasse"></label><button class="tip" data-tip="kasse" aria-expanded="false">?</button></div><div class="tipbox" id="tip-kasse" hidden></div>
+        <select id="kasse"></select>
+        <div id="f_zbman" hidden style="margin-top:8px"><div class="lbl"><label for="zb" data-t="zb"></label><button class="tip" data-tip="zb" aria-expanded="false">?</button></div><div class="tipbox" id="tip-zb" hidden></div><input type="number" id="zb" min="0" max="6" step="0.01" value="2.9"></div>
+        <p class="muted" id="zbShow" style="margin:6px 0 0"></p></div>
+      <div class="fld sub" id="f_pkv" hidden><div class="lbl"><label for="pkv" data-t="pkv"></label><button class="tip" data-tip="pkv" aria-expanded="false">?</button></div><div class="tipbox" id="tip-pkv" hidden></div><input type="number" id="pkv" min="0" max="3000" step="10" value="600"></div>
+      <p class="muted" id="statusNote" style="margin:10px 0 0"></p>
+    </fieldset>
+    
+    <details class="grp g-wide adv" id="advBox">
+      <summary><span class="num">4</span><span data-t="g5"></span> <span class="muted" data-t="g5s"></span></summary>
+      <div class="advgrid">
+        <div class="advitem">
+          <div class="lbl"><label class="chk"><input type="checkbox" id="a_fb"><span data-t="fb"></span></label><button class="tip" data-tip="fb" aria-expanded="false">?</button></div><div class="tipbox" id="tip-fb" hidden></div>
+          <div class="advin" id="in_fb" hidden><label class="f" for="fb" data-t="fbIn"></label><input type="number" id="fb" min="0" max="5000" step="10" value="100"></div>
+        </div>
+        <div class="advitem">
+          <div class="lbl"><label class="chk"><input type="checkbox" id="a_bav"><span data-t="bav"></span></label><button class="tip" data-tip="bav" aria-expanded="false">?</button></div><div class="tipbox" id="tip-bav" hidden></div>
+          <div class="advin" id="in_bav" hidden><label class="f" for="bav" data-t="bavIn"></label><input type="number" id="bav" min="0" max="2000" step="10" value="100"></div>
+        </div>
+        <div class="advitem">
+          <div class="lbl"><label class="chk"><input type="checkbox" id="a_fac"><span data-t="fac"></span></label><button class="tip" data-tip="fac" aria-expanded="false">?</button></div><div class="tipbox" id="tip-fac" hidden></div>
+          <div class="advin" id="in_fac" hidden><label class="f" for="sg" data-t="facIn"></label><input type="number" id="sg" min="0" max="30000" step="50" value="2000"><p class="muted" id="facOut" style="margin:6px 0 0"></p></div>
+        </div>
+        <div class="advitem">
+          <div class="lbl"><label class="chk"><input type="checkbox" id="a_sj"><span data-t="sj"></span></label><button class="tip" data-tip="sj" aria-expanded="false">?</button></div><div class="tipbox" id="tip-sj" hidden></div>
+          <div class="advin" id="in_sj" hidden><label class="f" for="sjg" data-t="sjIn"></label><input type="number" id="sjg" min="0" max="20000" step="10" value="300">
+            <div id="sjMini" class="checks" style="margin-top:8px">
+              <label class="chk2"><input type="checkbox" id="sj2"><span data-t="sj2"></span></label>
+              <label class="chk2"><input type="checkbox" id="sjrv"><span data-t="sjrv"></span></label>
+            </div>
+            <p class="muted" id="sjOut" style="margin:6px 0 0"></p></div>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="card">
+  <div class="viewbar">
+    <h2 id="t_summary" style="margin:0"></h2>
+    <div class="rescontrols"><div class="agtoggle"><div><div class="lbl"><label class="chk"><input type="checkbox" id="c_ag"><span data-t="ag"></span></label><button class="tip" data-tip="ag" aria-expanded="false">?</button></div><div class="tipbox" id="tip-ag" hidden></div></div></div><div class="seg" role="group"><button id="pm" class="on"></button><button id="py"></button></div></div>
+  </div>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar" id="bar"></div>
+  <div class="cmp" id="cmp" hidden></div>
+  <div class="notice" id="notice"></div>
+  <div id="detail" class="detail" hidden></div>
+  <p id="perDay" style="margin:10px 0 0;font-size:14px;line-height:1.5"></p>
+  <p class="muted" id="kpiHint" style="margin:6px 0 0;font-size:12px"></p>
+</section>
+
+<section class="card">
+  <div class="viewbar">
+    <h2 id="t_viewtitle" style="margin:0"></h2>
+    <div class="seg" role="group"><button id="v_flow" class="on"></button><button id="v_map"></button></div>
+  </div>
+  <p class="muted" id="t_viewhint" style="margin:0 0 8px"></p>
+  <div id="flowView"><div id="sankey"></div></div>
+  <div id="mapView" hidden>
+    <div id="map1"></div>
+    <div id="map2wrap"><h2 id="t_map2" style="margin-top:18px"></h2>
+    <p class="muted" id="t_map2hint" style="margin:0 0 8px"></p>
+    <div id="map2"></div>
+    <div id="map2note" class="detail" hidden></div></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2 id="t_detail"></h2>
+  <div style="overflow-x:auto"><table id="tbl"></table></div>
+</section>
+
+<section class="card">
+  <details>
+    <summary id="t_how"></summary>
+    <div class="muted" id="t_howtext" style="margin-top:10px"></div>
+  </details>
+</section>
+
+<div class="modal" id="mapModal" hidden role="dialog" aria-modal="true" aria-labelledby="mapTitle">
+  <div class="modalbox">
+    <div class="modalhead"><h2 id="mapTitle" data-t="mapTitle" style="margin:0"></h2><button type="button" class="closebtn" id="closeMap" aria-label="Close">×</button></div>
+    <p class="muted" data-t="mapIntro" style="margin:4px 0 10px"></p>
+    <div class="mapwrap"><div id="deMap"></div>
+      <div class="mapside">
+        <div class="legend" id="mapLegend"></div>
+        <div class="stinfo" id="stInfo"></div>
+        <p class="muted" style="font-size:11px;margin-top:12px">Map: <a href="https://github.com/VictorCazanave/svg-maps" target="_blank" rel="noopener">svg-maps</a> (CC BY 4.0)</p>
+      </div></div>
+  </div>
+</div>
+<section class="card" id="sources">
+  <h2 data-t="srcTitle"></h2>
+  <p class="muted" data-t="srcIntro" style="margin:0 0 10px"></p>
+  <div class="srcgrid">
+    <div><h3 data-t="srcTax"></h3><ul>
+      <li><a href="https://www.ihk-muenchen.de/ihk/documents/Recht-Steuern/Steuerrecht/Einkommensteuer/2025-11-12-PAP-2026-anlage-1.pdf" target="_blank" rel="noopener">BMF – Programmablaufplan Lohnsteuer 2026 (Anlage 1)</a></li>
+      <li><a href="https://www.steuerschroeder.de/Steuerrechner/Grundfreibetrag.html" target="_blank" rel="noopener">Grundfreibetrag 2026 (12.348 €)</a></li>
+      <li><a href="https://www.tk.de/firmenkunden/service/fachthemen/fachthema-beitraege/solidaritaetszuschlag-2075802" target="_blank" rel="noopener">TK – Solidaritätszuschlag 2026: Freigrenze</a></li>
+      <li><a href="https://esth.bundesfinanzministerium.de/esth/2020/A-Einkommensteuergesetz/IV-Tarif/Paragraf-32a/inhalt.html" target="_blank" rel="noopener">BMF – § 32a EStG tariffs of earlier years (EStH / LStH)</a></li>
+      <li><a href="https://www.ordio.com/tools/lohnsteuer-rechner" target="_blank" rel="noopener">Ordio – Lohnsteuer 2026 reference values (used to test this calculator)</a></li>
+    </ul></div>
+    <div><h3 data-t="srcSv"></h3><ul>
+      <li><a href="https://www.krankenkassen.de/gesetzliche-krankenkassen/system-gesetzliche-krankenversicherung/sozialversicherung-rechengroessen-beitragsbemessungsgrenze-versicherungspflichtgrenze/rechengroessen-2026/" target="_blank" rel="noopener">Rechengrößen der Sozialversicherung 2026</a></li>
+      <li><a href="https://www.dehoga-nrw.de/fileadmin/NRW/Download/Rechengroessen_Sozialversicherung_2026.pdf" target="_blank" rel="noopener">Beitragssätze 2026 incl. PV child reductions (DEHOGA NRW)</a></li>
+      <li><a href="https://www.hek.de/fileadmin/user_upload/data/Dokumente_Website/Downloads/Firmenkunden_Downloads/Beitragsuebersicht_FK_0126-02.pdf" target="_blank" rel="noopener">HEK – Beitragsübersicht 2026 (employer subsidy for private insurance)</a></li>
+      <li><a href="https://www.buzer.de/gesetz/886/al162812-0.htm" target="_blank" rel="noopener">Anlage 1 SGB VI – average gross earnings by year (wage adjustment)</a></li>
+      <li><a href="https://www.deutsche-rentenversicherung.de/DRV/DE/Ueber-uns-und-Presse/Presse/Meldungen/2025/250910-sv-rechengroessen-vo-2026.html" target="_blank" rel="noopener">DRV – average earnings 2024 (final) and 2026 (provisional)</a></li>
+      <li><a href="https://www.agv-vers.de/statistiken/verbraucherpreise/preise-vpi-jahresuebersicht.html" target="_blank" rel="noopener">Consumer price index 2020=100 (Destatis data) – inflation adjustment</a></li>
+      <li><a href="https://www.sozialpolitik-aktuell.de/Erstes_halbjahr_2021.html" target="_blank" rel="noopener">sozialpolitik-aktuell.de – contribution rates of earlier years</a></li>
+      <li><a href="https://www.gesetze-im-internet.de/sgb_4/__20.html" target="_blank" rel="noopener">§ 20 SGB IV – Übergangsbereich</a></li>
+      <li><a href="https://www.krankenkassen.de/gesetzliche-krankenkassen/krankenkasse-beitrag/kein-zusatzbeitrag" target="_blank" rel="noopener">krankenkassen.de – Zusatzbeiträge 2026</a></li>
+      <li><a href="https://www.test.de/Gesetzliche-Krankenkassen-2026-Das-koennen-Sie-tun-wenn-es-teuerer-wird-5898858-0/" target="_blank" rel="noopener">Stiftung Warentest – changes during 2026</a></li>
+    </ul></div>
+    <div><h3 data-t="srcPub"></h3><ul>
+      <li><a href="https://www.gesetze-im-internet.de/gg/art_106.html" target="_blank" rel="noopener">Grundgesetz Art. 106 – distribution of taxes</a></li>
+      <li><a href="https://www.bundestag.de/dokumente/textarchiv/2025/kw46-pa-haushalt-bereinigung-1126856" target="_blank" rel="noopener">Bundestag – federal budget 2026</a></li>
+      <li><a href="https://www.bundestag.de/presse/hib/kurzmeldungen-1126854" target="_blank" rel="noopener">Bundestag hib 622/2025 – budget 2026: €524.54 bn, taxes €387.21 bn, borrowing €97.97 bn</a></li>
+      <li><a href="https://www.bundestag.de/dokumente/textarchiv/2026/kw37-de-a-1194736" target="_blank" rel="noopener">Bundestag – Einzelplan 11: payments to the pension insurance 2026 (€127.42 bn)</a></li>
+      <li><a href="https://www.bundestag.de/presse/hib/kurzmeldungen-1205514" target="_blank" rel="noopener">Bundestag hib 656/2026 – federal interest 2026/2027</a></li>
+      <li><a href="https://www.dihk.de/de/newsroom/bund-plant-fuer-2026-mit-ausgaben-von-525-milliarden-euro-156322" target="_blank" rel="noopener">DIHK – borrowing incl. special funds 2026 (98 + 83 bn)</a></li>
+      <li><a href="https://kommunsense.de/wp-content/uploads/newsmappen/bmf/bmf-mb-04-2026-20.pdf" target="_blank" rel="noopener">BMF Monatsbericht April 2026 – Finanzkraftausgleich 2025, preliminary (copy)</a></li>
+      <li><a href="https://www.bundestag.de/presse/hib/kurzmeldungen-1126920" target="_blank" rel="noopener">Bundestag hib 623/2025 – Finanzkraftausgleich, federal government answer</a></li>
+    </ul></div>
+    <div><h3 data-t="srcOther"></h3><ul>
+      <li><a href="https://github.com/VictorCazanave/svg-maps" target="_blank" rel="noopener">svg-maps – map of German states (CC BY 4.0)</a></li>
+      
+    </ul></div>
+  </div>
+</section>
+<footer id="t_footer"></footer>
+</main>
+
+<script>
+const I18N={
+en:{adjL:"Compare your salary",grossToday:"Your gross salary today (€)",zbPre15:"{y}: no extra contribution – the 0.9% employee surcharge is in the base rate",adjWage:"wage-adjusted",adjCpi:"inflation-adjusted",adjNom:"same euros",
+adjOutWage:"Your {g} today ≈ {gy} in {y} – same position relative to the average wage.",adjOutCpi:"Your {g} today ≈ {gy} in {y} – same purchasing power.",adjOutNom:"Calculated with exactly {g} in {y}. Use this to enter your real salary from that year.",
+cmpReal:"In today’s money",cmpWageLvl:"Scaled to today’s wage level",cmpNoteAdj:"The earlier year’s take-home is converted to today’s money with the same index. Values as of 1 January of each year (2023: care insurance rose in July); tax uses the final annual tariff. Years before 2019: public health rates include the 0.9% employee surcharge (2010–2014) or the full extra contribution paid by employees (2015–2018).",cmpShare:"Take-home share",
+navOverview:"Overview",navPast:"Past",navNow:"Now",navFuture:"Future",yearL:"Year",
+pastTitle:"How much did I pay back then?",pastSub:"Same salary and settings under the rules of an earlier year – compared with today",
+cmpTitle:"Compared with 2026 rules",cmpMore:"more take-home today",cmpLess:"less take-home today",cmpSame:"same take-home as today",
+cmpNote:"Same gross in both years – not adjusted for wage growth or inflation. Values as of 1 January of the year (2023: care insurance rose in July). Tax uses the final annual tariff.",
+avgYear:"Average {y}: {r} %",
+asof:"Rules & rates as of Nov 2026",chgLink:"What’s changing in 2027 and beyond →",srcTitle:"Sources",srcIntro:"Rates and figures as of November 2026. Links open the original source.",srcTax:"Income tax",srcSv:"Social insurance",srcPub:"Public finances",srcOther:"Map & tools",srcRef:"Sources",
+notes2:{
+taxpayers:{t:"All taxpayers",b:"<p>Every working person, company and shopper pays taxes. The biggest ones – income tax (including the Lohnsteuer withheld from your pay), VAT and corporate tax – are <b>joint taxes</b> (Gemeinschaftsteuern): the constitution splits them between the federal government, the states and the municipalities. Other taxes belong to one level only, e.g. energy and tobacco tax to the federal government, property-purchase tax to the states, property and trade tax to the municipalities.</p><p>Why: each level has its own tasks (defence, schools, local roads) and needs its own money for them.</p>",s:"Art. 106 GG"},
+office:{t:"Tax office → state treasury",b:"<p>Tax offices (Finanzämter) belong to the <b>federal states</b>, not to the federal government. Your employer transfers the Lohnsteuer withheld from your pay to its tax office by the 10th of the following month.</p><p>The state treasury then passes on the federal share (42.5% of income tax plus the whole solidarity surcharge) and distributes the municipal share (15%). If you live in a different state from your employer, the money is re-allocated to your state of residence afterwards (Zerlegung).</p>",s:"Art. 106, 108 GG"},
+bund:{t:"Federal budget",b:"<p>Gets 42.5% of income tax, the full solidarity surcharge, about half of VAT, half of corporate tax and federal excise taxes.</p><p>The 2026 federal budget is about <b>€524.5 bn</b>: €387.2 bn from taxes, about €98 bn new borrowing and €39.4 bn other income. The largest single item is payments to the pension insurance. Other big items: defence, Bürgergeld, transport, interest.</p>",s:"Bundestag – Haushaltsgesetz 2026; Art. 106 GG"},
+land:{t:"Federal state budget",b:"<p>Gets 42.5% of income tax plus its share of VAT and its own taxes (e.g. property-purchase tax).</p><p>States pay for <b>schools, universities, police, courts</b> and most public-sector staff. Berlin, Hamburg and Bremen are city-states, so they also receive the municipal 15% – in Berlin, 57.5% of your income tax stays in one budget.</p>",s:"Art. 106 GG"},
+gem:{t:"Municipality",b:"<p>Gets 15% of income tax. It isn't paid back to each town exactly as collected: it's distributed by a formula based on the income tax its residents pay (Gemeindefinanzreformgesetz). Municipalities also have their own taxes – property tax (Grundsteuer, usually paid via your rent) and trade tax (Gewerbesteuer) from local businesses.</p><p>They pay for <b>daycare, local roads, waste collection, local administration</b> and part of social assistance.</p>",s:"Art. 106 Abs. 5 GG; Gemeindefinanzreformgesetz"},
+lenders:{t:"Lenders (new debt)",b:"<p>Taxes don't cover the whole federal budget. The rest is borrowed by selling federal bonds to banks, funds and other investors. In 2026 the core budget borrows about <b>€98 bn</b>; with the special funds for infrastructure and the armed forces, total federal borrowing is above €180 bn.</p><p>The debt brake limits normal borrowing, but defence spending above a threshold is exempt. Debt is repaid and serviced from future taxes – federal interest payments alone are budgeted at about €30.2 bn in 2026 and planned to rise to €41.8 bn in 2027.</p>",s:"Bundestag hib 622/2025, hib 656/2026; DIHK"},
+subs:{t:"Federal money for social insurance",b:"<p>The federal budget pays into the social insurance funds because they carry tasks nobody paid contributions for – e.g. pension credits for raising children, or free family health insurance for spouses and children.</p><p>2026: about <b>€127.4 bn</b> to the pension insurance (federal subsidies plus contributions for child-raising periods) and a fixed <b>€14.5 bn</b> to the health fund. Money flows only <b>from</b> the budget <b>to</b> the funds – your contributions never go into the budget.</p>",s:"Bundestag – Einzelplan 11 (2026: €127.42 bn Leistungen an die RV); § 221 SGB V"},
+equal:{t:"Equalisation between states",b:"<p>The constitution aims for comparable living conditions everywhere. Since 2020 richer states pass on part of their VAT share to poorer ones (Finanzkraftausgleich), and the federal government adds extra grants on top.</p><p>In 2025 about <b>€20 bn</b> was redistributed between states. Bavaria paid the most (€11.66 bn); <b>Berlin received the most (€4.22 bn)</b> – preliminary annual figures.</p>",s:"Art. 107 GG; BMF Monatsbericht April 2026"}},
+netL:"Take-home pay (€)",srcG:"I know my gross",srcN:"I know my take-home pay",calcTag:" · estimate",netHintG:"Take-home pay is only an estimate until you set tax class, state, children and health insurance below.",netOut:"Gross is only an estimate until you set tax class, state, children and health insurance below – then compare it with your payslip.",netNo:"This take-home pay cannot be reached with these settings.",
+perDay:"On a typical 8-hour workday (9:00–17:00) you work until <b>{t}</b> for taxes and social insurance. Per calendar day that is <b>{d}</b>: {parts}.",pdTax:"taxes",pdRv:"pension",pdKv:"health",pdPv:"care",pdAv:"unemployment",pdPkv:"private insurance",
+kpiHint:"Tip: click Taxes, Social insurance or Employer adds for a detailed breakdown.",more:"details",dClose:"Close",
+dTax:"Taxes in detail",dSv:"Social insurance in detail",dAg:"Employer contributions in detail",
+cItem:"Item",cRate:"Rate",cBase:"Calculated on",cYou:"You pay",cAg:"Employer",cTot:"Total",cDest:"Goes to",cShare:"% of gross",
+taxable:"taxable income / year",ofLst:"of income tax",belowSoli:"below threshold (€20,350 income tax / year)",ofGross:"of gross",
+split:"↳ split",fed:"Federal budget",st:"State budget",mun:"Municipality",churchD:"your church",
+reduced:"reduced base (transition zone)",uebAg:"transition-zone formula: total on a reduced base minus your share",capped:"capped at",ofMini:"of mini-job pay",
+effLabel:"Effective tax rate",
+mapBtn:"States map",mapTitle:"Tax differences between federal states",mapIntro:"Income tax and social insurance are the same everywhere in Germany. Only two things differ by state: church tax (if you're a member) and, in Saxony, employees' share of care insurance. Click a state to select it.",
+lgA:"Church tax 8%",lgB:"Church tax 9%",lgC:"Saxony: church tax 9% + higher care share (2.3%)",stChurch:"Church tax",stCare:"Your care-insurance share",stNet:"Your take-home pay here",stDiff:"vs. selected state",stSame:"same as selected state",stHint:"Hover or click a state.",stSel:"Selected",
+kasse:"Your health insurer",g5:"Advanced",g5s:"(optional – tax allowance, company pension, factor method, second job)",
+fb:"Personal tax allowance (Freibetrag)",fbIn:"Allowance per month (€)",bav:"Company pension (salary conversion)",bavIn:"Amount converted per month (€)",
+fac:"Married: factor method (IV with factor)",facIn:"Spouse's gross per month (€)",sj:"Second job",sjIn:"Second job gross per month (€)",
+sj2:"The 2% flat tax is deducted from my pay",sjrv:"Exempt from the 3.6% pension contribution",
+other:"Other / I only know the rate",avg:"Not sure – use 2026 average (2.9%)",zbUsing:"Using extra contribution",zbAsOf:"rates as of Nov 2026",
+grpIns:{ek:"Substitute funds & Knappschaft",aok:"AOK",ikk:"IKK",bkk:"BKK"},
+facLine:"Your factor",facNone:"Factor would be 1.000 – no effect (incomes very unequal: class III/V fits better).",
+sjMiniL:"Mini-job (up to €603): taxed separately, not with your main job.",sjRegL:"Over €603: taxed in class VI and social insurance on the combined pay.",
+n2:{main:"Main job",second:"Second job",bav:"Company pension"},
+r2:{bav:"Company pension (salary conversion)",bavD:"your future company pension · tax-/contribution-free within limits",flat:"Flat tax 2% (mini-job)",flatD:"via Minijob-Zentrale to the state",sjTax:"Second job: income tax (class VI)",sjSv:"Second job: social insurance",sjRv:"Mini-job: pension 3.6%",bavAg:"Employer subsidy to company pension (15%)"},
+status:"Employment status",hi:"Health insurance",statusOpts:["Employee","Working student (Werkstudent)","Civil servant (Beamter)"],hiOpts:["Public (gesetzlich)","Private"],
+statusNotes:{emp:"You pay health, care, pension and unemployment insurance – all mandatory.",stud:"As a working student you only pay pension insurance. Your student health insurance is paid separately and isn't deducted here.",beamt:"Civil servants pay no social insurance: the state pays your pension and part of medical costs (Beihilfe). You insure the rest privately."},
+g1:"Your income",g2:"About you",g3:"Your insurance",g4:"Display",age:"23 or older",pkv:"Private premium per month (€)",
+tips:{adj:"Wage-adjusted (recommended): your salary is scaled by the average wage of that year (Deutsche Rentenversicherung), so you compare a person in the same position. Inflation-adjusted: scaled by consumer prices (Destatis) – same purchasing power. Same euros: no scaling – useful if you enter what you actually earned back then. Only wage-adjusted shows ‘bracket creep’ (kalte Progression).",kasse:"Pick your public health insurer – the extra contribution (Zusatzbeitrag) is filled in automatically. Can't find it? Choose 'Other' and type the rate from your insurer's website or payslip. Not sure at all? Use the 2026 average.",
+fb:"An allowance the tax office registered for you on request (Lohnsteuerermäßigung), e.g. for high commuting or work costs. It appears on your payslip as 'Freibetrag'. It lowers your monthly wage tax.",
+bav:"Part of your gross goes straight into a company pension (betriebliche Altersversorgung). Up to €676/month is tax-free and up to €338/month free of social insurance (2026). Your employer must add 15% of the converted amount if it saves contributions.",
+fac:"Alternative to III/V for married couples: both are in class IV, but the tax is multiplied by a factor below 1 so the monthly tax already reflects joint taxation (splitting). Needs your spouse's gross. Applied for at the tax office; it switches your class to IV here.",
+sj:"A job alongside your main one. Up to €603/month it's a mini-job: flat-taxed separately and mostly contribution-free. Above that it's taxed in class VI (no tax-free allowance) and adds to your social insurance.",
+gross:"Your monthly pay before any deductions – the 'Gesamtbrutto' on your payslip or the salary in your contract divided by 12. You can also switch to “/ year” and enter your annual salary – it is divided by 12. Leave out one-off bonuses: a 13th salary is taxed a little differently, so including it only approximates.",
+cls:"Shown on your payslip as 'St.Kl.' or in ELSTER. I: single. II: single parent living with a child. III: married, the higher earner (spouse in V). IV: married, similar incomes. V: married, the lower earner. VI: a second job alongside your main one – no tax-free allowance. A mini-job up to €603 is taxed separately and doesn't count here.",
+kids:"Children you receive child benefit (Kindergeld) for. They remove the 0.6% childless surcharge on care insurance, lower it further from the 2nd child under 25, and reduce solidarity surcharge and church tax. They don't lower income tax itself – families get Kindergeld instead.",
+age:"From age 23, people without children pay an extra 0.6% care-insurance surcharge. Untick if you're younger than 23.",
+state:"Where you live or work. It sets the church-tax rate (8% in Bavaria and Baden-Württemberg, 9% elsewhere) and, in Saxony, employees pay a higher share of care insurance.",
+ki:"Tick only if you're a registered member of a church that levies church tax (e.g. Catholic or Protestant). Your payslip shows it under 'Konfession' – '--' means no.",
+status:"Decides which social insurance you pay. Employee: all four (health, care, pension, unemployment). Working student (enrolled, max. 20 h/week in term): pension only. Civil servant (Beamter): none – the state provides pension and covers part of medical costs.",
+hi:"Most employees are in public health insurance; care insurance (Pflegeversicherung) is always included with it. Private is possible for employees only above €6,450/month (2026), and is usual for civil servants. With private insurance, care insurance is part of your premium.",
+zb:"On top of the general 14.6%, every public health insurer charges its own extra rate. Average for 2026: 2.9%. You pay half. Find yours on your insurer's website.",
+pkv:"Your total monthly private health + care premium. Employees: the employer pays half, up to €613.22 per month (2026). Civil servants get no employer share – the state's Beihilfe covers part of the medical bills instead.",
+ag:"Your employer pays roughly the same amount again on top of your gross into the same funds. Tick to see the full cost of your job."},title:"Where does my salary go?",sub:"Germany · 2026 rules · enter your gross pay and see every euro's destination",
+gross:"Gross salary (€)",grossShort:"Gross",cls:"Tax class",kids:"Children",state:"Federal state",zb:"Health insurer's extra contribution (%)",
+have:"What applies to you",kv:"Public health insurance (KV)",kvs:"Untick if privately insured",pv:"Long-term care insurance (PV)",pvs:"Pflegeversicherung",
+rv:"Pension insurance (RV)",rvs:"Untick e.g. for civil servants",av:"Unemployment insurance (AV)",avs:"Arbeitslosenversicherung",
+ki:"Church member (church tax)",kis:"Kirchensteuer",ag:"Show employer's share",ags:"Paid on top of your gross",
+classes:["I – single","II – single parent","III – married, higher earner","IV – married, similar incomes","V – married, lower earner","VI – second job"],
+summary:"Your result",month:"Month",year:"Year",grossK:"Gross",taxK:"Taxes",svK:"Social insurance",svKp:"Insurance (incl. private)",netK:"Take-home pay",agK:"Employer adds",
+viewtitle:"Where the money goes",flow:"Flow",map:"Map",
+hintFlow:"Band width = amount. Hover a band to see the exact figure.",
+hintMap:"Your salary step by step: who takes it and where it ends up.",
+map2:"What happens to the taxes next",map2hint:"Your income tax is collected by the state tax office and split by the constitution (Art. 106 GG). Figures in the boxes are your share. Click any box for an explanation.",
+nodes:{agSv:"Employer’s social insurance",gross:"Your gross pay",tax:"Taxes",sv:"Social insurance",net:"Take-home pay",bund:"Federal budget",land:"State budget",gem:"Municipality",church:"Church",
+kv:"Health · KV",pv:"Care · PV",rv:"Pension · RV",av:"Unemployment · AV",ag:"Employer",pkv:"Private insurer"},
+m:{employer:"Employer",employerS:"withholds & pays out",taxOffice:"Tax office",healthIns:"Health insurer",healthInsS:"collects all 4",account:"Your bank account",
+taxpayers:"All taxpayers",taxpayersS:"income tax, VAT, etc.",office:"Tax office → state treasury",officeS:"collects and splits",
+bund:"Federal (42.5% + Soli)",land:"Federal state (42.5%)",gem:"Municipality (15%)",lenders:"Lenders",lendersS:"≈ €98 bn new debt (2026)",
+subs:"Social insurance funds",subsS:"≈ €140 bn federal funds (2026)",equal:"State equalisation",equalS:"rich → poorer states",yours:"your share"},
+detail:"Line by line",item:"Item",dest:"Where it goes",
+rows:{pkv:"Private health & care (your share)",pkvD:"your private insurer · employer pays the rest",lst:"Income tax (Lohnsteuer)",lstD:"42.5% federal · 42.5% state · 15% municipality",soli:"Solidarity surcharge",soliD:"100% federal",ki:"Church tax",kiD:"your church",
+kv:"Health insurance (KV)",kvD:"Health fund → your health insurer",pv:"Long-term care (PV)",pvD:"Care fund at your health insurer",rv:"Pension (RV)",rvD:"Deutsche Rentenversicherung · pays today's pensions",av:"Unemployment (AV)",avD:"Federal Employment Agency",
+taxG:"Taxes",svG:"Insurance (your share)",agG:"Employer pays on top",agAll:"KV / PV / RV / AV",agAllD:"same funds",cost:"Total cost of your job",costD:"gross + employer share",netG:"Take-home pay"},
+notes:{mini:"Up to €603 is a mini-job: no income tax for you (employer usually pays a 2% flat tax) and only the 3.6% pension contribution, which you can opt out of.",
+ueb:"Transition zone (€603–2,000): your social contributions are calculated on a reduced base; your employer pays a bit more.",
+cap:"Above €5,812.50 health and care contributions stop rising (contribution ceiling).",
+cls6:"Class VI has no tax-free allowance – every euro is taxed.",cls5:"Class V gets no tax-free allowance; your spouse in class III gets both. The couple's annual tax is settled in the joint return."},
+how:"How is this calculated?",
+howtext:`<p><b>Income tax</b> follows the official 2026 wage-tax algorithm (BMF Programmablaufplan): 2026 tariff with a €12,348 tax-free allowance, €1,230 employee allowance, €36 special-expenses allowance, and a pension/health/care allowance (Vorsorgepauschale). Class II adds the single-parent relief (€4,260 + €240 per further child). Classes V and VI use the special V/VI formula. Spot checks against published 2026 tables match to the cent (e.g. €3,000 class I → €293.08).</p>
+<p><b>Solidarity surcharge</b>: 5.5%, only once annual income tax exceeds €20,350 (class III: €40,700), with a phase-in zone. <b>Church tax</b>: 8% in Bavaria and Baden-Württemberg, 9% elsewhere. Children reduce Soli and church tax via child allowances, not income tax itself.</p>
+<p><b>Social insurance</b> (employee share): health 7.3% + half the insurer's extra contribution; care 1.8% (Saxony 2.3%) + 0.6% if childless and 23 or older, −0.25% per child from the 2nd to the 5th; pension 9.3%; unemployment 1.3%. Ceilings: €5,812.50 (health/care) and €8,450 (pension/unemployment) per month. Transition zone €603.01–2,000 uses the official reduced-base formula.</p>
+<p><b>Status</b>: working students pay pension insurance only; civil servants pay no social insurance. <b>Private health insurance</b>: your premium minus the employer subsidy (half, max €613.22/month; none for civil servants), also used for the tax allowance.</p><p><b>Advanced</b>: the personal allowance lowers taxable income; salary conversion is tax-free up to €676 and contribution-free up to €338 per month, with a 15% employer subsidy; the factor method uses the official formula (joint splitting tax ÷ sum of both class-IV taxes, rounded down to 3 decimals; your spouse is assumed publicly insured); a second job up to €603 is a mini-job (2% flat tax, 3.6% pension unless exempt), above that class VI with social insurance on the combined pay. <b>Health insurer rates</b>: 2026 extra contributions as published by the insurers, including changes during the year up to November 2026.</p><p><b>Not included</b>: company pensions, benefits in kind, tax-free allowances on your ELStAM, the factor method, and anything you claim in your annual tax return. This is an estimate for understanding – not tax or legal advice. Your payslip is what counts.</p>`,
+footer:"Estimate based on 2026 rules. Not tax advice."},
+de:{adjL:"Gehalt vergleichen",grossToday:"Dein heutiges Bruttogehalt (€)",zbPre15:"{y}: kein Zusatzbeitrag – der Sonderbeitrag von 0,9 % ist im Beitragssatz enthalten",adjWage:"lohnbereinigt",adjCpi:"inflationsbereinigt",adjNom:"gleiche Euro",
+adjOutWage:"Deine {g} heute ≈ {gy} im Jahr {y} – gleiche Stellung zum Durchschnittslohn.",adjOutCpi:"Deine {g} heute ≈ {gy} im Jahr {y} – gleiche Kaufkraft.",adjOutNom:"Berechnet mit genau {g} im Jahr {y}. So kannst du dein echtes Gehalt aus dem Jahr eingeben.",
+cmpReal:"In heutigem Geld",cmpWageLvl:"Auf heutiges Lohnniveau skaliert",cmpNoteAdj:"Das Netto des früheren Jahres ist mit demselben Index in heutiges Geld umgerechnet. Werte jeweils zum 1. Januar (2023: Pflegebeitrag stieg im Juli); Steuer nach dem endgültigen Jahrestarif. Vor 2019: Krankenkassenbeitrag mit 0,9 % Arbeitnehmer-Sonderbeitrag (2010–2014) bzw. voll vom Arbeitnehmer getragenem Zusatzbeitrag (2015–2018).",cmpShare:"Netto-Anteil",
+navOverview:"Überblick",navPast:"Vergangenheit",navNow:"Heute",navFuture:"Zukunft",yearL:"Jahr",
+pastTitle:"Wie viel habe ich früher gezahlt?",pastSub:"Gleiches Gehalt und gleiche Einstellungen nach den Regeln eines früheren Jahres – im Vergleich zu heute",
+cmpTitle:"Im Vergleich zu den Regeln 2026",cmpMore:"heute mehr Netto",cmpLess:"heute weniger Netto",cmpSame:"gleiches Netto wie heute",
+cmpNote:"Gleiches Brutto in beiden Jahren – nicht um Lohnwachstum oder Inflation bereinigt. Werte jeweils zum 1. Januar (2023: Pflegebeitrag stieg im Juli). Steuer nach dem endgültigen Jahrestarif.",
+avgYear:"Durchschnitt {y}: {r} %",
+asof:"Regeln & Sätze Stand Nov. 2026",chgLink:"Was sich 2027 und danach ändert →",srcTitle:"Quellen",srcIntro:"Sätze und Zahlen Stand November 2026. Links führen zur Originalquelle.",srcTax:"Lohnsteuer",srcSv:"Sozialversicherung",srcPub:"Öffentliche Finanzen",srcOther:"Karte & Werkzeuge",srcRef:"Quellen",
+notes2:{
+taxpayers:{t:"Alle Steuerzahler",b:"<p>Jede Beschäftigte, jedes Unternehmen und jeder Einkauf zahlt Steuern. Die größten – Einkommensteuer (inkl. der Lohnsteuer von deinem Lohn), Umsatzsteuer und Körperschaftsteuer – sind <b>Gemeinschaftsteuern</b>: Das Grundgesetz teilt sie zwischen Bund, Ländern und Gemeinden auf. Andere Steuern gehören nur einer Ebene, z. B. Energie- und Tabaksteuer dem Bund, Grunderwerbsteuer den Ländern, Grund- und Gewerbesteuer den Gemeinden.</p><p>Warum: Jede Ebene hat eigene Aufgaben (Verteidigung, Schulen, Ortsstraßen) und braucht dafür eigenes Geld.</p>",s:"Art. 106 GG"},
+office:{t:"Finanzamt → Landeskasse",b:"<p>Die Finanzämter gehören den <b>Ländern</b>, nicht dem Bund. Dein Arbeitgeber überweist die einbehaltene Lohnsteuer bis zum 10. des Folgemonats an sein Finanzamt.</p><p>Die Landeskasse leitet dann den Bundesanteil weiter (42,5 % der Einkommensteuer plus den ganzen Soli) und verteilt den Gemeindeanteil (15 %). Wohnst du in einem anderen Land als dein Arbeitgeber, wird das Geld nachträglich in dein Wohnsitzland umverteilt (Zerlegung).</p>",s:"Art. 106, 108 GG"},
+bund:{t:"Bundeshaushalt",b:"<p>Erhält 42,5 % der Einkommensteuer, den ganzen Soli, rund die Hälfte der Umsatzsteuer, die Hälfte der Körperschaftsteuer und die Verbrauchsteuern des Bundes.</p><p>Der Bundeshaushalt 2026 umfasst rund <b>524,5 Mrd. €</b>: 387,2 Mrd. € Steuern, rund 98 Mrd. € neue Kredite und 39,4 Mrd. € sonstige Einnahmen. Größter Einzelposten sind die Leistungen an die Rentenversicherung; weitere große Posten: Verteidigung, Bürgergeld, Verkehr, Zinsen.</p>",s:"Bundestag – Haushaltsgesetz 2026; Art. 106 GG"},
+land:{t:"Landeshaushalt",b:"<p>Erhält 42,5 % der Einkommensteuer plus seinen Umsatzsteueranteil und eigene Steuern (z. B. Grunderwerbsteuer).</p><p>Die Länder bezahlen <b>Schulen, Hochschulen, Polizei, Justiz</b> und den Großteil des öffentlichen Dienstes. Berlin, Hamburg und Bremen sind Stadtstaaten und erhalten auch die 15 % der Gemeinden – in Berlin bleiben also 57,5 % deiner Einkommensteuer in einem Haushalt.</p>",s:"Art. 106 GG"},
+gem:{t:"Gemeinde",b:"<p>Erhält 15 % der Einkommensteuer – nicht genau so, wie vor Ort eingenommen, sondern nach einer Formel, die sich an der Einkommensteuer ihrer Einwohner orientiert (Gemeindefinanzreformgesetz). Dazu kommen eigene Steuern: Grundsteuer (meist über die Miete) und Gewerbesteuer der örtlichen Betriebe.</p><p>Die Gemeinden bezahlen <b>Kitas, Ortsstraßen, Müllabfuhr, Verwaltung vor Ort</b> und einen Teil der Sozialhilfe.</p>",s:"Art. 106 Abs. 5 GG; Gemeindefinanzreformgesetz"},
+lenders:{t:"Kreditgeber (neue Schulden)",b:"<p>Die Steuern decken den Bundeshaushalt nicht ganz. Der Rest wird über Bundesanleihen bei Banken, Fonds und anderen Anlegern geliehen. 2026 nimmt der Kernhaushalt rund <b>98 Mrd. €</b> auf; mit den Sondervermögen für Infrastruktur und Bundeswehr sind es insgesamt über 180 Mrd. €.</p><p>Die Schuldenbremse begrenzt die normale Kreditaufnahme, Verteidigungsausgaben über einer Schwelle sind ausgenommen. Getilgt und verzinst wird aus künftigen Steuern – allein für Zinsen sind 2026 rund 30,2 Mrd. € eingeplant, 2027 sollen es 41,8 Mrd. € sein.</p>",s:"Bundestag hib 622/2025, hib 656/2026; DIHK"},
+subs:{t:"Bundesmittel für die Sozialversicherung",b:"<p>Der Bund zahlt in die Sozialversicherungen, weil sie Aufgaben tragen, für die niemand Beiträge gezahlt hat – z. B. Rentenpunkte für Kindererziehung oder die beitragsfreie Familienversicherung.</p><p>2026: rund <b>127,4 Mrd. €</b> an die Rentenversicherung (Bundeszuschüsse plus Beiträge für Kindererziehungszeiten) sowie fest <b>14,5 Mrd. €</b> an den Gesundheitsfonds. Das Geld fließt nur <b>vom</b> Haushalt <b>zu</b> den Kassen – deine Beiträge gehen nie in den Haushalt.</p>",s:"Bundestag – Einzelplan 11 (2026: 127,42 Mrd. € Leistungen an die RV); § 221 SGB V"},
+equal:{t:"Länderfinanzausgleich",b:"<p>Das Grundgesetz will vergleichbare Lebensverhältnisse überall. Seit 2020 geben finanzstarke Länder einen Teil ihres Umsatzsteueranteils an schwächere ab (Finanzkraftausgleich); der Bund legt Ergänzungszuweisungen obendrauf.</p><p>2025 wurden rund <b>20 Mrd. €</b> zwischen den Ländern umverteilt. Bayern zahlte am meisten (11,66 Mrd. €), <b>Berlin erhielt am meisten (4,22 Mrd. €)</b> – vorläufige Jahresrechnung.</p>",s:"Art. 107 GG; BMF-Monatsbericht April 2026"}},
+netL:"Netto aufs Konto (€)",srcG:"Ich kenne mein Brutto",srcN:"Ich kenne mein Netto",calcTag:" · Schätzung",netHintG:"Das Netto ist nur eine Schätzung, bis du unten Steuerklasse, Bundesland, Kinder und Krankenversicherung eingestellt hast.",netOut:"Das Brutto ist nur eine Schätzung, bis du unten Steuerklasse, Bundesland, Kinder und Krankenversicherung eingestellt hast – vergleiche es dann mit deiner Gehaltsabrechnung.",netNo:"Dieses Netto ist mit diesen Einstellungen nicht erreichbar.",
+perDay:"An einem typischen 8-Stunden-Tag (9–17 Uhr) arbeitest du bis <b>{t} Uhr</b> für Steuern und Sozialversicherung. Pro Kalendertag sind das <b>{d}</b>: {parts}.",pdTax:"Steuern",pdRv:"Rente",pdKv:"Krankenversicherung",pdPv:"Pflege",pdAv:"Arbeitslosenversicherung",pdPkv:"private Versicherung",
+kpiHint:"Tipp: Auf Steuern, Sozialversicherung oder Arbeitgeber klicken für eine detaillierte Aufschlüsselung.",more:"Details",dClose:"Schließen",
+dTax:"Steuern im Detail",dSv:"Sozialversicherung im Detail",dAg:"Arbeitgeberbeiträge im Detail",
+cItem:"Posten",cRate:"Satz",cBase:"Berechnet auf",cYou:"Du zahlst",cAg:"Arbeitgeber",cTot:"Gesamt",cDest:"Geht an",cShare:"% vom Brutto",
+taxable:"zu versteuerndes Einkommen / Jahr",ofLst:"der Lohnsteuer",belowSoli:"unter der Freigrenze (20.350 € Lohnsteuer / Jahr)",ofGross:"vom Brutto",
+split:"↳ Aufteilung",fed:"Bundeshaushalt",st:"Landeshaushalt",mun:"Gemeinde",churchD:"deine Kirche",
+reduced:"verminderte Basis (Übergangsbereich)",uebAg:"Übergangsbereich: Gesamtbeitrag auf verminderte Basis minus dein Anteil",capped:"gedeckelt bei",ofMini:"vom Minijob-Lohn",
+effLabel:"Effektiver Steuersatz",
+mapBtn:"Länderkarte",mapTitle:"Steuerunterschiede zwischen den Bundesländern",mapIntro:"Lohnsteuer und Sozialversicherung sind überall in Deutschland gleich. Nur zwei Dinge hängen vom Land ab: die Kirchensteuer (falls Mitglied) und in Sachsen der Arbeitnehmeranteil zur Pflegeversicherung. Klicke auf ein Land, um es auszuwählen.",
+lgA:"Kirchensteuer 8 %",lgB:"Kirchensteuer 9 %",lgC:"Sachsen: Kirchensteuer 9 % + höherer Pflegeanteil (2,3 %)",stChurch:"Kirchensteuer",stCare:"Dein Pflegeanteil",stNet:"Dein Netto hier",stDiff:"ggü. gewähltem Land",stSame:"wie im gewählten Land",stHint:"Mit der Maus über ein Land fahren oder klicken.",stSel:"Ausgewählt",
+kasse:"Deine Krankenkasse",g5:"Erweitert",g5s:"(optional – Freibetrag, Betriebsrente, Faktorverfahren, Zweitjob)",
+fb:"Persönlicher Freibetrag",fbIn:"Freibetrag pro Monat (€)",bav:"Betriebsrente (Entgeltumwandlung)",bavIn:"Umgewandelter Betrag pro Monat (€)",
+fac:"Verheiratet: Faktorverfahren (IV mit Faktor)",facIn:"Brutto des Partners pro Monat (€)",sj:"Zweitjob",sjIn:"Brutto Zweitjob pro Monat (€)",
+sj2:"Die 2 % Pauschalsteuer wird von meinem Lohn abgezogen",sjrv:"Von den 3,6 % Rentenbeitrag befreit",
+other:"Andere / ich kenne nur den Satz",avg:"Weiß nicht – Durchschnitt 2026 (2,9 %)",zbUsing:"Verwendeter Zusatzbeitrag",zbAsOf:"Stand Nov. 2026",
+grpIns:{ek:"Ersatzkassen & Knappschaft",aok:"AOK",ikk:"IKK",bkk:"BKK"},
+facLine:"Dein Faktor",facNone:"Faktor wäre 1,000 – keine Wirkung (Einkommen sehr ungleich: III/V passt besser).",
+sjMiniL:"Minijob (bis 603 €): wird separat versteuert, nicht mit dem Hauptjob.",sjRegL:"Über 603 €: Steuerklasse VI und Sozialversicherung auf das gemeinsame Entgelt.",
+n2:{main:"Hauptjob",second:"Zweitjob",bav:"Betriebsrente"},
+r2:{bav:"Betriebsrente (Entgeltumwandlung)",bavD:"deine spätere Betriebsrente · im Rahmen steuer-/beitragsfrei",flat:"Pauschalsteuer 2 % (Minijob)",flatD:"über die Minijob-Zentrale an den Staat",sjTax:"Zweitjob: Lohnsteuer (Klasse VI)",sjSv:"Zweitjob: Sozialversicherung",sjRv:"Minijob: Rente 3,6 %",bavAg:"Arbeitgeberzuschuss zur Betriebsrente (15 %)"},
+status:"Beschäftigungsstatus",hi:"Krankenversicherung",statusOpts:["Arbeitnehmer","Werkstudent","Beamter"],hiOpts:["Gesetzlich","Privat"],
+statusNotes:{emp:"Du zahlst Kranken-, Pflege-, Renten- und Arbeitslosenversicherung – alles Pflicht.",stud:"Als Werkstudent zahlst du nur Rentenversicherung. Deine studentische Krankenversicherung zahlst du separat; sie wird hier nicht abgezogen.",beamt:"Beamte zahlen keine Sozialversicherung: Der Dienstherr zahlt die Pension und einen Teil der Krankheitskosten (Beihilfe). Den Rest versicherst du privat."},
+g1:"Dein Einkommen",g2:"Zu dir",g3:"Deine Versicherung",g4:"Anzeige",age:"23 Jahre oder älter",pkv:"Private Prämie pro Monat (€)",
+tips:{adj:"Lohnbereinigt (empfohlen): dein Gehalt wird mit dem Durchschnittslohn des Jahres skaliert (Deutsche Rentenversicherung) – du vergleichst eine Person in gleicher Stellung. Inflationsbereinigt: skaliert mit den Verbraucherpreisen (Destatis) – gleiche Kaufkraft. Gleiche Euro: keine Skalierung – sinnvoll, wenn du dein damaliges echtes Gehalt eingibst. Nur lohnbereinigt zeigt die kalte Progression.",kasse:"Wähle deine Krankenkasse – der Zusatzbeitrag wird automatisch eingesetzt. Nicht dabei? 'Andere' wählen und den Satz von der Website der Kasse oder der Lohnabrechnung eintragen. Gar nicht sicher? Den Durchschnitt 2026 nehmen.",
+fb:"Ein Freibetrag, den das Finanzamt auf Antrag eingetragen hat (Lohnsteuerermäßigung), z. B. für hohe Fahrt- oder Werbungskosten. Steht auf der Lohnabrechnung als 'Freibetrag'. Senkt die monatliche Lohnsteuer.",
+bav:"Ein Teil des Bruttos fließt direkt in eine Betriebsrente (bAV). Bis 676 €/Monat steuerfrei und bis 338 €/Monat sozialversicherungsfrei (2026). Der Arbeitgeber muss 15 % des umgewandelten Betrags dazugeben, soweit er Beiträge spart.",
+fac:"Alternative zu III/V für Ehepaare: beide in Klasse IV, aber die Steuer wird mit einem Faktor unter 1 multipliziert, sodass die Monatssteuer schon dem Splitting entspricht. Braucht das Brutto des Partners. Wird beim Finanzamt beantragt; setzt hier die Klasse auf IV.",
+sj:"Ein Job neben dem Hauptjob. Bis 603 €/Monat ist es ein Minijob: separat pauschal versteuert und weitgehend beitragsfrei. Darüber Steuerklasse VI (ohne Grundfreibetrag) und Sozialversicherung auf das gemeinsame Entgelt.",
+gross:"Dein Monatslohn vor allen Abzügen – das 'Gesamtbrutto' auf der Lohnabrechnung oder das Jahresgehalt aus dem Vertrag geteilt durch 12. Du kannst auch auf „/ Jahr“ umschalten und das Jahresgehalt eingeben – es wird durch 12 geteilt. Einmalzahlungen weglassen: Ein 13. Gehalt wird etwas anders besteuert, mit ihm ist das Ergebnis nur eine Näherung.",
+cls:"Steht auf der Lohnabrechnung als 'St.Kl.' oder in ELSTER. I: ledig. II: alleinerziehend mit Kind im Haushalt. III: verheiratet, Hauptverdiener (Partner in V). IV: verheiratet, ähnliches Einkommen. V: verheiratet, Geringverdiener. VI: Zweitjob neben dem Hauptjob – ohne Grundfreibetrag. Ein Minijob bis 603 € wird pauschal versteuert und zählt hier nicht.",
+kids:"Kinder, für die du Kindergeld bekommst. Sie entfernen den Kinderlosenzuschlag von 0,6 % in der Pflegeversicherung, senken ihn ab dem 2. Kind unter 25 weiter und mindern Soli und Kirchensteuer. Die Lohnsteuer selbst sinkt nicht – dafür gibt es Kindergeld.",
+age:"Ab 23 Jahren zahlen Kinderlose 0,6 % Zuschlag zur Pflegeversicherung. Abwählen, wenn du jünger als 23 bist.",
+state:"Wo du wohnst bzw. arbeitest. Bestimmt den Kirchensteuersatz (8 % in Bayern und Baden-Württemberg, sonst 9 %); in Sachsen zahlen Beschäftigte einen höheren Anteil zur Pflegeversicherung.",
+ki:"Nur ankreuzen, wenn du Mitglied einer Kirche bist, die Kirchensteuer erhebt (z. B. katholisch oder evangelisch). Auf der Lohnabrechnung unter 'Konfession' – '--' heißt nein.",
+status:"Bestimmt, welche Sozialversicherung du zahlst. Arbeitnehmer: alle vier (Kranken, Pflege, Rente, Arbeitslosen). Werkstudent (eingeschrieben, max. 20 Std./Woche im Semester): nur Rente. Beamter: keine – der Dienstherr zahlt Pension und einen Teil der Krankheitskosten.",
+hi:"Die meisten Arbeitnehmer sind gesetzlich versichert; die Pflegeversicherung ist immer dabei. Privat geht für Angestellte erst ab 6.450 € im Monat (2026), bei Beamten ist es üblich. Bei privater Versicherung steckt die Pflegeversicherung in der Prämie.",
+zb:"Zusätzlich zu den allgemeinen 14,6 % erhebt jede Krankenkasse einen eigenen Zusatzbeitrag. Durchschnitt 2026: 2,9 %. Du zahlst die Hälfte. Der Wert steht auf der Website deiner Kasse.",
+pkv:"Deine gesamte monatliche private Kranken- und Pflegeprämie. Arbeitnehmer: der Arbeitgeber zahlt die Hälfte, höchstens 613,22 € im Monat (2026). Beamte bekommen keinen Arbeitgeberzuschuss – dafür übernimmt die Beihilfe einen Teil der Arztkosten.",
+ag:"Dein Arbeitgeber zahlt ungefähr denselben Betrag noch einmal zusätzlich zum Brutto in dieselben Kassen. Ankreuzen, um die vollen Kosten deiner Stelle zu sehen."},title:"Wohin geht mein Gehalt?",sub:"Deutschland · Stand 2026 · Brutto eingeben und sehen, wohin jeder Euro fließt",
+gross:"Bruttogehalt (€)",grossShort:"Brutto",cls:"Steuerklasse",kids:"Kinder",state:"Bundesland",zb:"Zusatzbeitrag der Krankenkasse (%)",
+have:"Was trifft auf dich zu?",kv:"Gesetzliche Krankenversicherung (KV)",kvs:"Abwählen bei privater Versicherung",pv:"Pflegeversicherung (PV)",pvs:"",
+rv:"Rentenversicherung (RV)",rvs:"Abwählen z. B. bei Beamten",av:"Arbeitslosenversicherung (AV)",avs:"",
+ki:"Kirchenmitglied (Kirchensteuer)",kis:"",ag:"Arbeitgeberanteil zeigen",ags:"Wird zusätzlich zum Brutto gezahlt",
+classes:["I – ledig","II – alleinerziehend","III – verheiratet, Hauptverdiener","IV – verheiratet, ähnliches Einkommen","V – verheiratet, Geringverdiener","VI – Zweitjob"],
+summary:"Dein Ergebnis",month:"Monat",year:"Jahr",grossK:"Brutto",taxK:"Steuern",svK:"Sozialversicherung",svKp:"Versicherungen (inkl. privat)",netK:"Netto",agK:"Arbeitgeber zahlt dazu",
+viewtitle:"Wohin das Geld fließt",flow:"Fluss",map:"Übersicht",
+hintFlow:"Breite des Bandes = Betrag. Mit der Maus über ein Band fahren, um den genauen Wert zu sehen.",
+hintMap:"Dein Gehalt Schritt für Schritt: wer es einzieht und wo es landet.",
+map2:"Was danach mit den Steuern passiert",map2hint:"Deine Lohnsteuer zieht das Finanzamt des Landes ein und teilt sie nach dem Grundgesetz (Art. 106 GG). Die Beträge in den Kästen sind dein Anteil. Klicke auf einen Kasten für eine Erklärung.",
+nodes:{agSv:"Arbeitgeberanteil Sozialvers.",gross:"Dein Brutto",tax:"Steuern",sv:"Sozialversicherung",net:"Netto",bund:"Bundeshaushalt",land:"Landeshaushalt",gem:"Gemeinde",church:"Kirche",
+kv:"Kranken · KV",pv:"Pflege · PV",rv:"Rente · RV",av:"Arbeitslosen · AV",ag:"Arbeitgeber",pkv:"Private Versicherung"},
+m:{employer:"Arbeitgeber",employerS:"behält ein & zahlt aus",taxOffice:"Finanzamt",healthIns:"Krankenkasse",healthInsS:"zieht alle 4 ein",account:"Dein Konto",
+taxpayers:"Alle Steuerzahler",taxpayersS:"Lohnsteuer, USt usw.",office:"Finanzamt → Landeskasse",officeS:"zieht ein und verteilt",
+bund:"Bund (42,5 % + Soli)",land:"Land (42,5 %)",gem:"Gemeinde (15 %)",lenders:"Kreditgeber",lendersS:"≈ 98 Mrd. € neue Schulden (2026)",
+subs:"Sozialversicherungen",subsS:"≈ 140 Mrd. € Bundesmittel (2026)",equal:"Länderfinanzausgleich",equalS:"reiche → ärmere Länder",yours:"dein Anteil"},
+detail:"Im Detail",item:"Posten",dest:"Wohin es geht",
+rows:{pkv:"Private Kranken- & Pflegeversicherung (dein Anteil)",pkvD:"deine private Versicherung · Rest zahlt der Arbeitgeber",lst:"Lohnsteuer",lstD:"42,5 % Bund · 42,5 % Land · 15 % Gemeinde",soli:"Solidaritätszuschlag",soliD:"100 % Bund",ki:"Kirchensteuer",kiD:"deine Kirche",
+kv:"Krankenversicherung (KV)",kvD:"Gesundheitsfonds → deine Krankenkasse",pv:"Pflegeversicherung (PV)",pvD:"Pflegekasse deiner Krankenkasse",rv:"Rentenversicherung (RV)",rvD:"Deutsche Rentenversicherung · zahlt heutige Renten",av:"Arbeitslosenversicherung (AV)",avD:"Bundesagentur für Arbeit",
+taxG:"Steuern",svG:"Versicherungen (dein Anteil)",agG:"Arbeitgeber zahlt zusätzlich",agAll:"KV / PV / RV / AV",agAllD:"dieselben Kassen",cost:"Gesamtkosten deiner Stelle",costD:"Brutto + Arbeitgeberanteil",netG:"Netto"},
+notes:{mini:"Bis 603 € ist es ein Minijob: keine Lohnsteuer für dich (der Arbeitgeber zahlt meist 2 % Pauschalsteuer) und nur 3,6 % Rentenbeitrag, von dem du dich befreien lassen kannst.",
+ueb:"Übergangsbereich (603–2.000 €): deine Sozialbeiträge werden aus einer verminderten Bemessungsgrundlage berechnet; der Arbeitgeber zahlt etwas mehr.",
+cap:"Über 5.812,50 € steigen Kranken- und Pflegebeiträge nicht weiter (Beitragsbemessungsgrenze).",
+cls6:"Steuerklasse VI hat keinen Grundfreibetrag – jeder Euro wird versteuert.",cls5:"Klasse V hat keinen Grundfreibetrag; der Partner in Klasse III bekommt beide. Die Jahressteuer des Paares wird in der gemeinsamen Erklärung ausgeglichen."},
+how:"Wie wird das berechnet?",
+howtext:`<p><b>Lohnsteuer</b> nach dem amtlichen Programmablaufplan 2026 des BMF: Tarif 2026 mit Grundfreibetrag 12.348 €, Arbeitnehmer-Pauschbetrag 1.230 €, Sonderausgaben-Pauschbetrag 36 € und Vorsorgepauschale. Klasse II mit Entlastungsbetrag (4.260 € + 240 € je weiteres Kind). Klassen V und VI mit der Sonderformel. Stichproben gegen veröffentlichte Tabellen 2026 stimmen auf den Cent (z. B. 3.000 € Klasse I → 293,08 €).</p>
+<p><b>Solidaritätszuschlag</b>: 5,5 %, erst wenn die Jahres-Lohnsteuer 20.350 € übersteigt (Klasse III: 40.700 €), mit Milderungszone. <b>Kirchensteuer</b>: 8 % in Bayern und Baden-Württemberg, sonst 9 %. Kinder mindern Soli und Kirchensteuer über Kinderfreibeträge, nicht die Lohnsteuer selbst.</p>
+<p><b>Sozialversicherung</b> (Arbeitnehmeranteil): KV 7,3 % + halber Zusatzbeitrag; PV 1,8 % (Sachsen 2,3 %) + 0,6 % kinderlos ab 23, −0,25 % je Kind ab dem 2. bis zum 5.; RV 9,3 %; AV 1,3 %. Grenzen: 5.812,50 € (KV/PV) und 8.450 € (RV/AV) pro Monat. Übergangsbereich 603,01–2.000 € nach amtlicher Formel.</p>
+<p><b>Status</b>: Werkstudenten zahlen nur Rentenversicherung; Beamte zahlen keine Sozialversicherung. <b>Private Krankenversicherung</b>: Prämie abzüglich Arbeitgeberzuschuss (Hälfte, max. 613,22 €/Monat; bei Beamten keiner), auch für die Vorsorgepauschale.</p><p><b>Erweitert</b>: Der Freibetrag mindert das zu versteuernde Einkommen; Entgeltumwandlung ist bis 676 € steuerfrei und bis 338 € im Monat beitragsfrei, mit 15 % Arbeitgeberzuschuss; das Faktorverfahren nutzt die amtliche Formel (Splittingsteuer ÷ Summe beider Steuern in Klasse IV, auf 3 Stellen abgerundet; der Partner gilt als gesetzlich versichert); ein Zweitjob bis 603 € ist ein Minijob (2 % Pauschalsteuer, 3,6 % Rente ohne Befreiung), darüber Klasse VI und Sozialversicherung auf das Gesamtentgelt. <b>Zusatzbeiträge</b>: veröffentlichte Werte 2026 inkl. unterjähriger Änderungen bis November 2026.</p><p><b>Nicht enthalten</b>: betriebliche Altersvorsorge, Sachbezüge, Freibeträge in den ELStAM, Faktorverfahren und alles aus der Steuererklärung. Eine Schätzung zum Verstehen – keine Steuer- oder Rechtsberatung. Maßgeblich ist deine Lohnabrechnung.</p>`,
+footer:"Schätzung nach Rechtsstand 2026. Keine Steuerberatung."}
+};
+const STATES=[["BW","Baden-Württemberg",8],["BY","Bayern",8],["BE","Berlin",9],["BB","Brandenburg",9],["HB","Bremen",9],["HH","Hamburg",9],["HE","Hessen",9],["MV","Mecklenburg-Vorpommern",9],["NI","Niedersachsen",9],["NW","Nordrhein-Westfalen",9],["RP","Rheinland-Pfalz",9],["SL","Saarland",9],["SN","Sachsen",9],["ST","Sachsen-Anhalt",9],["SH","Schleswig-Holstein",9],["TH","Thüringen",9]];
+
+const KASSEN=[["ek","Techniker Krankenkasse (TK)",2.69],["ek","BARMER",3.29],["ek","DAK-Gesundheit",3.2],["ek","hkk",2.59],["ek","HEK",2.89],["ek","KKH",3.78],["ek","Knappschaft",4.3],
+["aok","AOK Baden-Württemberg",2.99],["aok","AOK Bayern",2.69],["aok","AOK Bremen/Bremerhaven",3.29],["aok","AOK Hessen",2.98],["aok","AOK Niedersachsen",2.98],["aok","AOK Nordost",3.5],["aok","AOK NordWest",2.99],["aok","AOK PLUS",3.1],["aok","AOK Rheinland/Hamburg",3.29],["aok","AOK Rheinland-Pfalz/Saarland",2.47],["aok","AOK Sachsen-Anhalt",2.89],
+["ikk","BIG direkt gesund",3.69],["ikk","IKK Brandenburg und Berlin",4.35],["ikk","IKK classic",3.85],["ikk","IKK gesund plus",3.39],["ikk","IKK Südwest",3.87],["ikk","IKK – Die Innovationskasse",4.3],
+["bkk","Audi BKK",2.6],["bkk","Bahn BKK",3.65],["bkk","Bertelsmann BKK",3.2],["bkk","BKK firmus",2.18],["bkk","BKK Faber-Castell",2.48],["bkk","BKK Linde",2.99],["bkk","BKK Pfalz",3.9],["bkk","BKK ProVita",3.79],["bkk","BKK VerbundPlus",3.89],["bkk","BKK24",4.39],["bkk","Bosch BKK",3.18],["bkk","Debeka BKK",3.25],["bkk","Die Continentale BKK",3.33],["bkk","energie-BKK",3.98],["bkk","Heimat Krankenkasse",3.9],["bkk","mhplus",3.86],["bkk","mkk – meine krankenkasse",3.5],["bkk","Mobil Krankenkasse",3.89],["bkk","Novitas BKK",3.6],["bkk","Pronova BKK",3.7],["bkk","R+V BKK",3.49],["bkk","Salus BKK",3.29],["bkk","SBK",3.8],["bkk","SECURVITA",3.9],["bkk","SKD BKK",3.65],["bkk","TUI BKK",2.5],["bkk","VIACTIV",4.19],["bkk","vivida bkk",3.79],["bkk","WMF BKK",2.85]];
+let lang=window.FORCE_LANG||(()=>{try{const s=sessionStorage.getItem('lang');if(s)return s;}catch(e){}return (navigator.language||'en').toLowerCase().startsWith('de')?'de':'en';})();
+let period=1, view='flow', detailOpen=null, map2Sel=null;
+const $=id=>document.getElementById(id);
+const T=()=>I18N[lang];
+
+const E=window.SalaryEngine,PAGE=window.PAGE||'now';
+let YEAR=2026,ADJ='wage';
+const adjF=()=>{if(PAGE!=='past'||ADJ==='nom')return 1;const I=ADJ==='wage'?E.WAGE:E.CPI;return I[YEAR]/I[2026];};
+const PY=()=>E.PARAMS[YEAR];
+const r2=E.r2;
+const calc=o=>E.calc(o,PY());
+const nf=v=>v.toLocaleString(lang==='de'?'de-DE':'en-IE');
+function yr(str){if(YEAR===2026||!str)return str;const p=PY();
+ return str.replace(/603/g,nf(p.mini)).replace(/20[.,]350/g,nf(p.soliFG)).replace(/40[.,]700/g,nf(p.soliFG*2)).replace(/5[.,]812[.,]50/g,nf(p.kvBBG)).replace(/2[.,]000/g,nf(p.ueTop));}
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmt=v=>new Intl.NumberFormat(lang==='de'?'de-DE':'en-IE',{style:'currency',currency:'EUR'}).format(v);
+
+function zbValue(){const v=$('kasse').value;if(v==='other')return Math.max(0,+$('zb').value||0);if(v==='avg'||v===''||PAGE==='past')return PY().zb;return KASSEN[+v][2];}
+function statusFlags(){const st=$('status').value,pub=$('hi').value==='pub';
+ if(st==='stud')return{kv:false,pv:false,rv:true,av:false,priv:false,subsidy:false};
+ if(st==='beamt')return{kv:false,pv:false,rv:false,av:false,priv:true,subsidy:false};
+ return{kv:pub,pv:pub,rv:true,av:true,priv:!pub,subsidy:true};}
+function readRaw(){
+ const st=STATES.find(s=>s[0]===$('state').value)||STATES[2];
+ return {g:Math.max(0,+$('gross').value||0),cls:+$('cls').value,kids:+$('kids').value,state:st[0],kiRate:st[2]/100,
+  zb:zbValue(),age23:$('c_23').checked,pkv:Math.max(0,+$('pkv').value||0),status:$('status').value,...statusFlags(),ki:$('c_ki').checked,ag:$('c_ag').checked,
+  adv:{fb:$('a_fb').checked,fbAmt:Math.max(0,+$('fb').value||0),bav:$('a_bav').checked,bavAmt:Math.max(0,+$('bav').value||0),fac:$('a_fac').checked,sg:Math.max(0,+$('sg').value||0),sj:$('a_sj').checked,sjg:Math.max(0,+$('sjg').value||0),sj2:$('sj2').checked,sjrv:$('sjrv').checked}};
+}
+
+function applyLang(){
+ const t=T();document.documentElement.lang=lang;document.title=window.PAGE_TITLE||t.title+' · '+(lang==='de'?'Deutschland':'Germany')+' 2026';
+ const set=(id,v)=>{$(id).textContent=v;};
+ set('t_title',PAGE==='past'?t.pastTitle:t.title);set('t_sub',PAGE==='past'?t.pastSub:t.sub);
+ document.querySelectorAll('[data-nav]').forEach(a=>{a.textContent={overview:t.navOverview,past:t.navPast,now:t.navNow,future:t.navFuture}[a.dataset.nav];a.classList.toggle('on',a.dataset.nav===PAGE||(PAGE==='now'&&a.dataset.nav==='now'));});
+ if(PAGE==='past'){$('f_year').hidden=false;const yv=$('year').value||String(YEAR);$('year').innerHTML=E.YEARS.filter(y=>y<2026).reverse().map(y=>`<option value="${y}">${y}</option>`).join('');$('year').value=yv;}set('t_asof',PAGE==='past'?(lang==='de'?'Regeln des gewählten Jahres':'Rules of the selected year'):t.asof);
+ document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=t[e.dataset.t]||'';});
+ document.querySelectorAll('.tipbox').forEach(b=>{b.textContent=t.tips[b.id.slice(4)]||'';});
+ document.querySelectorAll('.tip').forEach(b=>b.setAttribute('aria-label',(lang==='de'?'Erklärung: ':'Explain: ')+(t[b.dataset.tip]||'')));
+ const stv=$('status').value||'emp';$('status').innerHTML=['emp','stud','beamt'].map((k,i)=>`<option value="${k}">${t.statusOpts[i]}</option>`).join('');$('status').value=stv;
+ const hv=$('hi').value||'pub';$('hi').innerHTML=['pub','priv'].map((k,i)=>`<option value="${k}">${t.hiOpts[i]}</option>`).join('');$('hi').value=hv;
+ const kv0=$('kasse').value||'avg';
+ let ko=`<option value="avg">${t.avg}</option>`;
+ for(const gk of ['ek','aok','ikk','bkk']){ko+=`<optgroup label="${t.grpIns[gk]}">`+KASSEN.map((k,i)=>k[0]===gk?`<option value="${i}">${k[1]} – ${k[2].toLocaleString(lang==='de'?'de-DE':'en-IE')} %</option>`:'').join('')+'</optgroup>';}
+ ko+=`<option value="other">${t.other}</option>`;
+ if(PAGE==='past'){ko=`<option value="avg">${YEAR<2015?t.zbPre15.replace('{y}',YEAR):t.avgYear.replace('{y}',YEAR).replace('{r}',nf(PY().zb))}</option><option value="other">${t.other}</option>`;}
+ $('kasse').innerHTML=ko;$('kasse').value=kv0;if(!$('kasse').value)$('kasse').value='avg';
+ const cv=$('cls').value||'1';$('cls').innerHTML=t.classes.map((c,i)=>`<option value="${i+1}">${c}</option>`).join('');$('cls').value=cv;
+ const sv=$('state').value||'BE';$('state').innerHTML=STATES.map(s=>`<option value="${s[0]}">${s[1]}</option>`).join('');$('state').value=sv;
+ set('t_summary',t.summary);set('pm',t.month);set('py',t.year);set('t_viewtitle',t.viewtitle);set('v_flow',t.flow);set('v_map',t.map);
+ set('t_map2',t.map2);set('t_map2hint',t.map2hint);set('t_detail',t.detail);set('t_how',t.how);$('t_howtext').innerHTML=t.howtext;$('t_footer').innerHTML=t.footer+'<br>'+DATA_LINE[lang];
+ document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+ if(!$('mapModal').hidden)drawGeo();
+ render();
+}
+
+function labelCells(root){root.querySelectorAll('table').forEach(tb=>{const hd=[...(tb.rows[0]?tb.rows[0].cells:[])].map(c=>c.textContent.trim());
+ [...tb.rows].slice(1).forEach(r=>[...r.cells].forEach((c,i)=>{if(i===0||!hd[i]||c.textContent.trim()==='')return;if(r.classList.contains('tot')&&!c.classList.contains('n'))return;c.dataset.label=hd[i];c.innerHTML='<span class="cv">'+c.innerHTML+'</span>';}));});}
+function drawDetail(c,o,m){
+ const box=$('detail');if(!detailOpen){box.hidden=true;box.innerHTML='';return;}
+ const t=T(),R=t.rows,R2=t.r2,P=v=>fmt(v*m),loc=lang==='de'?'de-DE':'en-IE',g=c.g;
+ const pf=x=>(x*100).toLocaleString(loc,{maximumFractionDigits:2})+' %';
+ const pg=v=>g>0?(v/g*100).toLocaleString(loc,{maximumFractionDigits:1})+' %':'—';
+ const eur=v=>fmt(v);
+ let h='';
+ if(detailOpen==='tax'){
+  const eff=c.estYr&&c.gMain>0?c.estYr/(c.gMain*12):0;
+  h+=`<h3>${t.dTax}<button class="closebtn" style="font-size:20px" aria-label="${t.dClose}" data-close="detail">×</button></h3><table><tr><th>${t.cItem}</th><th class="n">${t.cRate}</th><th>${t.cBase}</th><th class="n">${t.cYou}</th><th class="n">${t.cShare}</th><th>${t.cDest}</th></tr>`;
+  h+=`<tr><td>${R.lst}</td><td class="n">${pf(eff)}<br><span class="muted">${t.effLabel}</span></td><td>${c.zvE!=null?eur(c.zvE)+' '+t.taxable:'—'}</td><td class="n">${P(c.lstMain)}</td><td class="n">${pg(c.lstMain)}</td><td class="muted">${R.lstD}</td></tr>`;
+  h+=`<tr class="sub"><td>${t.split}: ${t.fed}</td><td class="n">${pf(0.425)}</td><td></td><td class="n">${P(c.lstMain*0.425)}</td><td></td><td></td></tr>`;
+  h+=`<tr class="sub"><td>${t.split}: ${t.st}</td><td class="n">${pf(0.425)}</td><td></td><td class="n">${P(c.lstMain*0.425)}</td><td></td><td></td></tr>`;
+  h+=`<tr class="sub"><td>${t.split}: ${t.mun}</td><td class="n">${pf(0.15)}</td><td></td><td class="n">${P(c.lstMain*0.15)}</td><td></td><td></td></tr>`;
+  if(c.sjLst>0)h+=`<tr><td>${R2.sjTax}</td><td class="n">VI</td><td>${eur(c.sj)} / ${t.month.toLowerCase()}</td><td class="n">${P(c.sjLst)}</td><td class="n">${pg(c.sjLst)}</td><td class="muted">${R.lstD}</td></tr>`;
+  if(c.flat>0)h+=`<tr><td>${R2.flat}</td><td class="n">2 %</td><td>${eur(c.sj)} ${t.ofMini}</td><td class="n">${P(c.flat)}</td><td class="n">${pg(c.flat)}</td><td class="muted">${R2.flatD}</td></tr>`;
+  h+=`<tr><td>${R.soli}</td><td class="n">${pf(0.055)}</td><td>${c.soli>0?t.ofLst:yr(t.belowSoli)}</td><td class="n">${P(c.soli)}</td><td class="n">${pg(c.soli)}</td><td class="muted">${R.soliD}</td></tr>`;
+  if(o.ki)h+=`<tr><td>${R.ki}</td><td class="n">${pf(o.kiRate)}</td><td>${t.ofLst}</td><td class="n">${P(c.kist)}</td><td class="n">${pg(c.kist)}</td><td class="muted">${t.churchD}</td></tr>`;
+  h+=`<tr class="tot"><td>${t.cTot}</td><td></td><td></td><td class="n">${P(c.tax)}</td><td class="n">${pg(c.tax)}</td><td></td></tr></table>`;
+ }
+ if(detailOpen==='sv'||detailOpen==='ag'){
+  const S=c.S,isAg=detailOpen==='ag';
+  h+=`<h3>${isAg?t.dAg:t.dSv}<button class="closebtn" style="font-size:20px" aria-label="${t.dClose}" data-close="detail">×</button></h3><table><tr><th>${t.cItem}</th><th class="n">${t.cYou}</th><th class="n">${t.cAg}</th><th>${t.cBase}</th><th class="n">${isAg?t.cAg:t.cYou} €</th><th>${t.cDest}</th></tr>`;
+  const baseTxt=(x)=>{if(c.zone==='ueb')return isAg?t.uebAg:eur(S.base[x])+' · '+t.reduced+(x==='pv'&&S.PVk>0?` (${pf(S.PVk)}: ${eur(S.BE)})`:'');const cap=x==='kv'?PY().kvBBG:(x==='pv'?PY().pvBBG:PY().rvBBG);return c.svBase>cap?`${eur(cap)} (${t.capped} ${eur(cap)})`:eur(Math.min(c.svBase,cap));};
+  const rowsMap=[['kv',R.kv,R.kvD,o.kv],['pv',R.pv,R.pvD,o.pv],['rv',R.rv,R.rvD,o.rv],['av',R.av,R.avD,o.av]];
+  let you=0,ag=0;
+  if(c.zone!=='mini')for(const [k,name,dest,on] of rowsMap){if(!on)continue;const r=S.rates[k];
+   const amt=isAg?c.ag[k]:c[k];
+   h+=`<tr><td>${name}</td><td class="n">${pf(r[0])}</td><td class="n">${pf(r[1])}</td><td>${baseTxt(k)}</td><td class="n">${P(amt)}</td><td class="muted">${dest}</td></tr>`;}
+  else if(o.rv&&!isAg)h+=`<tr><td>${R.rv}</td><td class="n">${pf(0.036)}</td><td class="n">${pf(0.15)}</td><td>${eur(c.gMain)}</td><td class="n">${P(c.rv)}</td><td class="muted">${R.rvD}</td></tr>`;
+  if(c.pkvOwn>0||c.pkvAg>0)h+=`<tr><td>${R.pkv}</td><td class="n">—</td><td class="n">—</td><td>${eur(o.pkv)} / ${t.month.toLowerCase()}</td><td class="n">${P(isAg?c.pkvAg:c.pkvOwn)}</td><td class="muted">${R.pkvD}</td></tr>`;
+  if(c.sj>0&&c.sj<=PY().mini){
+   if(!isAg&&c.sjRv>0)h+=`<tr><td>${R2.sjRv}</td><td class="n">${pf(0.036)}</td><td class="n">15 %</td><td>${eur(c.sj)} ${t.ofMini}</td><td class="n">${P(c.sjRv)}</td><td class="muted">${R.rvD}</td></tr>`;
+   if(isAg)h+=`<tr><td>${R2.sjRv.replace('3,6 %','15 %').replace('3.6%','15%')}</td><td class="n">—</td><td class="n">15 %${o.kv?' + 13 %':''}</td><td>${eur(c.sj)} ${t.ofMini}</td><td class="n">${P(c.sjAgMini)}</td><td class="muted">Minijob-Zentrale</td></tr>`;
+   if(isAg&&c.flatAg>0)h+=`<tr><td>${R2.flat}</td><td class="n">—</td><td class="n">2 %</td><td>${eur(c.sj)} ${t.ofMini}</td><td class="n">${P(c.flatAg)}</td><td class="muted">${R2.flatD}</td></tr>`;}
+  if(isAg&&c.bavAg>0)h+=`<tr><td>${R2.bavAg}</td><td class="n">—</td><td class="n">15 %</td><td>${eur(c.bavSv)}</td><td class="n">${P(c.bavAg)}</td><td class="muted">${R2.bavD}</td></tr>`;
+  const tot=isAg?c.agTot:c.sv;
+  h+=`<tr class="tot"><td>${t.cTot}</td><td></td><td></td><td></td><td class="n">${P(tot)}</td><td class="muted">${pg(tot)} ${t.ofGross}</td></tr></table>`;
+ }
+ box.innerHTML=h;box.hidden=false;labelCells(box);
+}
+
+function readInputs(){const o=readRaw();const f=adjF();if(f!==1){o.g=r2(o.g*f);o.adv={...o.adv,sjg:r2(o.adv.sjg*f),sg:r2(o.adv.sg*f)};}return o;}
+let netMode=false,netTarget=null;
+try{const _s=JSON.parse(sessionStorage.getItem('salaryState')||'{}');netMode=_s.netMode===true;netTarget=_s.netTarget!=null?+_s.netTarget:null;}catch(e){}
+function saveNet(){try{const s=JSON.parse(sessionStorage.getItem('salaryState')||'{}');s.netMode=netMode;s.netTarget=netTarget;sessionStorage.setItem('salaryState',JSON.stringify(s));}catch(e){}}
+function unitIsYear(){try{return JSON.parse(sessionStorage.getItem('salaryState')||'{}').grossUnit==='y';}catch(e){return false;}}
+let netReach=true;
+function solveGross(){ // smallest gross whose take-home pay reaches the target (bisection on the full engine)
+ const base=readInputs(),f=g=>calc({...base,g}).net;let lo=0,hi=200000;
+ if(f(hi)<netTarget){netReach=false;return;} netReach=true;
+ for(let k=0;k<60;k++){const mid=(lo+hi)/2;if(f(mid)>=netTarget)hi=mid;else lo=mid;}
+ const g=Math.ceil(hi*100)/100;$('gross').value=String(g);$('grossR').value=g;}
+function paintNet(){const t=T(),now=PAGE==='now',y=unitIsYear(),u=y?(lang==='de'?' / Jahr':' / year'):(lang==='de'?' / Monat':' / month'),src=now&&netMode?'n':'g';
+ $('srcSeg').hidden=!now;$('netCol').hidden=!now;$('netLbl').hidden=!now;
+ document.querySelectorAll('#srcSeg button').forEach(b=>{b.textContent=b.dataset.s==='g'?t.srcG:t.srcN;b.classList.toggle('on',b.dataset.s===src);b.setAttribute('aria-pressed',b.dataset.s===src);});
+ const gl=document.querySelector('label[for="grossV"],label[for="gross"]');if(gl)gl.textContent=t.gross+(now?u+(src==='n'?t.calcTag:''):'');
+ $('netL').textContent=t.netL+u+(src==='g'?t.calcTag:'');
+ const row=$('pairRow'),seg=document.querySelector('.guseg');if(seg&&seg.parentNode!==row)row.appendChild(seg);
+ const gv=$('grossV'),ni=$('netIn');
+ if(gv){gv.readOnly=src==='n';gv.classList.toggle('derived',src==='n');gv.tabIndex=src==='n'?-1:0;}
+ ni.readOnly=src==='g';ni.classList.toggle('derived',src==='g');ni.tabIndex=src==='g'?-1:0;
+ $('grossR').disabled=src==='n';
+ const c=calc(readInputs());
+ if(document.activeElement!==ni){const v=src==='n'&&netTarget!=null?netTarget:c.net;ni.value=String(Math.round(v*(y?12:1)*100)/100);}
+ const out=$('netOut');if(!now){out.hidden=true;return;}out.hidden=false;
+ out.textContent=src==='n'?(netReach?t.netOut:t.netNo):t.netHintG;}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(paintNet,0));
+function render(){
+ if(PAGE==='now'&&netMode&&netTarget!=null)solveGross();
+ paintNet();
+ const o=readInputs(),c=calc(o),t=T(),m=period,g=c.g;
+ const P=v=>fmt(v*m),pct=v=>g>0?(v/g*100).toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1})+' %':'—';
+ $('kpis').innerHTML=
+  `<div class="kpi"><div class="l">${t.grossK}</div><div class="v">${P(g)}</div></div>`+
+  `<div class="kpi click${detailOpen==='tax'?' active':''}" data-d="tax" role="button" tabindex="0" aria-expanded="${detailOpen==='tax'}"><div class="l"><span class="dot" style="background:var(--tax)"></span>${t.taxK}</div><div class="v">${P(c.tax)}</div><div class="p">${pct(c.tax)}</div><div class="more">${t.more} ▾</div></div>`+
+  `<div class="kpi click${detailOpen==='sv'?' active':''}" data-d="sv" role="button" tabindex="0" aria-expanded="${detailOpen==='sv'}"><div class="l"><span class="dot" style="background:var(--sv)"></span>${c.pkvOwn>0?t.svKp:t.svK}</div><div class="v">${P(c.sv)}</div><div class="p">${pct(c.sv)}</div><div class="more">${t.more} ▾</div></div>`+
+  `<div class="kpi"><div class="l"><span class="dot" style="background:var(--net)"></span>${t.netK}</div><div class="v">${P(c.net)}</div><div class="p">${pct(c.net)}</div></div>`+
+  (c.bav>0?`<div class="kpi"><div class="l"><span class="dot" style="background:var(--accent)"></span>${t.n2.bav}</div><div class="v">${P(c.bav)}</div><div class="p">${pct(c.bav)}</div></div>`:'')+
+  (o.ag?`<div class="kpi click${detailOpen==='ag'?' active':''}" data-d="ag" role="button" tabindex="0" aria-expanded="${detailOpen==='ag'}"><div class="l"><span class="dot" style="background:var(--ag)"></span>${t.agK}</div><div class="v">${P(c.agTot)}</div><div class="more">${t.more} ▾</div></div>`:'');
+ if(detailOpen==='ag'&&!o.ag)detailOpen=null;
+ $('kpis').querySelectorAll('.kpi.click').forEach(k=>{const go=()=>{detailOpen=detailOpen===k.dataset.d?null:k.dataset.d;render();};k.onclick=go;k.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+ $('kpiHint').textContent=detailOpen?'':t.kpiHint;
+ {const ded=c.tax+c.sv,el=$('perDay');
+  if(c.g>0&&ded>0.005){const mins=Math.round(ded/c.g*480),hh=9+Math.floor(mins/60),mm=mins%60,tt=(lang==='de'?hh+':'+String(mm).padStart(2,'0'):hh+':'+String(mm).padStart(2,'0'));
+   const day=v=>fmt(v*12/365);
+   const parts=[[t.pdTax,c.tax],[t.pdRv,c.rv+(c.sjRv||0)],[t.pdKv,c.kv],[t.pdPv,c.pv],[t.pdAv,c.av],[t.pdPkv,c.pkvOwn||0]].filter(p=>p[1]>0.005).sort((a,b)=>b[1]-a[1]).map(p=>day(p[1])+' '+p[0]).join(', ');
+   el.innerHTML=t.perDay.replace('{t}',tt).replace('{d}',day(ded)).replace('{parts}',parts);el.hidden=false;}
+  else{el.innerHTML='';el.hidden=true;}}
+ drawDetail(c,o,m);
+ $('bar').innerHTML=g>0?`<div style="width:${c.net/g*100}%;background:var(--net)"></div><div style="width:${c.sv/g*100}%;background:var(--sv)"></div><div style="width:${c.tax/g*100}%;background:var(--tax)"></div><div style="width:${c.bav/g*100}%;background:var(--accent)"></div>`:'';
+ const notes=[];if(c.zone==='mini'&&!c.sj)notes.push(yr(t.notes.mini));if(c.zone==='ueb')notes.push(yr(t.notes.ueb));if(g>PY().kvBBG&&(o.kv||o.pv))notes.push(t.notes.cap);
+ if(o.cls===6)notes.push(t.notes.cls6);if(o.cls===5)notes.push(t.notes.cls5);$('notice').textContent=notes.join(' ');
+ $('statusNote').textContent=t.statusNotes[o.status];
+ if($('map2wrap'))$('map2wrap').hidden=PAGE==='past';
+ saveState();
+ if(PAGE==='past'){const raw=readRaw();const now=E.calc({...raw,zb:$('kasse').value==='other'?raw.zb:E.PARAMS[2026].zb},E.PARAMS[2026]);const fA=adjF();const realThen=fA!==1?r2(c.net/fA):c.net;const d=r2(now.net-realThen);
+  const cls=d>0.004?'up':(d<-0.004?'down':'');const lab=d>0.004?t.cmpMore:(d<-0.004?t.cmpLess:t.cmpSame);
+  const shT=c.g>0?c.net/c.g*100:0,shN=raw.g>0?now.net/(now.g)*100:0,pp=(shN-shT);const pf1=v=>v.toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1});
+  $('cmp').innerHTML=`<b>${t.cmpTitle}:</b> ${fA!==1?(ADJ==='wage'?t.cmpWageLvl:t.cmpReal)+' – ':''}${YEAR}: ${fmt(realThen*period)} → 2026: ${fmt(now.net*period)} · <span class="${cls}"><b>${d>0?'+':''}${fmt(d*period)}</b> ${lab}</span><br>${t.cmpShare}: ${pf1(shT)} % → ${pf1(shN)} % (${Math.abs(pp)<0.05?'±0':(pp>0?'+':'')+pf1(pp)} ${lang==='de'?'Prozentpunkte':'pp'})<br><span class="muted" style="font-size:12px">${ADJ==='nom'?t.cmpNote:t.cmpNoteAdj}</span>`;
+  $('f_year').parentNode.querySelector('[data-t=gross]').textContent=ADJ==='nom'?t.gross:t.grossToday;
+  const ga=$('gross').value;$('adjOut').textContent=(ADJ==='nom'?t.adjOutNom:(ADJ==='wage'?t.adjOutWage:t.adjOutCpi)).replace('{g}',fmt(+ga||0)).replace('{gy}',fmt(c.gMain)).replace(/\{y\}/g,YEAR);
+  document.querySelectorAll('[data-adj]').forEach(b=>{b.textContent={wage:t.adjWage,cpi:t.adjCpi,nom:t.adjNom}[b.dataset.adj];b.classList.toggle('on',b.dataset.adj===ADJ);});$('cmp').hidden=false;}
+ else $('cmp').hidden=true;
+ $('f_zbman').hidden=$('kasse').value!=='other';
+ $('zbShow').textContent=o.kv?`${t.zbUsing}: ${o.zb.toLocaleString(lang==='de'?'de-DE':'en-IE')} %`+(PAGE==='past'?'':` · ${t.zbAsOf}`):'';
+ for(const k of ['fb','bav','fac','sj'])$('in_'+k).hidden=!$('a_'+k).checked;
+ $('cls').disabled=o.adv.fac;if(o.adv.fac)$('cls').value='4';
+ $('facOut').textContent=o.adv.fac?(c.factor===null?'':(c.factor>=1?t.facNone:`${t.facLine}: ${c.factor.toFixed(3).replace('.',lang==='de'?',':'.')}`)):'';
+ $('sjMini').hidden=!(c.sj>0&&c.sj<=PY().mini);
+ $('sjOut').textContent=c.sj>0?(c.sj<=PY().mini?yr(t.sjMiniL):yr(t.sjRegL)):'';
+ $('t_viewhint').textContent=view==='flow'?t.hintFlow:t.hintMap;
+ if(view==='flow'){try{drawSankey(c,o,m);}catch(e){$('sankey').innerHTML=(lang==='de'?'<p class="muted">Diagramm konnte nicht geladen werden – bitte die Ansicht „Übersicht“ nutzen.</p>':'<p class="muted">The chart could not load – please use the Map view.</p>');}}else drawMaps(c,o,m);
+ drawTable(c,o,m);
+}
+
+function drawSankey(c,o,m){
+ const t=T().nodes,tax=cssv('--tax'),sv=cssv('--sv'),net=cssv('--net'),ag=cssv('--ag');
+ const t2=T().n2,agW=lang==='de'?'Arbeitgeber':'employer';
+ const N=[t.gross,t.tax,t.sv,t.net,t.bund,t.land,t.gem,t.church,t.kv,t.pv,t.rv,t.av,t.ag,t.pkv,t2.main,t2.second,t2.bav,t.agSv];
+ const NC=[cssv('--accent'),tax,sv,net,tax,tax,tax,tax,sv,sv,sv,sv,ag,sv,cssv('--accent'),cssv('--accent'),cssv('--accent'),ag];
+ const miniAgRv=c.sj>0&&c.sj<=PY().mini?r2(c.sj*PY().miniRvAG):0,miniAgKv=c.sj>0&&c.sj<=PY().mini&&o.kv?r2(c.sj*PY().miniKvAG):0;
+ const agF={kv:r2(c.ag.kv+miniAgKv),pv:c.ag.pv,rv:r2(c.ag.rv+miniAgRv),av:c.ag.av,pkv:c.pkvAg};
+ const agSvTot=r2(agF.kv+agF.pv+agF.rv+agF.av+agF.pkv);
+ const L=[[0,1,c.tax,tax],[0,2,c.sv,sv],[0,3,c.net,net],[1,4,c.bund,tax],[1,5,c.land,tax],[1,6,c.gem,tax],[1,7,c.kist,tax],[2,8,c.kv,sv],[2,9,c.pv,sv],[2,10,c.rv+c.sjRv,sv],[2,11,c.av,sv],[2,13,c.pkvOwn,sv],[0,16,c.bav,cssv('--accent')]];
+ if(c.sj>0)L.push([14,0,c.gMain,cssv('--accent')],[15,0,c.sj,cssv('--accent')]);
+ if(o.ag)L.push([12,17,agSvTot,ag],[17,8,agF.kv,ag],[17,9,agF.pv,ag],[17,10,agF.rv,ag],[17,11,agF.av,ag],[17,13,agF.pkv,ag],[12,16,c.bavAg,ag]);
+ const F=L.filter(l=>l[2]>0.004);
+ const own=[c.g,c.tax,c.sv,c.net,c.bund,c.land,c.gem,c.kist,c.kv,c.pv,c.rv+c.sjRv,c.av,o.ag?c.agTot:0,c.pkvOwn,c.gMain,c.sj,c.bav,agSvTot];
+ const agv=[0,0,0,0,0,0,0,0,agF.kv,agF.pv,agF.rv,agF.av,0,agF.pkv,0,0,c.bavAg,0];
+ const pcs=v=>c.g>0?(v/c.g*100).toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1})+' %':'';
+ const NL=N.map((nm,i)=>{let l=own[i]>0?nm+' · '+pcs(own[i]):nm;if(o.ag&&agv[i]>0.004)l+=` + ${pcs(agv[i])} ${agW}`;return l;});
+ svgSankey(document.getElementById('sankey'),NL,NC,F.map(l=>[l[0],l[1],r2(l[2]*m),l[3]]));
+}
+
+// Lightweight SVG Sankey (no external library)
+function svgSankey(el,labels,colors,links){
+ const W=Math.max(el.clientWidth||900,320),H=W<600?620:520,PAD=18,NW=14,M=6;
+ const used=new Set();links.forEach(l=>{used.add(l[0]);used.add(l[1]);});
+ const ids=[...used],inV={},outV={},ins={},outs={};
+ ids.forEach(i=>{inV[i]=0;outV[i]=0;ins[i]=[];outs[i]=[];});
+ links.forEach(l=>{outV[l[0]]+=l[2];inV[l[1]]+=l[2];outs[l[0]].push(l);ins[l[1]].push(l);});
+ const depth={};const dfs=(i,d)=>{if(depth[i]!=null&&depth[i]>=d)return;depth[i]=d;outs[i].forEach(l=>dfs(l[1],d+1));};
+ ids.filter(i=>!ins[i].length).forEach(i=>dfs(i,0));
+ let maxD=Math.max(...ids.map(i=>depth[i]));ids.forEach(i=>{if(!outs[i].length)depth[i]=maxD;});
+ const cols=[];ids.forEach(i=>{(cols[depth[i]]=cols[depth[i]]||[]).push(i);});cols.forEach(c=>c&&c.sort((a,b)=>a-b));
+ const val=i=>Math.max(inV[i],outV[i]);
+ const k=Math.min(...cols.filter(Boolean).map(c=>(H-2*M-PAD*(c.length-1))/c.reduce((s,i)=>s+val(i),0)));
+ const pos={},fmtE=v=>v.toLocaleString(lang==='de'?'de-DE':'en-IE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+ cols.forEach((c,d)=>{if(!c)return;const tot=c.reduce((s,i)=>s+Math.max(val(i)*k,2),0)+PAD*(c.length-1);let y=M+Math.max(0,(H-2*M-tot)/2)*(d===0?1:0);
+  const x=maxD?M+(W-2*M-NW)*d/maxD:M;c.forEach(i=>{const h=Math.max(val(i)*k,2);pos[i]={x,y,h,o:0,n:0};y+=h+PAD;});});
+ const plain=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+ let g='';
+ ids.forEach(i=>{const cy=j=>pos[j].y+pos[j].h/2;outs[i].sort((a,b)=>cy(a[1])-cy(b[1]));ins[i].sort((a,b)=>cy(a[0])-cy(b[0]));});
+ const off=new Map();ids.forEach(i=>{let y=pos[i].y;outs[i].forEach(l=>{off.set(l,{sy:y});y+=l[2]*k;});});
+ ids.forEach(i=>{let y=pos[i].y;ins[i].forEach(l=>{off.get(l).ty=y;y+=l[2]*k;});});
+ links.forEach(l=>{const s=pos[l[0]],t=pos[l[1]],o=off.get(l),h=l[2]*k,x0=s.x+NW,x1=t.x,xm=(x0+x1)/2;
+  const d=`M${x0},${o.sy}C${xm},${o.sy} ${xm},${o.ty} ${x1},${o.ty}L${x1},${o.ty+h}C${xm},${o.ty+h} ${xm},${o.sy+h} ${x0},${o.sy+h}Z`;
+  g+=`<path d="${d}" fill="${l[3]}" fill-opacity="0.38" class="sk-l"><title>${plain(labels[l[0]].split(' · ')[0])} → ${plain(labels[l[1]].split(' · ')[0])}: ${fmtE(l[2])}</title></path>`;});
+ ids.forEach(i=>{const p=pos[i],right=depth[i]===maxD||(W<600&&depth[i]>0);
+  g+=`<rect x="${p.x}" y="${p.y}" width="${NW}" height="${p.h}" fill="${colors[i]}"><title>${plain(labels[i])}: ${fmtE(val(i))}</title></rect>`;
+  const tx=right?p.x-6:p.x+NW+6,two=W<600&&depth[i]>0&&depth[i]<maxD&&labels[i].includes(' · ');
+  const inner=two?(()=>{const k2=labels[i].indexOf(' · ');return `<tspan x="${tx}" dy="-0.6em">${plain(labels[i].slice(0,k2))}</tspan><tspan x="${tx}" dy="1.2em">${plain(labels[i].slice(k2+3))}</tspan>`;})():plain(labels[i]);
+  g+=`<text x="${tx}" y="${p.y+p.h/2}" text-anchor="${right?'end':'start'}" dominant-baseline="central" font-size="13" fill="var(--text)" style="paint-order:stroke;stroke:var(--card);stroke-width:3px">${inner}</text>`;});
+ el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" style="display:block">${g}</svg>`;
+}
+
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-close]');if(!b)return;if(b.dataset.close==='detail')detailOpen=null;else map2Sel=null;render();});
+let _rsT,_rsW=0;window.addEventListener('resize',()=>{clearTimeout(_rsT);_rsT=setTimeout(()=>{const w=($('sankey')||{}).clientWidth;if(w&&Math.abs(w-_rsW)>40){_rsW=w;render();}},200);});
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function box(x,y,w,h,col,title,sub,dim,sub2){
+ const op=dim?0.35:1,txt=(yy,v,fs,fw,c2)=>`<text x="${x+w/2}" y="${yy}" text-anchor="middle" dominant-baseline="central" font-size="${fs}" ${fw?'font-weight="500"':''} fill="${c2}">${esc(v)}</text>`;
+ let out=`<g opacity="${op}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${col}22" stroke="${col}" stroke-width="1"/>`;
+ if(sub2){out+=txt(y+h/2-19,title,14,1,'var(--text)')+txt(y+h/2+1,sub,13,0,'var(--muted)')+txt(y+h/2+19,sub2,12,1,col);}
+ else{out+=txt(y+(sub?h/2-9:h/2),title,14,1,'var(--text)')+(sub?txt(y+h/2+11,sub,13,0,'var(--muted)'):'');}
+ return out+'</g>';
+}
+const arr=(d,col)=>`<path d="${d}" fill="none" stroke="${col||'var(--muted)'}" stroke-width="1.5" marker-end="url(#ah)"/>`;
+const line=(d,col)=>`<path d="${d}" fill="none" stroke="${col||'var(--muted)'}" stroke-width="1.5"/>`;
+const defs=`<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>`;
+
+const mk=(k,inner)=>`<g class="mk${map2Sel===k?' on':''}" data-k="${k}" role="button" tabindex="0">${inner}</g>`;
+function drawMaps(c,o,m){
+ const t=T(),mm=t.m,n=t.nodes,P=v=>fmt(v*m),pc=v=>c.g>0?(v/c.g*100).toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1})+' %':'',PP=v=>P(v)+' · '+pc(v);
+ const TX=cssv('--tax'),SV=cssv('--sv'),NT=cssv('--net'),GR=cssv('--accent'),DB=cssv('--debt');
+ let s=`<svg viewBox="0 0 960 484" width="100%" role="img" aria-label="${esc(t.viewtitle)}">${defs}`;
+ s+=box(360,20,240,56,GR,n.gross,P(c.g));
+ s+=arr('M480 76 L480 104');
+ s+=box(360,106,240,56,NT,mm.employer,mm.employerS);
+ s+=arr('M400 162 L400 186 L150 186 L150 208');
+ s+=arr('M480 162 L480 208');
+ s+=arr('M560 162 L560 186 L810 186 L810 208');
+ s+=box(40,210,220,56,TX,mm.taxOffice,PP(c.tax),c.tax<=0);
+ s+=box(370,210,220,56,NT,mm.account,PP(c.net));
+ s+=box(700,210,220,56,SV,(o.kv?mm.healthIns:(lang==='de'?'Versicherungen':'Insurers')),PP(c.sv),c.sv<=0);
+ const shT=lang==='de'?['Bund','Land','Gemeinde','Kirche']:['Federal','State','Municipality','Church'];const tx=[[shT[0],c.bund],[shT[1],c.land],[shT[2],c.gem],[shT[3],c.kist]];
+ const xs=[10,128,246,364];
+ s+=line('M150 266 L150 300',TX)+line(`M${xs[0]+52} 300 L${xs[3]+52} 300`,TX);
+ tx.forEach((b,i)=>{s+=arr(`M${xs[i]+52} 300 L${xs[i]+52} 326`,TX);s+=box(xs[i],328,104,74,TX,b[0],P(b[1]),b[1]<=0,pc(b[1]));});
+ const sh=lang==='de'?['Kranken','Pflege','Rente','Arbeitslosen']:['Health','Care','Pension','Unemployment'];const sf=!o.priv?[[sh[0],c.kv],[sh[1],c.pv],[sh[2],c.rv],[sh[3],c.av]]:[[lang==='de'?'Privat (KV+PV)':'Private (KV+PV)',c.pkvOwn],[sh[1],0],[sh[2],c.rv],[sh[3],c.av]];
+ const xs2=[492,610,728,846];
+ s+=line('M810 266 L810 300',SV)+line(`M${xs2[0]+52} 300 L${xs2[3]+52} 300`,SV);
+ sf.forEach((b,i)=>{s+=arr(`M${xs2[i]+52} 300 L${xs2[i]+52} 326`,SV);s+=box(xs2[i],328,104,74,SV,b[0],P(b[1]),b[1]<=0,pc(b[1]));});
+ if(c.bav>0){s+=arr('M600 134 L678 134',cssv('--accent'));s+=box(680,106,240,56,cssv('--accent'),T().n2.bav,PP(c.bav));}
+ if(o.ag){s+=box(700,424,220,48,cssv('--ag'),n.ag+' +'+P(c.agTot)+' · '+pc(c.agTot),'');s+=arr('M810 424 L810 406',cssv('--ag'));}
+ s+='</svg>';$('map1').innerHTML=s;
+
+ let q=`<svg viewBox="0 0 960 400" width="100%" role="img" aria-label="${esc(t.map2)}">${defs}`;
+ q+=mk('taxpayers',box(330,20,300,56,'#888780',mm.taxpayers,mm.taxpayersS));
+ q+=arr('M480 76 L480 104');
+ q+=mk('office',box(330,106,300,56,'#888780',mm.office,mm.officeS));
+ q+=line('M480 162 L480 186',TX)+line('M190 186 L770 186',TX);
+ q+=arr('M190 186 L190 208',TX)+arr('M480 186 L480 208',TX)+arr('M770 186 L770 208',TX);
+ q+=mk('bund',box(70,210,240,62,TX,mm.bund,mm.yours+': '+PP(c.bund)));
+ q+=mk('land',box(360,210,240,62,TX,mm.land,mm.yours+': '+PP(c.land)));
+ q+=mk('gem',box(650,210,240,62,TX,mm.gem,mm.yours+': '+PP(c.gem)));
+ q+=mk('lenders',box(20,20,250,56,DB,mm.lenders,mm.lendersS));
+ q+=arr('M110 76 L110 208',DB);
+ q+=arr('M190 272 L190 318',SV);
+ q+=mk('subs',box(70,320,240,56,SV,mm.subs,mm.subsS));
+ q+=arr('M480 272 L480 318',TX);
+ q+=mk('equal',box(360,320,240,56,TX,mm.equal,mm.equalS));
+ q+='</svg>';$('map2').innerHTML=q;
+ $('map2').querySelectorAll('.mk').forEach(g=>{const go=()=>{map2Sel=map2Sel===g.dataset.k?null:g.dataset.k;drawMaps(c,o,m);};g.onclick=go;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+ const nb=$('map2note');if(map2Sel){const N=t.notes2[map2Sel];nb.innerHTML=`<h3>${N.t}<button class="closebtn" style="font-size:20px" aria-label="${t.dClose}" data-close="map2">×</button></h3>${N.b}<p class="muted" style="font-size:12px;margin:8px 0 0">${t.srcRef}: ${N.s}</p>`;nb.hidden=false;}else{nb.hidden=true;nb.innerHTML='';}
+}
+
+function drawTable(c,o,m){
+ const t=T(),R=t.rows,P=v=>fmt(v*m);
+ const row=(a,b,v,col)=>`<tr><td><span class="dot" style="background:${col}"></span>${a}</td><td class="muted">${b}</td><td class="n">${P(v)}</td></tr>`;
+ const TX='var(--tax)',SV='var(--sv)';
+ let h=`<tr><th>${t.item}</th><th>${t.dest}</th><th class="n">${period===1?t.month:t.year}</th></tr>`;
+ const R2=t.r2;h+=`<tr class="grp"><td colspan="2">${R.taxG}</td><td class="n">${P(c.tax)}</td></tr>`+row(R.lst,R.lstD,c.lstMain,TX)+(c.sjLst>0?row(R2.sjTax,R.lstD,c.sjLst,TX):'')+(c.flat>0?row(R2.flat,R2.flatD,c.flat,TX):'')+row(R.soli,R.soliD,c.soli,TX)+(o.ki?row(R.ki,R.kiD,c.kist,TX):'');
+ h+=`<tr class="grp"><td colspan="2">${R.svG}</td><td class="n">${P(c.sv)}</td></tr>`;
+ if(o.kv)h+=row(R.kv,R.kvD,c.kv,SV);else if(c.pkvOwn>0)h+=row(R.pkv,R.pkvD,c.pkvOwn,SV);if(o.pv)h+=row(R.pv,R.pvD,c.pv,SV);if(o.rv)h+=row(R.rv,R.rvD,c.rv,SV);if(o.av)h+=row(R.av,R.avD,c.av,SV);if(c.sjRv>0)h+=row(R2.sjRv,R.rvD,c.sjRv,SV);
+ if(c.bav>0)h+=`<tr class="grp"><td colspan="2">${R2.bav}</td><td class="n">${P(c.bav)}</td></tr>`+row(R2.bav,R2.bavD,c.bav,'var(--accent)');
+ if(o.ag)h+=`<tr class="grp"><td colspan="3">${R.agG}</td></tr>`+row(R.agAll,R.agAllD,r2(c.agTot-c.bavAg-c.flatAg),'var(--ag)')+(c.bavAg>0?row(R2.bavAg,R2.bavD,c.bavAg,'var(--ag)'):'')+(c.flatAg>0?row(R2.flat,R2.flatD,c.flatAg,'var(--ag)'):'')+row(R.cost,R.costD,r2(c.g+c.agTot),'var(--accent)');
+ h+=`<tr class="grp"><td colspan="2">${R.netG}</td><td class="n">${P(c.net)}</td></tr>`;
+ $('tbl').innerHTML=h;
+}
+
+document.querySelectorAll('#srcSeg button').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.s==='n';if(n===netMode)return;netMode=n;
+ if(n)netTarget=calc(readInputs()).net;saveNet();render();const f=n?$('netIn'):$('grossV');if(f)f.focus();}));
+$('netIn').addEventListener('input',()=>{if(!netMode)return;const v=Math.max(0,+$('netIn').value||0);netTarget=unitIsYear()?v/12:v;saveNet();render();});
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('.guseg'))setTimeout(render,0);});
+
+$('gross').addEventListener('input',()=>{$('grossR').value=$('gross').value;render();});
+$('grossR').addEventListener('input',()=>{$('gross').value=$('grossR').value;render();});
+['cls','kids','state','zb','c_ki','c_ag','kasse','a_fb','a_bav','a_fac','a_sj','fb','bav','sg','sjg','sj2','sjrv'].forEach(id=>$(id).addEventListener(['zb','fb','bav','sg','sjg'].includes(id)?'input':'change',render));
+$('pm').onclick=()=>{period=1;$('pm').classList.add('on');$('py').classList.remove('on');render();};
+$('py').onclick=()=>{period=12;$('py').classList.add('on');$('pm').classList.remove('on');render();};
+$('v_flow').onclick=()=>{view='flow';$('v_flow').classList.add('on');$('v_map').classList.remove('on');$('flowView').hidden=false;$('mapView').hidden=true;render();};
+$('v_map').onclick=()=>{view='map';$('v_map').classList.add('on');$('v_flow').classList.remove('on');$('flowView').hidden=true;$('mapView').hidden=false;render();};
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{if(window.switchLang&&switchLang(b.dataset.lang))return;lang=b.dataset.lang;try{sessionStorage.setItem('lang',lang);}catch(e){}applyLang();});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render);window.addEventListener('themechange',render);
+document.querySelectorAll('.tip').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();
+ const box=$('tip-'+b.dataset.tip),open=box.hidden;
+ document.querySelectorAll('.tipbox').forEach(x=>x.hidden=true);document.querySelectorAll('.tip').forEach(x=>x.setAttribute('aria-expanded','false'));
+ if(open){box.hidden=false;b.setAttribute('aria-expanded','true');}}));
+document.addEventListener('click',e=>{if(!e.target.closest('.tip')&&!e.target.closest('.tipbox')){document.querySelectorAll('.tipbox').forEach(x=>x.hidden=true);document.querySelectorAll('.tip').forEach(x=>x.setAttribute('aria-expanded','false'));}});
+function syncKV(){const st=$('status').value;if(st==='beamt'){$('hi').value='priv';if($('pkv').value==='600')$('pkv').value='250';}else if($('pkv').value==='250')$('pkv').value='600';$('f_hi').hidden=st==='stud';$('hi').disabled=st==='beamt';const f=statusFlags();$('f_zb').hidden=!f.kv;$('f_pkv').hidden=!f.priv;}
+['status','hi'].forEach(id=>$(id).addEventListener('change',()=>{syncKV();render();}));
+['c_23','pkv'].forEach(id=>$(id).addEventListener(id==='pkv'?'input':'change',render));
+const DE_GEO={"vb":"0 0 586 793","p":{"BW":"m 181.25486,750.7102 0.58,2.09 -1.43,-0.58 -2.03,0.72 1.01,-1.05 -0.63,-1.38 2.5,0.2 z m 25.41,-179.5 5.81,0.34 2.84,-0.68 0.71,-1.25 0,0 0.58,0.03 0,0 1.59,-2.05 -0.89,-1.86 2.14,-2.11 2.52,1.09 1.51,-1.32 1.14,1.36 1.36,-0.19 0.87,-1.33 -1.25,-1.34 1.36,-1.74 -0.14,-2.09 -2.07,-1.9 -0.31,2.65 -1.53,-0.04 -0.9,-1.43 1.87,-0.99 -4.96,-0.95 1.73,-0.54 -0.48,-2.39 2.3,-0.07 1.29,-0.98 1.28,0.9 2.12,-1.95 2.08,1.99 1.39,-1.73 1.46,-0.18 0.65,2.34 2.11,-0.18 1.05,2.19 -0.33,-2.99 0.69,-0.79 0.99,0.42 4.24,-1.28 -0.25,1.79 0,0 -0.13,1.58 0,0 0.2,1.92 -1.24,0.55 0.97,0.84 -1.08,1.89 1.8,1.69 0,0 0.53,-0.18 0,0 0.92,-0.43 0.11,-2.27 2.07,-1.07 1.08,3.87 0,0 0.59,0 0,0 1.06,-2.17 2.92,-2.05 -0.29,0.96 2.43,1.82 -0.2,4.96 1.58,0.93 1.09,3.15 -1.91,1.6 0.38,1.69 -2.35,2.17 3.04,0.98 0.35,-2.16 2.17,-1.96 1.06,0.52 -1.09,1.95 1.39,-0.05 0.04,0.87 0,0 0.26,0 0,0 -0.71,5.9 0.87,0.87 5.81,-0.09 0.71,-1.8 1.97,-1.33 -1.36,-1.21 1.64,-1.67 1.68,1.17 -0.4,2.22 2.4,0.25 -1.38,1.8 1.38,2.69 -1.08,0.1 -0.68,1.46 2.52,0.98 1.79,4.09 -3.48,1.64 1.03,2.79 -1.06,-0.14 -0.24,0.98 0.45,1.25 2.05,0.6 -0.64,2.19 1.59,1.98 -1.45,1.71 -0.64,-1.27 -0.91,1.67 1.5,0.57 -0.9,0.5 1.3,3.52 -0.86,-0.02 -0.12,1.15 1.98,0.65 0.82,1.43 0.72,-0.44 1.24,2.69 1.26,-0.82 1.85,1.41 0.47,1.88 -1.94,1.04 -0.98,1.73 1.19,1.1 1.43,-0.19 -1.01,1.54 1.75,1.26 -0.74,2.19 2.75,-0.23 1.78,1.59 1.7,-0.16 0.5,2.29 1.59,0.36 0,1.2 0.89,-0.17 0.68,1.1 0.48,-0.52 -0.54,1.68 0.84,-0.2 0.79,2.09 1.35,0.82 -0.83,0.47 1.21,1.63 -2.17,1.09 1.96,1.63 -0.01,2.9 -1.64,1.49 1.36,1.22 0.03,1.87 -1.8,1.2 0.77,2.2 -1.3,0.48 0.98,1.41 -0.75,0.92 1.94,1.78 1.09,-0.68 -0.57,0.66 1.75,1.98 -0.73,0.51 1.5,1.48 -1.91,1.63 -3.44,0.88 0.99,-1.11 -0.24,-1.67 0.99,-0.28 -1.91,-0.44 -1.27,3 -1.75,1.26 -1.64,-3.45 -1.99,0.37 -2.24,-1.68 0.28,1.63 -1.07,0.55 -0.1,1.45 4.3,5.42 -1.56,0.5 -0.29,1.34 1.26,2.41 -0.75,2.06 0.59,1.91 -4.84,1.1 -0.49,0.48 0.92,0.08 -0.03,1.33 -3.67,1.55 -0.82,1.69 -2.44,0.25 -1.66,-2.13 -2.75,2.2 -1.65,-0.43 -0.59,2.06 0.88,0.8 -4.53,4.87 0.29,1.39 1.51,0.05 -0.06,1.53 4.28,6.26 -0.06,4.58 2.82,9.76 1.77,1.83 0.54,3.63 0,0 0,1.46 0,0 -0.27,0.52 0,0 0.08,0.63 0,0 -1.66,6.79 -1.75,0.73 0,1.75 1.47,1.45 -0.08,2.16 -0.87,2.45 0.62,0.47 -1.8,1.26 0.31,1.01 1.42,-0.73 -0.89,2.04 0.98,-1.02 -0.27,0.98 2.25,3.09 -1.13,-0.23 -0.37,1.11 -1.47,-0.36 -1.76,1.6 3.47,2.57 -0.11,3.86 1.5,1.68 -0.57,2.28 -1.2,1.09 -1.33,-0.68 -0.92,3.2 -0.78,-3.42 -2.13,0.08 -0.25,-1.09 -1.76,0.56 -2.23,2.73 -7.15,-2.49 -1.34,0.95 0,0 -0.05,0.42 0,0 -0.96,1.37 -1.57,0.21 0.19,1.16 -2.63,2.13 -3.03,0.98 -3.02,-0.93 -1.23,0.82 -1.72,2.03 -0.75,3.14 0,0 -8.57,-1.57 -17.77,-8.74 -6.15,-2.13 -4.49,-0.58 -7.9,3.55 -2.79,-3.15 0.04,-1.35 1.42,0.19 -0.1,-0.92 -3.39,-0.93 -0.63,-2.31 -2.45,1.83 -0.04,1.09 2.54,1.23 -1.1,1.85 -4.17,-1.79 0.59,-2.13 -1.5,-1.13 0.59,-1.55 1.21,-0.35 -1.14,-1.56 -1.86,0.82 -0.64,-2.7 -1.89,-1.45 -0.63,1.13 0.5,1.41 -1.48,1.36 -0.73,-3.78 -2.64,-0.08 -0.59,-0.79 -0.34,1.35 0.92,1.16 -1.54,-0.29 -2.03,1.32 -2.31,0.08 -2.21,2.82 0.31,1.66 -3.05,2.26 0.94,1.41 -0.97,0.94 2.51,1.85 1.43,-0.25 0.51,1.69 -0.15,-1 1.31,0.77 2.08,-0.29 -0.02,-1.47 0.9,0.28 0.25,-0.94 2.24,0.44 1.61,-0.96 1.48,2.35 -0.79,0.94 -0.43,-1.37 -0.82,0.87 0.56,2.79 -1.86,1.74 -0.93,-0.58 0.51,-1.49 -3.17,-1.53 -0.75,1.48 -3.26,1.5 0.69,1.64 1.36,-0.43 -0.13,1.06 -3.53,1.05 -2.15,-1.04 -0.94,1.05 -3.79,-0.69 -2.22,-3.43 -2.03,-0.53 -1.94,0.99 -1.36,-1.51 -2.55,2.47 -3.53,1.19 -1.27,2.29 -1.38,-0.64 -3.07,1.31 -3.86,-0.68 -1.04,1.31 -1.93,-0.6 -1.32,-3.49 -4.44,-0.06 -1.66,2.86 -6.59,2.36 -1.63,-0.37 -2.09,-2.35 3.29,-0.43 -0.9,-1.98 1.31,-1.29 -1.19,0.85 -1.68,-0.35 -1.74,1.68 -1.89,-1.15 -1.52,-4.03 -2.8,-2.8 -0.69,-3.32 2.32,-3.43 -1.16,-4.31 2.07,-5.87 -0.35,-3.58 1.6,-1.72 0.09,-3.17 2.5,-3.93 -0.91,-2.78 -2.45,-3.14 0.47,-8.22 5.72,-9.64 1.7,-7.66 3.29,-2.43 -0.78,-6.43 2.01,-5.67 0.28,-3.51 2.4,-2.35 -0.38,-6.66 2.49,-5.48 3.19,-2.03 4.76,-5.77 0.5,-3.39 2.79,-0.31 0.89,-2.46 2.35,-0.29 1.46,-1.3 3.8,-9.85 3.08,-5.1 2.23,-0.86 0,0 3.3,-2.83 0,0 0.84,-1.81 0,0 0.94,-3.87 2.98,-4.55 0.58,-6.63 2.36,-4.89 -1.26,0.07 0.34,-1.56 6.23,-5.87 -2.43,-2.9 3.03,-4.07 0.13,-2.13 -1.68,1.46 -0.7,-0.76 2.08,-1.95 0.78,-3.29 -4.12,-1.49 1.32,-2.01 -3.05,-8.11 0.45,-2.96 0,0 1.61,-0.57 1.76,0.6 5.46,6.77 2.24,-1.66 0.73,0.32 0.53,-1.27 -1.32,-6.75 6.19,-1.33 -0.3,1.47 -0.4,-1.36 -0.73,0.53 1.75,1.9 -1.08,2.12 1.58,2.64 -0.2,1.28 1.97,1.69 0,0 -0.01,-0.26 0,0 4.13,0.91 1.63,-1.25 -0.34,1.83 0.93,1.38 0.94,-0.9 3.32,-0.18 0.09,1.77 -1.49,1.74 -0.93,0.07 -0.61,-1.69 -1.71,1.5 0.77,3.37 -2.31,2.29 0.85,1.33 1.06,-1.06 1.16,1.21 2.8,-2.55 0.52,-2.21 0.69,0.62 2.36,-1.75 -1.2,-1.41 0.58,-1.44 0.87,0.19 -0.15,-2.07 2.16,-0.62 2.54,1.25 1.36,-1.07 0,0 0.26,-0.48 0,0 0.92,-1.64 2.21,0.4 0.44,1.6 1.24,-0.71 -3.41,-4.71 0.09,-1.04 0.61,1.39 1.08,0.1 0.07,-1.67 z","BY":"m 266.49486,478.2802 1.96,-1.04 -0.11,-0.92 2.4,-2.78 2.19,2.1 0.52,-0.95 1.56,0.95 0.25,-0.9 1.56,-0.24 0.3,1.38 1.48,0.94 0.03,1.99 1.52,-0.2 2.95,1.94 1.79,-0.03 0.44,2.85 1.97,2.69 0.87,-0.12 -0.68,0.75 2.01,0.64 -1.16,1.68 0.68,1.49 3.64,-0.78 1.34,2.81 0,0 0.47,0 0,0 0.71,-0.18 -0.02,2 1.3,-0.45 0.18,0.96 1.12,-1.55 0.77,0.17 1.09,2.6 2.43,0.42 -0.49,2.58 0.77,1.49 -0.82,2.12 1.05,-0.02 -0.59,0.83 0.79,1.4 -0.86,0.35 0.65,1.53 1.4,0.71 1.88,-0.69 2.29,1.79 0,0 0.33,0 0,0 1.07,0.73 0.83,-0.67 0.11,-3.97 2.41,0.98 2.03,-1.02 1.36,1.39 1.53,-0.66 -0.07,-3.07 -2.17,-0.39 0,0 -0.35,0 0,0 -0.17,-1.22 -2.06,-0.16 -1.84,-2.23 -1.66,-0.52 0.81,-2.35 -0.97,-0.15 0.18,-1.84 2.45,0.63 2.01,-2.65 1.22,0.53 1.71,-1.3 1.92,0.45 0.89,-0.85 0.96,1.6 1.08,-0.65 0,0 0.48,-0.19 0,0 1.27,-0.35 3.12,4.44 0.82,-0.16 -0.26,-1.59 2.76,0.53 0.46,1.6 2.62,-0.78 0.23,-1.35 1.68,-0.13 0.17,1.75 1.27,-0.4 1.27,2.25 -1.56,3.05 0.81,1.41 2.3,0.49 -0.41,1.08 0.92,-0.32 0.31,-1.99 3.59,2.44 0.33,-2.02 0,0 0.26,0 0,0 -0.58,-0.48 1.13,-1.25 -0.51,-3.07 0.95,0.08 -0.94,-1.53 1.47,-0.87 -1.69,-3.98 0.57,-3.04 -1.19,-1.85 -0.03,-2.97 2.5,-0.63 0.25,0.95 0.71,-1.38 1.29,-0.14 -0.05,-1.77 1.63,-0.22 -0.07,-1 5.42,0.95 0.63,1.19 -0.35,0.79 -0.97,-0.24 0.02,4.95 1.93,1.26 -0.49,1.19 1.39,-1.21 1.16,0.18 -0.24,2.95 2.65,0.48 0.09,2.1 2.42,-1.05 0.72,-1.46 1.42,-0.29 1.98,1.54 5.31,-1.49 0.38,0.64 1.59,-1.3 1.56,0.32 -0.7,-0.87 1.28,0.43 0.44,-0.92 2.9,1.69 0,1.31 6.28,-3.38 0,0 1.91,1.55 -0.26,1.24 0.96,-0.44 1.19,1.14 -0.37,3.76 1.27,-0.36 3.12,2.85 0.07,-0.62 2.83,-0.16 0.58,1.54 0,0 1.56,1.15 -0.4,0.92 1.34,2.14 -2.69,1.32 -0.4,1.29 2.26,1.64 1.48,-0.28 0.61,2.47 0.93,-0.27 0.54,1.42 0.9,0.05 -0.51,0.44 1.7,2.57 -1.37,2.61 0.34,3.27 2.03,1.48 1.06,-0.3 1.72,2.08 -0.89,1.79 3.6,0.54 0.67,2.01 0.64,-0.69 1.91,2.2 2.1,0.15 0.09,1.07 1.84,0.25 0.07,1.76 1.8,-1.04 1.88,1.38 0.59,0.91 -1.81,2.3 0.45,1.25 4.43,1.51 0.19,1.97 -3.36,4.36 0.03,1.8 -1.48,0.24 -0.65,2.46 0.5,2.39 -4.51,2.53 0.11,1.8 2.44,3.83 2.9,1.61 2.18,0.07 0.4,6.7 2.07,-0.15 1.87,8 2.02,1.11 0.95,-0.57 0.49,0.87 -0.67,4.55 1.48,2.33 0.03,1.84 3.26,0.96 3.12,2.92 1.46,4.67 4.33,0.23 2.17,1.48 -0.03,-2.03 3.96,0.61 4,3.75 1.41,0.15 0.31,3.86 1.3,0.08 0.47,1.28 1.28,0.38 0.43,1.84 1.66,0.95 -0.17,1.54 3.85,2.89 0.43,3.45 3.63,2.26 3.42,-0.46 6.64,6.3 0.63,6.49 5.86,4.4 0.82,-0.12 -0.02,-2.55 1.53,-0.5 3.11,0.37 1.8,3.16 1.3,-1.12 -0.41,1.02 3.1,5.65 2.84,0.25 1.39,-0.82 1.66,4.91 1.84,0.54 1.39,3.07 -0.61,1.66 2.21,0.89 -2.89,5.43 1.11,1.33 1.62,0.29 -1.59,0.69 0.68,7.41 -1.47,1.75 0.03,2.06 -2.02,1.93 -0.71,-0.96 -0.78,1.04 0.17,2.04 -1.05,1.7 -4.19,-1.88 -0.74,-1.35 -3.04,-1.76 -2.09,0.62 -4.13,-2.85 -0.16,1.38 -1.93,1.85 -1.62,-0.77 -0.75,0.57 1.19,4.45 -2,5.28 0.81,2.51 -1.8,5.37 -4.87,4.65 -5.03,3.17 -4.67,-0.22 -10.25,3.56 -4.04,4.58 -5.57,0.74 -1.44,3.29 -3.07,2.02 -0.88,2.22 -1.76,-0.31 -0.55,1.64 0.82,3.46 5.68,5.45 1.47,4.99 2.51,0.63 0.53,1.6 1.02,-0.36 4.17,8.89 -4.82,7.3 0.95,0.76 -2.22,3.84 1.29,1.2 2.77,0.29 2.89,-1.49 4.05,3.45 -0.23,1.61 1.38,3.3 -2.3,3.11 0.56,1.35 -1.81,1.06 0.98,1.34 -1.67,2.53 1,1.24 -0.08,2.84 -2.78,2.65 -0.57,-1.43 -1.29,-0.6 -0.37,1.02 -3.76,-2.14 -1.69,-2.33 -1.85,-0.8 -0.37,-1.53 -3.22,-0.86 -1.03,-2.42 1.1,-2.26 1.7,-0.66 -4.17,-3.65 1.51,-2.1 -1.55,0.88 -1.74,-1.55 -3.25,-0.21 -2,1.18 -2.81,-0.23 -1.85,3.78 -2.47,-0.31 -2.53,1.04 -3.8,-4.74 0.06,-1.85 -4.61,1.03 -2.01,-1.2 -5.15,1.68 -0.89,-1.42 1.47,-3.67 -0.79,-0.93 -2.4,2.91 -3.26,1.12 2.35,5.85 0.18,2.99 -1.79,0.51 0.19,-1.25 -2.49,0.81 -4.86,-1.27 -2.62,0.84 -0.76,-1.44 -2.08,1.1 -3.97,-0.04 -3.68,1.12 -0.72,1.89 -3.95,-0.88 -7.61,0.68 -1.69,-0.99 -0.15,1.32 -1.93,0.17 -1.02,5 -0.99,0.98 -4.23,0.93 -4.68,-0.77 -3.14,3.85 1.5,0.43 0.89,2.18 -5.37,-0.43 -2.97,2.08 -0.09,1.84 -1.35,0.98 -2.84,0.19 1.85,-3.09 -3.03,-0.54 -4.97,2.03 -0.77,1.48 -8.86,-0.17 -0.45,-1.56 0.89,-1.44 -3.48,-3.83 0.4,-0.91 -4.22,-0.14 0.23,-1.84 2.85,-1.06 -1.9,-2.25 -6.96,2.15 -1.2,-1.89 -4.06,-0.97 -0.28,-1.37 -5.85,-0.9 -1.67,3.29 -3.1,-0.12 -4.33,-1.93 1.62,-2.79 -2.72,0.08 -0.5,0.68 1.42,2.16 -1.36,4.78 0.77,1.74 1.62,0.75 0.44,4.09 -2.5,2.07 -0.03,2.77 -2.52,0.5 -4.22,6.64 -6.19,3.25 -2.05,-0.58 -1.6,0.66 0.21,-2.45 2.24,-1.53 -0.96,-1.44 2.4,-5.12 -0.63,-0.54 -0.91,0.78 -1.91,-1.24 -1.18,2.3 -2.97,-0.59 -1.25,1.83 -1.79,-5.3 2.2,-1.57 -0.74,-2.35 -2.47,-1.18 -0.73,-2.03 -2.73,0.43 -0.87,-1.39 0.53,-0.49 -1.93,-1.75 0.34,-2.32 -0.48,1.08 -2.7,0.48 -2.53,-1.74 -0.48,1.87 -3.75,-1.87 0.76,-2.91 -1.66,-1.53 -2.51,1.09 -1.63,4.72 -8.67,-1.35 0,0 0.75,-3.14 1.72,-2.03 1.23,-0.82 3.02,0.94 3.04,-0.98 2.63,-2.13 -0.19,-1.16 1.57,-0.21 0.95,-1.37 0,0 0.05,-0.42 0,0 1.34,-0.96 7.15,2.49 2.23,-2.72 1.76,-0.56 0.25,1.1 2.12,-0.08 0.79,3.41 0.92,-3.19 1.34,0.68 1.19,-1.09 0.58,-2.28 -1.51,-1.69 0.11,-3.85 -3.47,-2.57 1.76,-1.6 1.46,0.36 0.37,-1.11 1.14,0.23 -2.25,-3.1 0.27,-0.97 -0.98,1.02 0.89,-2.04 -1.42,0.73 -0.31,-1.01 1.8,-1.26 -0.63,-0.47 0.87,-2.45 0.08,-2.16 -1.47,-1.45 0,-1.75 1.75,-0.73 1.66,-6.79 0,0 -0.08,-0.63 0,0 0.28,-0.52 0,0 0,-1.47 0,0 -0.54,-3.62 -1.77,-1.83 -2.81,-9.76 0.06,-4.58 -4.28,-6.26 0.06,-1.53 -1.52,-0.05 -0.28,-1.39 4.53,-4.87 -0.88,-0.81 0.59,-2.06 1.64,0.44 2.75,-2.21 1.66,2.13 2.44,-0.25 0.83,-1.69 3.67,-1.55 0.02,-1.33 -0.92,-0.08 0.49,-0.48 4.84,-1.1 -0.58,-1.91 0.74,-2.07 -1.26,-2.41 0.29,-1.33 1.56,-0.5 -4.3,-5.43 0.09,-1.45 1.07,-0.55 -0.28,-1.63 2.25,1.68 1.99,-0.37 1.64,3.45 1.75,-1.26 1.27,-3.01 1.91,0.45 -0.98,0.28 0.23,1.66 -0.99,1.11 3.44,-0.88 1.91,-1.62 -1.5,-1.49 0.73,-0.51 -1.75,-1.97 0.57,-0.66 -1.09,0.69 -1.94,-1.79 0.75,-0.92 -0.98,-1.41 1.3,-0.48 -0.77,-2.2 1.8,-1.2 -0.02,-1.87 -1.37,-1.22 1.65,-1.49 0.01,-2.89 -1.96,-1.64 2.18,-1.09 -1.22,-1.64 0.84,-0.47 -1.35,-0.82 -0.79,-2.09 -0.84,0.2 0.54,-1.68 -0.47,0.52 -0.69,-1.11 -0.88,0.17 0,-1.2 -1.59,-0.36 -0.5,-2.29 -1.7,0.16 -1.78,-1.59 -2.75,0.23 0.74,-2.19 -1.75,-1.26 1.02,-1.55 -1.43,0.2 -1.19,-1.1 0.98,-1.73 1.94,-1.04 -0.46,-1.87 -1.86,-1.41 -1.25,0.82 -1.24,-2.7 -0.72,0.44 -0.82,-1.43 -1.99,-0.65 0.12,-1.15 0.87,0.02 -1.3,-3.52 0.9,-0.5 -1.5,-0.57 0.91,-1.67 0.64,1.27 1.44,-1.71 -1.59,-1.98 0.64,-2.19 -2.04,-0.6 -0.46,-1.25 0.25,-0.98 1.05,0.14 -1.03,-2.79 3.48,-1.64 -1.79,-4.1 -2.52,-0.98 0.68,-1.45 1.09,-0.1 -1.38,-2.69 1.38,-1.8 -2.4,-0.26 0.4,-2.22 -1.69,-1.16 -1.63,1.66 1.36,1.21 -1.97,1.34 -0.71,1.8 -5.8,0.08 -0.88,-0.87 0.71,-5.89 0,0 -0.26,0 0,0 -0.05,-0.87 -1.39,0.05 1.09,-1.95 -1.05,-0.52 -2.17,1.96 -0.35,2.15 -3.04,-0.98 2.34,-2.16 -0.37,-1.69 1.91,-1.6 -1.09,-3.15 -1.58,-0.93 0.2,-4.96 -2.43,-1.82 0.29,-0.96 -2.92,2.05 -1.06,2.17 0,0 -0.58,0 0,0 -1.09,-3.87 -2.07,1.07 -0.11,2.27 -0.91,0.43 0,0 -0.53,0.18 0,0 -1.8,-1.69 1.08,-1.89 -0.97,-0.83 1.24,-0.55 -0.2,-1.92 0,0 0.14,-1.59 0,0 0.25,-1.79 -4.24,1.28 -0.99,-0.42 -0.7,0.79 0.33,2.99 -1.04,-2.2 -2.11,0.18 -0.65,-2.34 -1.46,0.18 -1.39,1.73 -2.08,-1.99 -2.12,1.95 -1.28,-0.9 -1.3,0.99 -2.3,0.07 0.49,2.39 -1.73,0.54 4.96,0.95 -1.87,0.99 0.9,1.43 1.53,0.04 0.31,-2.65 2.06,1.89 0.14,2.1 -1.36,1.74 1.25,1.33 -0.86,1.34 -1.37,0.18 -1.14,-1.36 -1.51,1.31 -2.52,-1.09 -2.15,2.11 0.9,1.87 -1.59,2.05 0,0 -0.58,-0.03 0,0 -0.71,1.25 -2.84,0.68 -5.81,-0.34 0,0 -1.24,-2.27 -1.05,-0.18 -0.01,-1.68 2.24,-2.14 -0.77,-5.11 2.44,-0.74 -0.37,-1.29 1.61,-2.65 -2.58,-1.76 1.73,-2.3 -0.44,-1.36 -2.38,0.46 -0.82,-2.57 0.54,-2.87 -1.34,1.46 -0.75,-0.74 0.53,-0.68 -1.61,0.21 -0.2,-2.22 1.1,-0.06 -1.75,-4.27 -0.3,-6.66 0.48,-1.4 1.51,-0.14 -0.96,-1.08 -0.35,-3.55 -3.33,-0.76 1.4,-2.08 -0.05,-2.24 1.36,-1.94 6.39,-1.5 2.23,0.94 -0.17,2.51 2.51,-3.48 -0.33,-1.11 2.25,-1.1 2.12,1.05 3.54,0.52 1.18,-0.73 0.8,0.89 1.84,0.02 2.04,4.06 2.02,0.59 4.99,-1.01 -0.29,-5.03 0.82,-0.42 0,0 0.49,-1.62 0,0 -0.09,-0.13 0,0 -1.83,-0.92 0,0 0.13,-1.62 0.97,-0.61 -1.3,-2.71 0.33,-1.51 2.66,1.68 2.18,-0.78 0.42,1.08 5.2,-1.17 0.07,-0.75 -1.78,-0.95 1.06,-2.05 3.02,-0.98 2.87,-2.87 0.02,-3.15 -0.87,-1.43 1.83,-6.93 1.22,0.64 1.35,-0.64 0.41,1.19 3.18,1.63 0.79,-1.32 0.71,1.02 1.26,-0.39 3.65,-2.03 2.54,-3.77 1.26,-0.49 z","BE":"m 485.39486,257.9802 0.07,0.04 0,0 0.71,-0.34 -0.07,1.39 2.28,1.41 -1.62,3.88 0.69,1.62 2.67,0.48 2.06,1.77 0.11,2.3 3.23,0.76 -0.5,1.12 1.82,0.12 -2.93,6.07 0.78,0.58 1.57,-1.33 3.72,2.51 -0.35,-1.35 3.7,2.57 -1.24,1.14 0,0 -0.93,-0.22 0,0 1.13,0.54 0,0 0.03,0.24 0,0 -0.31,0.04 0,0 -0.36,0.64 0,0 0.44,1.14 0,0 -0.63,1.04 0,0 -2.73,1.4 0.85,1.18 -1.71,0.9 -1.59,2.86 -0.71,-0.74 0.46,-3.25 -0.94,-0.59 -1.43,0.8 -0.97,-1.91 -3.48,0.41 -0.07,-1.11 -3.57,0.43 -0.85,-2.5 -2.96,1.03 -0.02,3.55 -1.98,-0.19 -0.15,-1.09 -1.02,-0.03 -1.72,-2.29 -1.47,0.76 0,0 -0.99,-0.32 0,0 -0.47,-1.07 -1.47,1.24 -1.6,-0.02 -0.21,-1.62 -1.29,-0.13 -3.7,1.57 -0.57,1.01 0.81,0.13 -2.44,0.49 0,0 -0.34,0.02 0,0 0.63,-0.82 -2.19,-1.25 0,0 -0.31,-0.17 0,0 -0.46,-0.01 0,0 0.4,-1.09 0,0 1.69,-1.64 -0.83,-1.18 0.53,-3.02 3.13,-3.25 -1.53,-1.08 -1.65,0.29 0.63,-3.45 1.19,-0.28 0.5,-2.31 -1.58,-1.22 2.24,-1.29 3.36,1.15 -0.96,-1.99 1.22,-2.22 2.74,0.06 -0.17,-1.35 1.38,-0.19 0.02,-1.98 1.7,0.36 -0.02,2.99 3.2,0.55 2.21,-2.56 1.84,1.26 1.35,-1.5 1.67,-0.09 -1.29,-1.22 0.56,-0.7 0,0 0.91,-0.53 0,0 0.38,0.11 0,0 z","BB":"m 344.56486,210.1302 8.02,1.19 0.28,-3 1.52,-0.16 1.24,0.64 1.43,-0.56 0.54,1.43 2.03,0.66 1.84,-0.5 1.54,-1.35 -0.38,-1.38 1.06,-1.54 -1.01,-4.7 2.29,-0.47 2.52,-2.77 2.59,-0.51 3.87,1.31 0.19,1.53 2.86,-1.02 2.68,0.27 0.79,-1.22 -2.17,-1.8 4.06,0.48 2.05,-3 3.61,0.69 1.58,-2.94 1.32,0.65 1.81,-0.95 -0.36,-3.58 2.73,-1.78 -0.84,-2.29 2.17,0.46 0.15,2.22 1.88,0.28 2.53,-1.79 1.15,2.31 1.05,-0.37 0.12,-1.08 2.71,-0.6 1.78,3.73 3.31,-0.45 5.24,2.97 0.04,1.7 2.2,1.03 1.09,2.71 5.11,-1.54 5.11,2.15 3.58,-1.05 0.94,0.51 -0.66,1.65 1.15,0.74 4.58,0.3 -1.14,2.51 1.99,1.32 4.93,-1.49 1.96,2.28 1.63,-1.51 1.63,-0.16 -0.55,0.8 1.23,0.15 -0.16,-0.83 1.8,-0.64 1.01,0.92 -2.37,1.83 1.03,-0.38 1.04,1.74 1.89,-0.49 2.16,-3.04 2.44,-0.52 0.56,-1.41 1.23,-0.18 -0.07,-2.15 1.6,0.02 1.3,-1.55 2.14,0.07 1.27,2.89 1.75,0.67 0.93,-4.25 3.49,-2.57 2.45,0.8 1.42,-0.48 1.63,3.74 1.24,-0.65 0,0 -0.11,-0.18 0,0 2.19,-3.73 -0.12,-1.43 1.13,-0.04 0.5,1.02 1.4,-0.36 1.14,-3.54 1.25,0.64 -0.4,-3.54 0.52,-1.44 1.18,0.15 0.91,-1.36 -0.39,-2.23 2.29,-1.59 2.52,0.35 0.45,-3.36 5.14,-4.25 1.63,-0.46 2.3,1.28 2.36,-1.25 0.64,-1.28 -3.07,-1.84 1.17,-4.79 1.9,4.37 3.47,1.43 -0.13,3.27 2.52,2.18 -0.91,2.41 1.01,0.99 5.37,-1.36 2.89,0.52 0.36,1.76 2.22,0.28 2.26,-3.23 3.74,2 1.8,-0.16 0.92,-1.16 1.08,0.68 0.31,4.28 -1.19,3.11 -6.11,6.53 -2.05,3.83 3.91,-0.5 3.35,1.33 3.17,-0.55 0.1,-1.8 2.46,-1 1.01,-2.67 1.94,0.13 4.07,-2.2 0,0 0.58,5.58 1.18,0.27 0.48,1.38 -2.75,5.59 -1.75,1.15 -0.57,4.06 1.24,2.14 -1.48,6.62 -1.24,2.77 -5.41,5.11 -7.33,4.51 1.04,8.08 -2.41,4.88 1.22,1.45 4.86,0.83 3.85,4.39 4.64,2.53 7.18,9.35 8.47,5.52 2.61,3.83 -2.18,4.03 1.88,4.48 -3.42,5.09 -1.96,0.89 -0.95,3.99 1.73,6.89 1.4,2.09 -0.53,1.9 1.11,1.71 6.09,1.82 1.64,2.08 -0.48,2.85 -1.33,1.28 1.22,2.65 -1.58,2.86 0.13,2.82 4.91,5.25 -0.87,1.17 0.17,2.31 -2.13,3.03 0.46,1.02 -1.04,1.72 0.98,3.47 -1.64,4.24 -5.39,4.76 -1.24,2.91 1.03,2.3 2.5,0.96 1.45,7.16 4.39,3.86 1.25,2.88 0.48,5.41 -2.21,2.57 0,0 -2.12,-1.61 0.43,1.98 -1.54,2.58 -4.09,0.3 -1.21,-2.21 -1.82,-0.88 -1.48,0.78 -0.41,1.38 -5.33,0.18 -0.44,1.47 -3.76,0.11 -2.94,2.38 -0.57,1.55 -0.55,-0.83 0,0 -0.04,-0.48 0,0 -3.44,-1.65 -1.54,0.47 -2.05,-1.2 -4.85,-0.4 -0.52,1.14 0.7,0.9 -2.22,0.25 -0.69,2.35 -1.29,0.54 0.87,1.59 -3.47,0.11 1.82,3.13 -1.59,1 0.53,1.7 -1.87,1.39 0.71,0.87 -1.48,0.15 -0.36,2.2 -1.78,-0.34 0.05,-1.73 -0.8,-0.32 -3.37,1.7 -4.55,-0.48 -0.97,1.54 -2.31,-0.1 -0.63,0.8 -0.43,-0.8 -1.64,0.87 -4.73,-1.5 -0.56,0.73 -3.96,0.06 -0.52,-1.51 -1.21,-0.14 -1.61,1.59 -0.4,-1.24 -0.89,-0.05 -0.22,-2.02 -3.63,-1.03 0.66,-0.68 -1.73,-1.41 -1.62,1.07 0.44,-1.22 -1.79,-1.95 -1.5,1.75 0.16,1.11 -3.49,-1.17 0.34,1.1 -2.7,1.5 -0.04,1.3 -1.59,-0.18 0.4,1.58 -3.34,-1.15 -1.36,-4.09 -0.3,1.27 -0.85,-0.43 1.77,-2.31 -1.32,-2.47 0.15,-1.71 1.07,-0.08 0.38,-3.23 -1.41,-3.39 -2.65,-1.2 1.12,-2.54 -2.49,-2.74 -2.24,1.17 -2.16,-3.82 0,0 6.09,-3.94 0.8,-0.82 -0.51,-1.88 2.1,-0.58 -2.1,-2.93 0.75,-0.63 -1.07,-1.75 0.96,-3.87 -2.61,-5.15 1.94,-0.46 -0.86,-1.95 -1.2,-0.22 -2.46,1.42 -2.54,-0.32 -0.84,-0.94 0.7,0.01 0.4,-2.04 -4.62,0.05 0.12,-2.2 -1.21,-0.21 0.13,-1.29 -2.46,-0.42 -1.94,1.23 -0.18,-0.7 -2.17,-0.1 -0.47,-3.38 -4.14,0.53 -1.55,-2.47 -5.37,-2.61 -0.97,-0.07 -0.73,1.89 -1.92,0.27 -0.13,1 -4.62,-0.36 -0.25,-1.75 -2.89,-1.15 -0.71,-2.03 -1.15,-0.11 -0.71,1.79 -0.98,0.08 -2.93,-2.76 -1.92,-0.47 -2.92,-4.6 -2.4,-1.25 -0.87,-2.9 -2.76,-3.8 0.55,-1.6 1.25,0.02 0.05,-2.83 3.19,-1.71 -2.39,-0.7 0.78,-0.53 -1.7,-1.26 1.98,-6.68 1.96,-3.12 -1.58,-2.01 1.4,-1.28 -0.76,-0.85 0.48,-2.15 -1.7,-0.83 1.45,-0.94 -0.5,-0.71 2.71,-4.94 -1.42,-1.11 1.38,-0.89 -3.8,1.06 -0.71,-0.94 0.66,-0.53 -1.75,-2.21 -1.55,2.14 -2.09,0.52 -1.17,-1.88 1.46,-1.96 -1.19,-0.71 -1.75,0.95 2.29,-4.65 -0.65,-5.32 2.08,0.67 1.73,-1.09 0,0 0.12,-1 0,0 0.39,-4.46 -1.1,-0.84 0.33,-1.55 -1.14,-0.79 0.21,-0.91 -0.76,0.2 1.48,-2.74 -0.83,-1.52 0.73,-3.06 1.87,-0.18 0.51,-1.6 -1.54,-5.94 -2.1,-0.68 -0.41,-1.06 -4.4,2.67 -0.12,-4.27 -0.76,1.83 -5.69,-1.43 -2.75,1.53 -5.71,-2 -1.42,-1.55 -2.24,-0.03 -0.77,-1.24 1.68,-2.06 -0.27,-1.22 -3.7,-0.87 -2.8,-3.01 -3.03,1.23 -1.1,-3.25 -3.23,-0.37 0.88,-2.82 -2.52,0.24 0,0 -3.3,-1.86 -2.46,0.51 -3.54,-3.19 -7.29,2.44 -4.19,-4.53 -0.45,-2.44 z m 139.77,47.73 0,0 -0.56,0.7 1.29,1.22 -1.67,0.09 -1.35,1.5 -1.84,-1.26 -2.21,2.56 -3.2,-0.54 0.02,-3 -1.7,-0.36 -0.02,1.98 -1.38,0.19 0.17,1.35 -2.74,-0.06 -1.22,2.22 0.96,1.99 -3.36,-1.15 -2.24,1.3 1.58,1.21 -0.5,2.31 -1.2,0.28 -0.63,3.45 1.66,-0.29 1.52,1.08 -3.13,3.26 -0.53,3.02 0.83,1.18 -1.68,1.64 0,0 -0.4,1.09 0,0 0.46,0.01 0,0 0.31,0.17 0,0 2.19,1.25 -0.63,0.82 0,0 0.34,-0.02 0,0 2.44,-0.49 -0.81,-0.14 0.57,-1.01 3.7,-1.56 1.29,0.13 0.21,1.63 1.59,0.02 1.47,-1.24 0.47,1.06 0,0 0.99,0.32 0,0 1.47,-0.76 1.72,2.29 1.01,0.03 0.15,1.08 1.98,0.2 0.02,-3.55 2.96,-1.03 0.85,2.5 3.57,-0.43 0.06,1.1 3.48,-0.41 0.98,1.91 1.43,-0.8 0.93,0.59 -0.46,3.25 0.71,0.74 1.59,-2.85 1.7,-0.91 -0.85,-1.18 2.73,-1.4 0,0 0.63,-1.04 0,0 -0.43,-1.15 0,0 0.36,-0.64 0,0 0.31,-0.04 0,0 -0.03,-0.24 0,0 -1.13,-0.54 0,0 0.93,0.22 0,0 1.24,-1.14 -3.7,-2.57 0.35,1.35 -3.72,-2.5 -1.57,1.33 -0.78,-0.57 2.93,-6.08 -1.82,-0.12 0.5,-1.12 -3.23,-0.76 -0.11,-2.3 -2.06,-1.77 -2.68,-0.48 -0.69,-1.62 1.62,-3.88 -2.28,-1.4 0.06,-1.39 -0.71,0.34 0,0 0.17,-0.58 0,0 -0.38,-0.1 0,0 -0.52,0.71 -0.35,-0.2 z","HB":"m 167.59486,199.0602 0.72,-0.1 0,0 3.31,2.04 1.56,-0.88 1.31,0.53 -1.23,2.18 1.98,0.04 0.81,2.01 3.45,-0.34 1.42,-1.06 0.37,0.88 1.46,-0.35 0.92,1.74 5.53,-0.04 0.65,0.73 0,0 0.19,0.93 0,0 1.21,1.48 0,0 0.11,0.33 0,0 3.2,-0.11 1.97,-2.09 2.46,2.73 -2.24,1.09 0.96,1.75 1.69,0.26 -1.74,1.33 0.17,2.64 1.02,1.44 -2.79,2.33 -0.15,1.09 -2.59,-0.01 -1.8,-2.77 -0.06,1.96 -2.75,0.15 -2.84,-2.02 -0.35,-1.48 -1.05,1.57 -2.38,-0.1 -0.82,-1.61 0.33,-2.26 -2.84,-1.56 0.23,-1.3 -2.5,-3.77 -0.71,-3.03 -6.92,-3.24 0,0 -0.27,-0.34 0,0 -1.55,-2.53 0.5,-0.37 0,0 0.05,0.13 z m 1.94,-40.43 4.6,1.36 1.45,-1.24 1.91,0.3 -0.17,-0.86 1.1,0 -2.71,3.76 0.69,1.9 1.07,0.2 -0.41,2.86 0.75,1.49 -1.14,2.03 -1.64,1.24 -1.31,-0.93 -0.78,0.69 -1.7,-3.64 0.53,-0.35 0,0 0.86,0.12 0.08,-2.43 0.48,0.47 -1.19,-1.26 0.1,-2.65 -0.68,-0.09 -0.19,1.38 -1.7,-4.35 z","HH":"m 246.59486,163.8402 2.61,-8.03 0.09,1.58 1.55,0.5 0.19,1.96 2.32,0.81 3.46,-3.9 1.02,-3.15 4.61,0.65 1.28,-3.73 4.24,0.34 0.81,-2.83 -0.65,-0.68 0.84,-1.04 2.58,0.75 3.03,-2.71 1.62,0.83 -0.09,0.75 -0.65,1.56 -1.6,0.55 0.16,1.46 -1.04,1.35 2.63,1.53 0.9,1.67 -0.5,1.01 1.93,0.51 -1.96,2.3 0.5,2.85 -3.06,1.35 0.71,5.43 1.63,1.12 1.51,-0.93 1.9,4.11 3.29,3.24 2.15,0.34 -1.13,1.65 0,0 -2.85,1.43 -1.58,2.55 -4.1,0 -7.81,-7.18 -0.28,1.76 -1.76,0.04 0.66,1.26 -2.9,1.99 -2.75,-1.25 -1.68,1.5 -0.56,-0.22 0.9,-2.09 -1.1,-2.2 -2.7,1.86 0.03,0.94 -3.48,-3.55 -0.2,-3.11 -1.35,0.18 0.16,-0.96 -1.43,-1.01 0.97,-1.2 -0.82,-2.21 0.58,-1.37 z","HE":"m 228.83486,363.9102 2.86,-1.05 -0.28,2.15 1.15,0.95 2.21,-1.37 1.62,1.6 3.58,-1.2 0.74,2.79 3.32,3.24 -0.72,0.96 -3.11,-1.69 -0.23,1.45 1.3,1.88 -1.5,0.31 -1.12,-1.29 0.99,2.85 -2.25,1.68 3.64,4.73 -0.99,2.44 1.07,2.88 -0.98,1.33 -3.22,0.4 -1.21,2.23 1.13,0.85 -0.53,0.91 -2.36,-0.51 1.91,2.26 2.74,2.05 1.76,-0.08 -0.1,1.42 2.52,-0.68 4.08,2.34 2.18,-1.15 0.28,-3.07 -2.13,1.75 -2.36,-4.51 2.58,-0.7 1.82,-1.76 1.76,0.26 -0.19,-2.29 1.46,-0.38 1.3,0.95 0.07,1.92 1.6,1.23 -0.92,-4.38 1.77,0.93 0.24,-0.96 1.24,-0.28 1.83,2.51 -0.16,1.79 0,0 -0.2,2.13 1.49,3.53 -0.58,1.27 1.9,0.69 0.21,1.61 5.3,0.6 -0.53,2.54 1.95,1.07 -0.58,1.67 2.82,1.13 1.66,-0.55 0.61,1.36 1.09,-0.46 1.92,1.99 2.63,0.68 -2.23,3.5 0.61,2.59 -0.81,1.3 -2.1,-4.07 -2.95,1.4 3.51,2.32 -1.87,3.21 0.58,1.58 -0.84,0.95 4.11,2.46 0.61,0.93 -1.39,0.75 0.72,1.09 -3.68,1.52 -1.74,-1.78 -1.07,0.65 -4.04,-0.92 -1.26,3.19 1.36,1.41 0.14,1.85 1.29,0.45 -2.17,0.73 -0.31,-0.6 -0.78,0.9 -3.94,-0.78 0.23,1.89 0.68,-0.93 1.48,0.1 -1.03,2.39 2.57,-1.39 2.46,2.16 -0.2,1.1 0.75,-0.08 0.08,0.78 -2.41,1.69 -0.07,1.75 1.06,-0.44 -0.7,1.84 -1.34,-0.26 -0.57,1.14 -1.01,-0.46 0,0 -0.41,-0.15 0,0 -1.42,1.08 -0.58,2.17 0.62,2.6 -1.76,-0.04 -0.26,1.52 1.07,0.34 0.1,1.67 -2.02,3.36 0.92,1.15 -2.79,2.39 -0.17,2.99 5.32,1.09 0.5,-1.19 -1.2,-1.54 0.3,-1.06 2.99,-0.91 3.41,0.53 1.82,4.86 -2.12,-0.09 -0.77,1.28 1.54,5.49 -1.44,2.66 0.2,1.31 0,0 -1.5,4.94 -1.26,0.49 -2.54,3.77 -3.65,2.03 -1.26,0.39 -0.71,-1.02 -0.79,1.32 -3.18,-1.63 -0.41,-1.19 -1.35,0.64 -1.22,-0.64 -1.83,6.93 0.87,1.43 -0.02,3.15 -2.87,2.87 -3.02,0.98 -1.06,2.05 1.78,0.95 -0.07,0.75 -5.2,1.17 -0.42,-1.08 -2.18,0.78 -2.66,-1.68 -0.33,1.51 1.3,2.71 -0.97,0.61 -0.13,1.62 0,0 1.83,0.92 0,0 0.09,0.13 0,0 -0.49,1.62 0,0 -0.82,0.42 0.29,5.03 -4.99,1.01 -2.02,-0.59 -2.04,-4.06 -1.84,-0.02 -0.8,-0.89 -1.18,0.73 -3.54,-0.52 -2.12,-1.05 -2.25,1.1 0.33,1.11 -2.51,3.48 0.17,-2.51 -2.23,-0.94 -6.39,1.5 -1.36,1.94 0.05,2.24 -1.4,2.08 3.33,0.76 0.35,3.55 0.96,1.08 -1.51,0.14 -0.48,1.4 0.3,6.66 1.75,4.27 -1.1,0.06 0.2,2.22 1.61,-0.21 -0.53,0.68 0.75,0.74 1.34,-1.46 -0.54,2.87 0.82,2.57 2.38,-0.46 0.44,1.36 -1.73,2.3 2.58,1.76 -1.61,2.65 0.37,1.29 -2.44,0.74 0.77,5.11 -2.24,2.14 0.01,1.68 1.05,0.18 1.24,2.27 0,0 -0.18,1.68 -1.08,-0.09 -0.61,-1.4 -0.09,1.04 3.41,4.71 -1.24,0.72 -0.44,-1.6 -2.21,-0.4 -0.92,1.65 0,0 -0.26,0.48 0,0 -1.36,1.06 -2.54,-1.25 -2.16,0.62 0.15,2.06 -0.86,-0.18 -0.58,1.43 1.19,1.41 -2.35,1.75 -0.69,-0.61 -0.53,2.2 -2.8,2.55 -1.16,-1.21 -1.07,1.07 -0.85,-1.33 2.31,-2.29 -0.77,-3.37 1.72,-1.5 0.61,1.7 0.93,-0.07 1.49,-1.74 -0.09,-1.78 -3.32,0.18 -0.94,0.9 -0.93,-1.38 0.34,-1.83 -1.62,1.25 -4.13,-0.91 0,0 0,0.27 0,0 -1.97,-1.7 0.21,-1.28 -1.58,-2.64 1.07,-2.11 -1.74,-1.91 0.73,-0.53 0.4,1.37 0.3,-1.47 -6.19,1.33 1.32,6.75 -0.53,1.28 -0.73,-0.33 -2.24,1.66 -5.46,-6.77 -1.76,-0.6 -1.61,0.57 0,0 -2.45,-4.19 -1.58,-6.45 5.02,-2.94 2.63,-3.95 -0.48,-0.68 -3.06,0.05 -2.79,-5.35 0.33,-3.25 -2.54,-2.13 0.65,-3.96 -2.1,-5.8 -4.95,-5.02 -3.86,-0.78 -9.16,3.11 -4.53,2.55 -5.33,0.6 -1.16,-0.84 -0.9,-3.22 -5.07,-4.42 1.88,-2.57 2.23,-0.03 -0.45,-1.44 1.33,-2.84 2.03,1.25 1.14,-0.7 1.8,1.86 -0.56,-3.12 0.72,-0.99 -3.07,-2.41 -0.08,-1.32 1.72,-1.2 0.01,-0.95 2.3,-0.63 0.26,-0.96 2.27,-0.83 0.14,-1 1.54,1.98 1.31,0.19 1.28,-2.11 0,0 -0.26,-0.35 0,0 -1.7,-1.67 0.92,-1.34 2.36,-0.14 0.43,1.08 1.68,0.11 0.81,-3.84 -1.05,-1.05 -0.05,-1.68 -1.9,-0.55 0.29,-1.55 -1.07,-2.65 -0.88,-0.08 -0.18,-1.04 -1.75,0.1 0.4,-1.58 -2.32,0.09 -1.4,-1.15 1.38,-1.18 0.18,-1.16 -0.83,-0.36 2.25,-1.54 -2.07,-3.41 1.08,-3.75 3.08,-3.27 1.75,1.85 2.05,0.55 2.06,-1.74 1.03,-4.83 -1.63,-1.05 0.88,-2.26 -1.93,-2.74 0.94,-2.59 0,0 2.73,-4.88 -2.39,-4.53 0.25,-1.03 0,0 0.4,-0.13 0,0 8.07,-9.05 1.57,-0.11 0.95,2.09 3.35,0 4.68,-5.71 1.77,-0.12 -0.64,-2.24 0.53,-2.5 1.26,-0.33 -0.21,-0.73 3.98,-4.35 -1.16,-2.46 -0.89,0.31 1.39,-2.31 -1.56,-1.67 1.62,-1.73 1.92,-0.6 6.3,0.85 1.75,-1.34 2.3,-0.2 -1.23,-1.36 0,0 -0.24,0 0,0 -0.07,-1.42 3.96,-4.03 -0.69,-2.2 1.27,-1.03 -1.67,-1.01 -0.87,-3.28 0.56,-1.14 -0.92,-1.15 -1.91,-0.24 -6.14,2.94 -2.45,-3.07 4.01,-5.97 1.07,-0.78 1.11,0.44 0.29,-1.58 1.44,-0.47 -0.3,-1.15 1.11,-0.59 2.37,0.43 4.56,-1.87 2.18,0.21 1.14,1.13 2.32,-1.55 2.99,0.36 0.58,-3.9 -1.76,-0.32 -0.02,-1.82 -1.79,-3.4 8.12,-3.7 1.32,1.57 2.4,-0.07 0.92,0.82 -0.82,3.03 1.1,2.13 2.6,-0.58 1.46,0.72 1.54,-2.29 2.08,0.67 0.52,-3.14 2.51,-0.89 1.18,-1.57 1.61,0.04 0.51,-3.96 3.59,-3.95 -2.21,-2.4 5.42,-1.56 z","NI":"m 60.664857,159.3402 -3.66,0.35 -2.38,1.24 2.63,1.78 -0.89,1.26 -0.89,-1.41 -1.45,1.06 -3.4,-2.79 0.29,-1.76 5.76,-2.03 3.99,2.3 z m 6.04,-5.43 -1.13,0.58 1.44,0.09 -1.32,0.65 0.52,0.93 -1.64,-0.05 -0.5,-1.75 2.63,-0.45 z m -5.37,0.09 1.53,0.77 -1.43,0.39 -0.23,-2.51 0.13,1.35 z m 16.28,-4.09 1.08,1 -14.74,1.11 13.66,-2.11 z m 16.32,-4.16 0.76,0.94 -3.08,0.94 -0.52,-0.57 0.31,0.65 -1.64,0.38 -3.94,-0.21 -0.85,0.83 -1.68,-0.93 -0.92,1.12 -0.98,-1.11 3.19,-1.72 9.35,-0.32 z m 53.270003,-0.63 1.43,0.72 -2.09,0.23 -0.42,1.22 -2.18,-0.08 1.22,-1.81 2.04,-0.28 z m -49.070003,-0.41 2.050003,0.38 0.3,1.53 -4.990003,-0.89 2.64,-1.02 z m 11.290003,-2.53 3.08,0.47 0.26,1 -7.5,0.33 -0.41,2 -0.23,-0.7 -0.11,0.83 -2.31,-0.12 0.91,-3.27 6.31,-0.54 z m 27.64,-0.26 0.66,1.77 -1.08,-0.7 0.42,-1.07 z m 0.24,-1.08 -0.59,0.8 -0.56,-0.45 0.68,-1.35 0.47,1 z m -18.65,-1.12 6,1.1 -3.83,1.26 -3.86,-0.54 -0.82,1.42 -0.92,-0.28 0.96,-2.4 2.47,-0.56 z m 11.02,-1.43 4.77,2.17 -6.01,-1.41 -0.68,1.57 -1.22,-1.39 3.14,-0.94 z m 30.52,-3.56 -1.97,0.27 1.5,-1.69 0.9,0.14 -0.43,1.28 z m 20.04,-6.94 -0.09,1.17 1.54,0.91 -0.41,1.06 1.15,0.99 -0.52,-1.74 3.56,3.6 7.84,1.37 8.04,-1.86 -1.01,-3.55 0,0 13.06,-0.56 6.67,2.83 3.21,4.36 3.92,8 5.09,4.77 2.84,8.25 7.85,5.57 3.63,0.89 0,0 2.83,0.35 -0.58,1.37 0.82,2.21 -0.97,1.2 1.42,1.02 -0.16,0.95 1.35,-0.17 0.2,3.11 3.48,3.54 -0.03,-0.94 2.7,-1.86 1.1,2.2 -0.9,2.09 0.55,0.21 1.69,-1.49 2.75,1.25 2.89,-2 -0.66,-1.26 1.77,-0.03 0.27,-1.76 7.81,7.18 4.1,0 1.58,-2.55 2.85,-1.43 0,0 1.44,0.92 3,0.1 7.8,5.34 5.07,1.49 0.98,-0.46 0,0 6.65,-0.68 2.56,2.91 1.48,0.43 -0.2,1.16 4.81,2.53 5.27,-4.67 2.03,1.49 2.38,0.1 1.43,5.62 1.13,0.14 3.93,6.97 6.83,3.55 -1.43,2.42 0.61,2.22 2.65,-0.77 2.66,2.3 0,0 0.36,2.48 4.19,4.53 7.29,-2.44 3.54,3.19 2.46,-0.51 3.3,1.86 0,0 -2.49,2.52 -0.21,1.37 -2.98,-0.7 -1.06,4.75 0.62,2.13 -2.91,0.7 -3.31,3.1 -5.83,2.8 -1.15,0.36 -0.25,-1.54 -3.3,1 -1.15,-1.85 -4.14,-0.76 -3.65,0.72 0.03,-1.55 -5.99,0.14 -0.87,0.4 -0.27,2.44 -3.01,3.33 -2.73,-0.31 -1,1.05 -0.85,-1.07 -6.44,1.44 -0.7,6.19 2.34,3.79 0.34,3.55 1.93,-0.26 0.83,2.32 0,0 0,0.25 0,0 4.96,8.63 3.61,-1.46 -0.3,2.08 -2.03,1.51 -0.13,2.29 4.52,7.55 0,0 -0.61,-0.07 0,0 -1.44,-0.52 -1.98,0.77 -0.71,3.44 5.19,6.3 -0.03,1.2 0.71,-0.18 0,0 0.57,0.5 0,0 2.53,1.13 -0.41,1.98 -2.06,1.21 -3.37,0.28 3.35,3.93 0,0 0.01,0.28 0,0 -1.55,1.32 1.03,1.82 1.55,0.41 0.4,2.63 0,0 0.57,0 0,0 1.13,1.31 -0.64,0.93 -2.94,0.85 -1.01,1.37 0.37,2.13 2.6,0.51 -0.96,4.01 0,0 -0.55,0 0,0 -3.71,2.97 -2.21,0.24 -0.24,0.88 2.05,0.9 -0.38,3.01 -5.25,-0.32 -3.44,1.36 -8.22,-0.33 -3.29,0.9 0.47,1.57 -2.01,1.78 -1.58,0.2 -0.34,-0.83 -2.05,1.07 1.46,3.09 1.34,-0.28 0.98,2 1.89,0.03 -2.42,1.99 0.08,1.78 2.2,1.27 0.06,1.84 -1.06,2.02 -3.53,2.31 -0.22,0.96 0.83,0.36 -0.82,2.55 1.04,4.36 2.38,1.17 0.31,2.3 2.31,2.57 0.04,4.3 1.96,2.71 0,0 -1.61,0.42 0.43,0.94 -2.79,0.88 0.63,1.34 -0.91,-0.05 0.29,2.32 1.7,0.88 -0.57,1.76 -3.23,-2.15 -2.87,2.39 -2.66,0.22 -1.54,-1.94 -3.95,-1.96 0,0 -0.38,0 0,0 -3.63,0.48 0.65,1.91 0,0 0,0.6 0,0 -2.4,4.51 -2.24,0.45 -0.55,2.09 -3.37,1.08 -0.78,1.29 -1.07,-0.02 -0.92,-1.56 -1.5,1.66 0.51,0.67 -0.83,1.77 -2.04,0.22 0.79,1.24 -2.34,0.09 0,0 -0.41,0 0,0 -1.95,-0.43 -0.75,1.7 -1.4,-1.95 -0.52,1.69 -1.82,0.04 -0.59,1.59 -4.63,3.01 0,0 0.16,-1.79 -1.83,-2.51 -1.24,0.28 -0.24,0.96 -1.77,-0.93 0.92,4.38 -1.61,-1.23 -0.06,-1.92 -1.3,-0.96 -1.47,0.39 0.19,2.28 -1.76,-0.25 -1.82,1.76 -2.58,0.69 2.35,4.52 2.14,-1.75 -0.29,3.06 -2.18,1.15 -4.07,-2.34 -2.52,0.68 0.1,-1.41 -1.76,0.07 -2.74,-2.05 -1.91,-2.26 2.36,0.51 0.53,-0.91 -1.13,-0.86 1.21,-2.23 3.23,-0.4 0.98,-1.33 -1.06,-2.89 0.98,-2.44 -3.63,-4.73 2.24,-1.68 -0.98,-2.85 1.12,1.29 1.5,-0.31 -1.29,-1.88 0.23,-1.45 3.1,1.69 0.72,-0.96 -3.31,-3.23 -0.74,-2.8 -3.58,1.21 -1.63,-1.61 -2.21,1.37 -1.15,-0.95 0.27,-2.14 -2.86,1.05 0,0 -4.86,-0.35 1.69,-5.26 -0.92,-1.85 0.47,-1.34 -1.23,-1.11 4.54,-5.24 -1.2,-2.12 0.91,-1.63 -0.52,-1.09 1.71,-2.02 -3.49,0.57 -2.78,-0.96 -2.36,1.12 1.22,-2.79 -0.19,-2.74 -4.3,-2.48 0.19,-1.22 -0.84,-0.34 1.36,-1.24 -0.66,-1.42 -3.64,-0.09 -0.57,1.36 -1.42,-0.49 -0.69,-1.59 1.29,-1.61 -0.95,-0.74 0.98,-0.95 -1.31,-2.33 -0.13,-2.41 1.33,-1.18 -2.51,-2.9 -1.33,0.29 1.61,-2.57 -0.33,-1.05 -1.53,-1 -2.59,0.47 -1.35,-0.56 0.09,-0.86 -3.7,1.39 0.66,-3.75 -2.31,-2.45 1.28,0.53 0.5,-0.59 0.55,1.3 1.38,-0.1 -0.5,-4.2 1.09,0.37 1.52,-1.14 -2.55,-1.92 -4.06,-1.39 0.4,-1.11 -0.87,-0.58 1.29,-0.63 0.78,-4.19 1.3,-0.48 0.56,-1.5 2.01,0.6 2.52,-3.35 -0.18,-1.69 1.75,-1.7 0.06,-1.86 -0.88,0.01 0.01,-1.41 -1.01,-0.86 2.7,-3.43 -2.38,-2.18 -3,-0.29 -2.5,4.49 -2.24,0.72 0.53,1.88 -2.82,1.68 -0.35,1.5 -2.79,-0.39 -0.41,1.16 -2,0.52 -4.17,-0.97 -2.68,1.07 -1.44,-1.14 -1.19,0.4 -0.17,-2.5 0.83,-1.05 -0.84,-1.39 -0.15,-6.38 -0.83,-1.64 -1.12,0.28 -1.27,-1.47 -6.02,3.41 -3.47,-1.36 -2.77,2.06 -0.22,3.22 -2.43,1.76 -1.12,-0.62 -2.29,0.65 -3.84,-1.5 0.06,2.52 1.13,0.91 -0.34,2.3 4.97,1.98 3.16,2.33 1.68,4.86 -0.69,2.9 0.57,4.22 -1.64,3.32 1.66,2.15 3.08,0.98 -3.02,3.06 -3.81,1.91 -0.22,2.67 -2.18,0.05 -2.03,-1.47 -1.89,0.59 -1.68,-0.74 0.1,-0.97 -4.04,2.9 -1.93,3.54 -2.63,-0.25 -3.52,1.84 -4.05,-1.19 -3.27,3.45 -3.93,-1.58 -2.17,-3.41 5.57,-3.33 2.27,0.08 -0.54,-3.75 0.22,-0.85 1.49,-0.3 -1.25,-1.38 -4.46,-0.01 -1.74,-1.33 -0.48,-1.62 1.63,-2.27 -0.08,-3.83 2.01,-0.38 -1.61,-1.96 0.02,-1.64 3.82,-0.74 -2.76,-2.68 -0.75,-3.1 -2.98,-1.71 -2.88,1.18 -2.4,-0.25 -6,-2.93 -1.57,-5.4 -5.14,-2.29 -2.74,4.46 2.44,1.08 -2,4.14 0.71,0.6 -3.85,0.78 -5.54,3.7 -0.620003,1.92 -2.63,0.48 -1.5,2.22 -2.96,0.82 -1.19,1.63 -9,-0.25 -2.1,0.54 -1.38,1.88 -2.4,0.15 0,0 -2.29,-3.31 -0.1,-1.7 2.97,-6.47 0.04,-2.22 -0.96,-2.72 -1.46,-0.17 -1.61,-2.92 -1.26,-3.99 -3.12,3.39 -5.64,-1.48 0.01,-0.98 -6.13,-0.38 -3.81,-2.53 0.45,-3.6 -1.59,-3.31 2.22,0.45 0.68,-1.5 2.64,-0.03 -3.02,-2.67 0.43,-2.81 -0.89,-1.2 2.53,-2.25 7.76,-0.57 4.01,1.68 2.44,-0.94 4.25,1.45 0.89,-1.05 1.07,-17.52 1.33,-3.02 -0.32,-1.19 6.09,-9.77 2.19,-6.79 -1.02,-11.35 -1.15,-0.85 -0.25,-1.77 1.52,-3.8 1.52,-0.47 -1.19,-1.1 0.6,-1.05 -0.54,-4.68 1.22,-1.97 1.08,-6.17 4.02,-0.19 -18.76,-2.27 -1.12,-2.99 0.85,-1.42 0.95,-10.67 1.48,-2.33 -0.96,-3.05 1.4,2.58 2.13,0.01 0.68,1.09 0.8,-1.06 -3.36,-0.06 -1.14,-2.83 1.65,1.98 0.61,-1.53 1.78,2.24 -0.26,-1.34 1.45,-0.11 1.32,-1.79 -1.7,-0.65 -1.75,-3.32 3.75,-3.75 0.43,-1.59 -0.09,0.74 5.79,-5.15 7.43,-1.81 0.99,0.66 6.650003,-0.24 2.81,1.31 11.37,-3.47 0.02,-1.74 0.02,2.11 6.55,-1.16 1.8,-2.54 -1.58,2.92 6.5,-1.23 7.31,1.11 -0.38,2.74 1.47,4.34 1.83,-0.58 1.61,1.59 0.74,-0.99 0.47,0.59 -1.15,0.5 1.01,1.6 0.87,-0.38 -0.78,0.53 0.48,1.69 2.96,6.04 -0.74,1.34 0.85,-0.5 -1.12,2.31 -3.81,1.44 -2.17,-0.49 0.18,3.1 2.25,3.31 2.31,-0.87 1.08,0.52 3.14,4.71 2.8,0.69 1.4,-0.83 2.93,-5.51 -0.19,-6.81 -5.28,0.11 0.96,-6.58 2.45,-3.16 1.61,-0.7 1.97,0.58 2.92,4.05 5.15,2.3 2.51,0.25 0.96,-0.88 -0.03,1.05 2.07,1.16 0.36,1.55 0,0 -0.53,0.35 1.7,3.64 0.78,-0.69 1.31,0.93 1.64,-1.24 1.14,-2.03 -0.75,-1.49 0.41,-2.86 -1.07,-0.2 -0.69,-1.9 2.71,-3.76 -1.1,0 0.17,0.86 -1.91,-0.3 -1.45,1.24 -4.6,-1.36 0,0 -2.4,-5.32 -0.08,-4.21 4,-10.03 0.19,-2.96 4.08,-7.1 4.89,-1.23 z m -4.47,77.62 0.71,3.03 2.5,3.77 -0.23,1.3 2.84,1.56 -0.33,2.26 0.82,1.61 2.38,0.1 1.05,-1.57 0.35,1.48 2.84,2.02 2.75,-0.15 0.06,-1.96 1.8,2.77 2.59,0.01 0.15,-1.09 2.79,-2.33 -1.02,-1.44 -0.17,-2.64 1.74,-1.33 -1.69,-0.26 -0.96,-1.75 2.24,-1.09 -2.46,-2.73 -1.97,2.09 -3.2,0.11 0,0 -0.11,-0.33 0,0 -1.21,-1.48 0,0 -0.19,-0.93 0,0 -0.65,-0.73 -5.53,0.04 -0.92,-1.74 -1.46,0.35 -0.37,-0.88 -1.42,1.06 -3.45,0.34 -0.81,-2.01 -1.98,-0.04 1.23,-2.18 -1.31,-0.53 -1.56,0.88 -3.31,-2.04 0,0 -0.78,-0.03 0,0 -0.5,0.37 1.55,2.53 0,0 0.27,0.34 6.93,3.24 z m -7.38,-81.45 0.9,1.26 -1.92,0.35 0.28,-1.72 0.74,0.11 z m -3.2,-3.6 0.73,0.3 -2.33,1.86 -0.77,-0.37 1.25,-2.03 1.12,0.24 z","MV":"m 506.60486,98.040196 1.94,4.610004 2.22,2.68 9.15,5.19 13.36,13.4 -2.67,1.61 1.86,1.36 -0.09,3.61 -11.17,-0.75 -2.97,2.76 -3.25,0.51 -1.09,-0.82 1.27,0.27 0.68,-1.06 -1.6,-1.68 -1.09,3.36 -2.09,0.32 -3.35,-1.11 0.66,-2.31 3.89,-0.74 2.55,-3.27 -0.99,-4.41 -1.64,-1.68 0.78,-2.56 3.52,0.01 -0.37,5.89 0.54,-2.45 1.06,-0.5 2.52,-0.06 -0.77,1.22 1.9,0.95 0.45,-4.57 -0.47,-2.95 -1.42,-1 -0.74,1.11 -0.71,-3.51 -1.58,-2.27 -3.86,0.08 -0.17,2.23 1.65,1.56 -0.44,1.31 -0.68,-0.55 0.4,-1.48 -1.43,2.39 -2.52,1.34 -0.44,-1.47 1.69,-2.66 -1.48,-1.03 -3.65,3.17 -1.94,-0.08 -0.21,-1.21 1.1,-0.88 1.61,-4.55 0.2,-2.98 -1.4,-0.46 -2.16,-2.7 -0.48,-2.320004 2.42,-1.6 1.5,0.73 z m -43.24,-15.3 -0.64,0.63 -0.51,-1.11 0.8,-0.39 0.35,0.87 z m 25.24,-0.92 -0.18,0.67 -0.36,-0.7 1.55,-1.82 0.25,0.99 -1.26,0.86 z m -52.44,-12.27 1.61,1.44 -3.42,-0.11 0.93,-1.52 0.88,0.19 z m 15.49,-1.53 1.03,0.57 -2.5,0.38 0.3,-0.98 1.17,0.03 z m 6.74,-0.57 -5.09,1.39 1.74,-1.25 2.08,-0.09 0.99,-1.39 0.28,1.34 z m -33.24,-3.71 -0.93,0.91 2.98,2.17 6.68,1.23 15.83,-0.33 0.62,1.97 -3.21,1.43 -3.3,-0.75 -1.36,1.37 -1.06,-0.82 -3.16,0.05 -0.99,-1.76 -2.01,0.05 -1.56,2.48 -1.85,-0.81 0.1,-1.05 -1.45,2.02 -2.46,0.38 1.36,1.33 -0.42,0.98 -0.36,-0.82 -2.07,-0.02 -1.75,1.02 -0.34,0.72 1.01,1.03 1.2,-1.47 0.8,0.7 3.35,-0.12 3,-1.8 0.03,-2.05 2.5,-0.34 0.45,0.9 -1.72,0.43 0.38,1.51 -1.05,1.59 0.67,0.08 0.86,-3.12 0.9,-0.01 0.33,2.92 1.01,0.17 0.59,-1.36 1.44,1.26 1.23,-2.68 1.61,5.67 4.42,-2.61 1,-3.6 1.72,-1.34 4.09,-1.4 1.4,-1.34 1.3,0.27 -0.25,4.24 1.41,1.77 1.96,-0.09 0.89,1.48 -1.09,2.42 0.78,2.84 1.72,2.1 -0.65,2.03 1.86,1.49 2.03,-0.99 0.87,0.83 -2.23,1.79 2.73,-1.42 1.83,2.82 4.67,0.6 2.33,5.54 2.84,0.23 -1.95,0.46 -1.47,1.9 3.78,-1.8 2,1.04 -0.91,-1.56 1.5,0.77 -0.15,1.51 -0.4,-0.5 -1.8,1.42 0.11,0.780004 1.8,-1.250004 -0.2,1.020004 1.42,1.05 2.47,5.44 2.08,0.08 -1.52,-3.29 0.89,-0.88 8.56,-1.8 4.43,-3.380004 1.06,0.31 0.34,0.73 -1.31,0.51 0.16,0.91 2.19,1.420004 1.05,-0.41 0.3,2.15 3.07,2.35 -0.86,3.76 -0.91,0.51 0.38,1.32 -2.33,2.01 0.82,0.04 0.24,1.39 2.11,2.1 2.53,1.2 1.43,3.74 1.6,0.1 2.12,2.93 -0.76,1.34 -2.38,1.07 -1.14,2.36 -1.43,0.13 0.04,1.29 -1.23,0.56 0.73,1.79 2.23,0.09 3,4.2 1.12,-0.28 3.35,3.56 8.5,3.49 4.03,-0.23 1.05,0.72 3.13,-2.79 2.27,1.38 -0.06,1.94 -3.25,3 3.65,0.68 0.5,1.02 -0.68,2.17 0.88,0.58 0.06,2.88 2.09,1.83 -0.61,7.88 1.22,4.11 1.74,1.46 2.46,14.67 1.25,2.56 0,0 -4.07,2.2 -1.94,-0.13 -1.01,2.67 -2.46,1 -0.1,1.8 -3.17,0.55 -3.35,-1.33 -3.91,0.5 2.05,-3.83 6.11,-6.53 1.19,-3.11 -0.31,-4.28 -1.08,-0.68 -0.92,1.16 -1.8,0.16 -3.74,-2 -2.26,3.23 -2.22,-0.28 -0.36,-1.76 -2.89,-0.52 -5.37,1.36 -1.01,-0.99 0.91,-2.41 -2.52,-2.18 0.13,-3.27 -3.47,-1.43 -1.9,-4.37 -1.17,4.79 3.07,1.84 -0.64,1.28 -2.36,1.25 -2.3,-1.28 -1.63,0.46 -5.14,4.25 -0.45,3.36 -2.52,-0.35 -2.29,1.59 0.39,2.23 -0.91,1.36 -1.18,-0.15 -0.52,1.44 0.4,3.54 -1.25,-0.64 -1.14,3.54 -1.4,0.36 -0.5,-1.02 -1.13,0.04 0.12,1.43 -2.19,3.73 0,0 0.11,0.18 0,0 -1.24,0.65 -1.63,-3.74 -1.42,0.48 -2.45,-0.8 -3.49,2.57 -0.93,4.25 -1.75,-0.67 -1.27,-2.89 -2.14,-0.07 -1.3,1.55 -1.6,-0.02 0.07,2.15 -1.23,0.18 -0.56,1.41 -2.44,0.52 -2.16,3.04 -1.89,0.49 -1.04,-1.74 -1.03,0.38 2.37,-1.83 -1.01,-0.92 -1.8,0.64 0.16,0.83 -1.23,-0.15 0.55,-0.8 -1.63,0.16 -1.63,1.51 -1.96,-2.28 -4.93,1.49 -1.99,-1.32 1.14,-2.51 -4.58,-0.3 -1.15,-0.74 0.66,-1.65 -0.94,-0.51 -3.58,1.05 -5.11,-2.15 -5.11,1.54 -1.09,-2.71 -2.2,-1.03 -0.04,-1.7 -5.24,-2.97 -3.31,0.45 -1.78,-3.73 -2.71,0.6 -0.12,1.08 -1.05,0.37 -1.15,-2.31 -2.53,1.79 -1.88,-0.28 -0.15,-2.22 -2.17,-0.46 0.84,2.29 -2.73,1.78 0.36,3.58 -1.81,0.95 -1.32,-0.65 -1.58,2.94 -3.61,-0.69 -2.05,3 -4.06,-0.48 2.17,1.8 -0.79,1.22 -2.68,-0.27 -2.86,1.02 -0.19,-1.53 -3.87,-1.31 -2.59,0.51 -2.52,2.77 -2.29,0.47 1.01,4.7 -1.06,1.54 0.38,1.38 -1.54,1.35 -1.84,0.5 -2.03,-0.66 -0.54,-1.43 -1.43,0.56 -1.24,-0.64 -1.52,0.16 -0.28,3 -8.02,-1.19 0,0 -2.66,-2.3 -2.65,0.77 -0.61,-2.22 1.43,-2.42 -6.83,-3.55 -3.93,-6.97 -1.13,-0.14 -1.43,-5.62 -2.38,-0.1 -2.03,-1.49 -5.27,4.67 -4.81,-2.53 0.2,-1.16 -1.48,-0.43 -2.56,-2.91 -6.65,0.68 0,0 1.33,-1.93 1.09,-7.63 1.31,-0.74 2.49,0.57 0.61,-2.4 3.47,-0.51 1.96,-2.93 2.41,-0.33 -0.67,-0.76 1.23,-2.32 -0.73,-3.47 1.04,-0.18 0.74,1.26 3.84,-0.72 1.19,-6.22 1.46,-2.07 -0.65,-3.91 -1.4,-0.56 0.19,-1.01 -4.63,-0.29 -2.45,-1.99 -0.42,-1.87 -2.98,-1.51 0,0 0.27,-1.83 0,0 0.68,-2.57 -1.56,-6.33 1.46,-2.29 1.87,-0.39 0.99,-1.91 1.78,-0.37 2.29,-2.96 2.03,1.03 -0.61,0.89 0.54,0.96 3.45,-1.03 -4.59,-1.62 0.66,-3.64 0,0 8.62,-5.35 8.99,-0.97 1.8,2.92 3.28,0.47 -1.08,3.03 0.94,2.2 1.98,0.42 3,-2.99 2.08,2.7 2.38,-0.14 -0.13,1.54 1.75,0.94 0.32,1.44 1.5,0.27 -0.94,-1.57 2.28,-1.8 0.18,-4.25 -0.73,0.45 -0.52,-0.74 -1.17,1.18 -0.06,-4.29 -1.1,1.44 0.27,2.51 -2.16,-1.28 -0.73,0.74 1.49,0.13 -1.34,0 -0.81,-1.63 0.67,-2.3 3.91,-2.25 2.75,0.05 -1.45,5.3 1.43,0.66 0.63,-1.9 -0.59,-0.89 1.24,-2.2 1.52,-0.7 -0.92,-1.28 1.94,0.64 1.51,-0.89 0.48,-3.18 2.57,-1.44 0.23,-1.51 -1.35,-1.37 -4.67,5.94 -0.27,-2.75 1.98,-2.36 3.21,-1.27 4.53,-4.910004 4.94,-0.23 5.71,1.030004 10.45,-3.570004 7.25,-0.63 3.87,-5.85 9.57,-6.35 4.6,-8.91 3.7,-4.39 2.14,-6.02 2.01,-0.91 z m 39.24,-13.18 0.64,3.19 -0.66,-2.61 0.02,2.51 -0.7,-1.58 0.41,-1.22 -2,1.81 0.34,4.98 -2.71,4.16 -0.52,4.54 -0.27,-2.02 2.4,-8.91 0.08,-3.54 1.52,-1.48 1.45,0.17 z m 18.18,-8.92 -0.23,2.54 -2.28,0.98 -1.07,1.93 0.99,3.82 1.78,2.27 2.67,0.88 10.97,-1.61 2.81,2.3 0.02,3.59 -6.57,5.97 -0.06,3.18 2.47,4.76 3.76,0.38 3.6,5.02 2.38,1.46 -1.63,0.58 -1.31,2.56 0.29,4 -0.89,0.75 -1.64,-1.66 1.57,0.42 -0.47,-1.77 -2.65,0.92 -0.93,-1.06 3.44,-2.08 0.27,-1.1 -2.07,-0.38 -3.92,1.48 4.26,-2.38 0.52,-1.43 -2.57,0.41 -1.84,1.94 -1.98,-2.52 -2.01,1.4 -3.19,-0.19 -5.2,4.3 -2.25,4.02 0.31,-1.45 -2.42,1.02 0.34,2.53 0.46,-1.89 0.95,1.13 1.56,-1.2 0.88,1.15 0.44,1.7 -2.08,1.86 -6.46,-3.18 1.98,0.57 0.78,-3.61 -1.59,1.36 0.67,0.88 -3.25,0.46 -3.12,-2.7 -1.23,0.91 -0.39,-2.88 -3.42,1.6 0.97,-2.41 1.88,0.4 -4.49,-3.49 0.83,-4.21 4.37,-0.54 1.54,0.88 2.56,-1.8 -1.52,-0.42 -0.41,-1.47 1.48,-0.51 -1.33,0.23 -1.35,-2.81 -3.91,0.79 1.8,-3.63 -3.44,1.53 -0.2,-0.63 3.07,-4.87 3.67,0.83 -0.29,2.19 -2.3,-0.02 -0.25,0.97 1.04,0.94 0.44,-1.39 2.94,-0.4 -1.33,-0.48 2.5,-1.28 -2.7,-0.61 0.18,-2.75 -2.04,0.84 -1.84,-0.54 -1.63,-4.18 6.37,-0.96 2.82,1.43 -0.07,2.2 1.05,0.83 0.48,-1.16 -0.93,-3.08 3.66,-2.99 0.92,0.43 -1.94,3.05 1.08,0.37 1.26,-1.59 2.45,4.41 -0.1,2.82 1.9,0.73 0.55,1.73 1.39,-1.2 1.94,0.12 0.69,-5.17 -1.42,-3.31 1.16,0.09 0.1,-0.81 -1.39,0.36 0.06,1.2 -2.87,-0.04 -1.31,-1.88 -2.04,-0.55 -1.47,-4.48 -2.65,2.29 0.34,1.17 -5.73,2.6 2.56,-6.33 0.06,-3.14 -3.65,2.27 0.68,3.27 -4.9,3.99 0.24,-1.26 3.36,-2.95 0.08,-4.46 1.73,-2.21 2.78,-1.85 9.07,-1.04 z","NW":"m 76.644857,302.5102 2.4,-0.15 1.38,-1.88 2.1,-0.54 9,0.25 1.19,-1.63 2.96,-0.82 1.51,-2.23 2.62,-0.47 0.630003,-1.93 5.54,-3.69 3.85,-0.79 -0.72,-0.6 2,-4.14 -2.44,-1.08 2.74,-4.46 5.13,2.29 1.57,5.4 6,2.93 2.4,0.25 2.88,-1.18 2.98,1.71 0.75,3.1 2.76,2.68 -3.82,0.74 -0.02,1.65 1.61,1.96 -2.01,0.38 0.08,3.84 -1.64,2.27 0.49,1.62 1.74,1.32 4.46,0.01 1.25,1.38 -1.49,0.3 -0.22,0.85 0.54,3.75 -2.27,-0.08 -5.57,3.33 2.17,3.42 3.93,1.58 3.27,-3.45 4.06,1.18 3.52,-1.84 2.63,0.25 1.93,-3.54 4.04,-2.9 -0.11,0.98 1.68,0.73 1.89,-0.59 2.04,1.47 2.18,-0.05 0.21,-2.67 3.81,-1.91 3.01,-3.06 -3.08,-0.97 -1.66,-2.15 1.64,-3.32 -0.57,-4.22 0.7,-2.9 -1.68,-4.86 -3.16,-2.33 -4.97,-1.98 0.34,-2.31 -1.13,-0.9 -0.06,-2.53 3.84,1.5 2.3,-0.64 1.12,0.61 2.43,-1.76 0.21,-3.22 2.77,-2.05 3.48,1.35 6.02,-3.4 1.27,1.47 1.13,-0.28 0.83,1.64 0.15,6.38 0.85,1.39 -0.83,1.05 0.16,2.5 1.19,-0.4 1.44,1.14 2.68,-1.07 4.17,0.97 2,-0.53 0.4,-1.15 2.79,0.38 0.35,-1.5 2.82,-1.68 -0.53,-1.87 2.24,-0.72 2.5,-4.49 3,0.29 2.38,2.18 -2.7,3.44 1.02,0.85 -0.01,1.41 0.88,-0.01 -0.06,1.85 -1.75,1.7 0.19,1.69 -2.52,3.35 -2.02,-0.6 -0.56,1.5 -1.3,0.48 -0.78,4.19 -1.29,0.63 0.87,0.58 -0.4,1.11 4.06,1.4 2.55,1.92 -1.53,1.14 -1.09,-0.38 0.5,4.21 -1.38,0.1 -0.54,-1.3 -0.5,0.6 -1.28,-0.53 2.31,2.44 -0.66,3.75 3.71,-1.38 -0.09,0.86 1.35,0.56 2.59,-0.47 1.53,1 0.33,1.05 -1.6,2.57 1.32,-0.29 2.51,2.89 -1.33,1.18 0.13,2.41 1.31,2.33 -0.97,0.95 0.95,0.74 -1.3,1.61 0.69,1.59 1.42,0.49 0.58,-1.37 3.64,0.1 0.65,1.42 -1.36,1.24 0.84,0.34 -0.19,1.22 4.3,2.48 0.19,2.74 -1.23,2.79 2.37,-1.12 2.78,0.96 3.49,-0.57 -1.71,2.02 0.52,1.09 -0.91,1.62 1.21,2.12 -4.55,5.24 1.23,1.11 -0.46,1.35 0.92,1.84 -1.69,5.26 4.86,0.35 0,0 -1.84,1.73 -5.42,1.56 2.21,2.4 -3.59,3.95 -0.51,3.96 -1.61,-0.04 -1.18,1.57 -2.51,0.89 -0.52,3.14 -2.08,-0.67 -1.54,2.29 -1.46,-0.72 -2.6,0.58 -1.1,-2.13 0.82,-3.03 -0.92,-0.82 -2.4,0.07 -1.32,-1.57 -8.12,3.7 1.79,3.4 0.02,1.82 1.76,0.32 -0.58,3.9 -2.99,-0.36 -2.32,1.55 -1.14,-1.13 -2.18,-0.21 -4.56,1.87 -2.37,-0.43 -1.11,0.59 0.3,1.15 -1.44,0.47 -0.29,1.58 -1.11,-0.44 -1.07,0.78 -4.01,5.97 2.45,3.07 6.14,-2.94 1.91,0.24 0.92,1.15 -0.56,1.14 0.87,3.28 1.67,1.01 -1.27,1.03 0.69,2.2 -3.96,4.03 0.07,1.42 0,0 0.24,0 0,0 1.23,1.36 -2.3,0.2 -1.75,1.34 -6.3,-0.85 -1.92,0.6 -1.62,1.73 1.56,1.67 -1.39,2.31 0.89,-0.31 1.16,2.46 -3.98,4.35 0.21,0.73 -1.26,0.33 -0.53,2.5 0.64,2.24 -1.77,0.12 -4.68,5.71 -3.35,0 -0.95,-2.09 -1.57,0.11 -8.07,9.05 0,0 -0.4,0.13 0,0 -0.25,1.03 2.39,4.53 -2.73,4.88 0,0 -2.97,-2.12 -1.17,1.1 -1.22,-0.18 -0.14,-3.07 -4.48,-4.77 0.59,-4.96 -0.57,-2.12 -0.73,-0.75 -2.63,0.82 -2.11,-3.01 -3.48,-0.76 1.41,-4.59 -3.66,-1.46 -1.71,1.86 -1.92,0.59 1.56,1.73 -0.65,3.45 0.81,2.2 -2.14,-0.61 -1.68,2.4 -2.68,0.63 1.23,1.21 -0.54,2.75 -1.04,1.31 -3.51,0.28 -0.5,2.62 -2.68,-0.68 -1.87,0.93 -0.01,0.82 -5.51,1.9 -3.790003,-0.85 -1.1,2.1 0.94,1.64 -1.14,1.93 0.34,1.16 -1.54,1.12 -7.81,1.6 -0.74,-2.52 -0.79,2.51 -1.08,1.1 -1.17,-0.17 -0.43,1.39 -2.01,-1.19 -1.65,2.63 -2.16,-2.02 -3.7,4.15 -1.56,0.82 -2.75,-0.4 0.04,2.65 -3.1,0.63 0.9,0.99 -0.53,1.06 1.04,0.4 -0.26,3.41 -2.71,1.59 -2.86,-1.93 -0.78,-1.97 -3.55,1.88 1.34,1.43 -1.44,1.81 1.78,0.56 0.76,1.4 -0.83,2.82 2.06,2.41 -0.21,0.83 -1.3,-0.34 -4.91,2.77 -2.06,-3.42 -1.96,2.62 -1.1,-1.02 0.31,-1.92 -1.39,-0.11 -0.12,-1.27 -6.07,2.77 -1.48,2.14 -1.99,0.19 0.45,-2.44 -0.93,-1.03 -0.93,0.88 -1.12,-2.64 -1.67,0.49 0.55,2.25 0.73,-0.14 0.09,2.39 1.06,0.61 0.04,0.98 -1.32,0.05 0,0 -0.34,-2.2 -3.67,-3.54 2.24,-5.62 -0.28,-1.83 -2,-0.79 0.65,-2.65 -5.12,-1.65 -2.81,0.99 -1.15,-2.56 -1.24,-0.57 0.48,-1.03 -1.13,-0.52 -0.14,-1.53 3.13,-3.26 1.16,0.11 1.62,-3.75 -4.52,-0.65 -1.32,0.66 0.44,-0.59 -0.95,-1.07 0.9,-0.83 -3.97,-6.88 -4.8,-0.86 -0.44,0.92 0.18,-2.54 -1.6499997,-1.71 0.6299997,-1.22 -3.3499997,-2.29 0.69,-1.33 1.29,0.75 1.2899997,-1.3 -0.38,-3.1 2.35,-1.01 1.16,0.94 0.96,-2.68 -0.89,-1.98 1.26,-2.88 -2.58,-0.06 -2.23,-1.25 -0.9199997,-2.31 1.2699997,-2.68 -3.6899997,0.48 -0.86,-0.9 -3.57,1.33 0.45,-2.75 -1.63,-1.65 -0.89000004,-2.98 3.07000004,-1.86 1.48,3.16 1.42,-0.07 1.31,-3.7 1.98,-1.94 2.1099997,-0.89 3.04,-3.46 5.3,-2.3 -2.21,-1.59 2.7,-1.33 -1.06,-0.83 -4.18,2.46 -1.13,-0.21 -0.93,-4.77 1.15,-0.42 -0.9,-1.93 3.27,-3.19 2.91,-5.89 1.54,-0.33 2.11,-2.78 -0.76,-2.51 0.75,-1.4 -1.26,0.06 1.12,-7.35 -0.64,-4.13 -3.38,-5.17 -4.43,-4.41 1.61,-5.16 -5.36,-1.84 -0.38,-3.45 1.12,-0.95 -3.2199997,-2.18 -2.43,-0.06 0.03,-1.26 2.16,-1.51 0.08,-1.77 -1.05,-0.33 0.19,-1.23 -1.97,-1.51 0.79,-0.49 -0.85,-0.65 1.03,-1.28 3.29,0.11 3.2599997,-3.01 2.25,1.6 4.24,0.85 -0.12,-2.04 -1.63,-2.54 -2.11,-0.71 0.86,-0.98 3.2,0.07 2.74,3.33 4.34,-0.53 1.22,0.59 0.42,1.88 3.08,0.14 0.61,1.29 2.46,0.93 0.53,-2.63 -1.47,-1.07 0.29,-1.17 2.55,1.61 1.13,-0.67 1.26,1.22 4.74,-3.16 8.94,-3.42 3.04,1.9 3.57,-3.12 0.69,-3.04 1.83,-0.57 0.16,-2.32 -4.91,-4.28 -4.22,-1.18 0.43,-3.21 2.73,-0.49 1.54,-4.49 6.01,-0.21 3.29,-5.76 2.77,-0.53 2.17,-4.6 3.37,-0.13 z","RP":"m 34.664857,497.6602 1.32,-0.05 -0.04,-0.98 -1.06,-0.61 -0.09,-2.39 -0.73,0.14 -0.55,-2.25 1.67,-0.49 1.12,2.64 0.93,-0.88 0.93,1.03 -0.45,2.44 1.99,-0.19 1.48,-2.14 6.07,-2.77 0.12,1.27 1.39,0.11 -0.31,1.92 1.1,1.02 1.96,-2.62 2.06,3.42 4.91,-2.77 1.3,0.34 0.21,-0.83 -2.06,-2.41 0.83,-2.82 -0.76,-1.4 -1.78,-0.56 1.44,-1.81 -1.34,-1.43 3.55,-1.88 0.78,1.97 2.86,1.93 2.71,-1.59 0.26,-3.41 -1.04,-0.4 0.53,-1.06 -0.9,-0.99 3.1,-0.63 -0.04,-2.65 2.75,0.4 1.56,-0.82 3.7,-4.15 2.16,2.02 1.65,-2.63 2.01,1.19 0.43,-1.39 1.17,0.17 1.08,-1.1 0.79,-2.51 0.74,2.52 7.81,-1.6 1.54,-1.12 -0.34,-1.16 1.14,-1.93 -0.94,-1.64 1.1,-2.1 3.790003,0.85 5.51,-1.9 0.01,-0.82 1.87,-0.93 2.68,0.68 0.5,-2.62 3.51,-0.28 1.04,-1.31 0.54,-2.75 -1.23,-1.21 2.68,-0.63 1.68,-2.4 2.14,0.61 -0.81,-2.2 0.65,-3.45 -1.56,-1.73 1.92,-0.59 1.71,-1.86 3.66,1.46 -1.41,4.59 3.48,0.76 2.11,3.01 2.63,-0.82 0.73,0.75 0.57,2.12 -0.59,4.96 4.48,4.77 0.14,3.07 1.22,0.18 1.17,-1.1 2.97,2.12 0,0 -0.94,2.59 1.93,2.74 -0.88,2.26 1.63,1.05 -1.03,4.83 -2.06,1.74 -2.05,-0.55 -1.75,-1.85 -3.08,3.27 -1.08,3.75 2.07,3.41 -2.25,1.54 0.83,0.36 -0.18,1.16 -1.38,1.18 1.4,1.15 2.32,-0.09 -0.4,1.58 1.75,-0.1 0.18,1.04 0.88,0.08 1.07,2.65 -0.29,1.55 1.9,0.55 0.05,1.68 1.05,1.05 -0.81,3.84 -1.68,-0.11 -0.43,-1.08 -2.36,0.14 -0.92,1.34 1.7,1.67 0,0 0.26,0.35 0,0 -1.28,2.11 -1.31,-0.19 -1.54,-1.98 -0.14,1 -2.27,0.83 -0.26,0.96 -2.3,0.63 -0.01,0.95 -1.72,1.2 0.08,1.32 3.07,2.41 -0.72,0.99 0.56,3.12 -1.8,-1.86 -1.14,0.7 -2.03,-1.25 -1.33,2.84 0.45,1.44 -2.23,0.03 -1.88,2.57 5.07,4.42 0.9,3.22 1.16,0.84 5.33,-0.6 4.53,-2.55 9.16,-3.11 3.86,0.78 4.95,5.02 2.1,5.8 -0.65,3.96 2.54,2.13 -0.33,3.25 2.79,5.35 3.06,-0.05 0.48,0.68 -2.63,3.95 -5.02,2.94 1.58,6.45 2.45,4.19 0,0 -0.45,2.96 3.05,8.11 -1.32,2.01 4.13,1.49 -0.78,3.29 -2.08,1.95 0.7,0.76 1.67,-1.45 -0.12,2.13 -3.03,4.06 2.43,2.9 -6.24,5.87 -0.34,1.56 1.26,-0.07 -2.36,4.89 -0.58,6.63 -2.97,4.55 -0.94,3.87 0,0 -0.84,1.81 0,0 -3.3,2.83 0,0 -0.44,-1.01 -1.64,0.85 -0.32,-0.99 -2.28,0.25 -4.22,-1.42 -2.64,-2.35 -4.78,-1.3 -2.73,-2.94 -0.89,1.57 -2,-0.67 -1.41,1.47 -4.6,-3.12 -1.76,1.87 -1.99,0.28 -0.19,-1.25 -0.75,0.53 -1.63,-0.69 0.11,0.86 -1.48,0.46 -2.57,-0.97 -0.11,-1.77 -2,-0.99 -2.31,0.31 -2.28,-1.67 -1.79,-3.25 -0.39,-3.68 -3.72,0.42 0.46,-1.87 -4.970003,1.21 -0.12,1.27 0,0 -4.21,-4.61 0.46,-1.73 -0.89,-1.45 1.21,-1.91 1.02,0.96 0.04,-1.23 1.2,-0.87 -0.49,-0.91 1.71,0.06 1.43,-1.54 0.98,-7.39 -2.18,0.54 -0.77,-1.5 -4.09,-0.94 -0.09,-2.68 -2.42,-1.65 -0.27,-1.22 2.51,-1.14 1.19,-1.7 -1.65,-0.98 0.53,-3.22 1.35,-0.56 -0.35,-1.04 -1.79,-0.3 -0.47,-4.61 -3.4,1.83 -0.09,-1.01 -1.71,-0.02 -0.76,-0.9 -0.15,-1.28 -3.16,0.3 -1.37,-1.05 -0.76,0.61 -1.81,-2.92 -2.06,-1.02 -2.73,1.84 0.37,-1.37 -2.47,0.9 -0.74,-0.87 -0.71,2.12 -2.18,-0.33 -1.1,1.45 -0.9,-0.62 -1.8,2.42 -1.57,-0.77 -4.04,3.31 -2.39,0.37 -1.28,1.76 -0.36,-1.18 -1.44,0.45 -0.72,-0.71 -0.24,1.17 -1,-0.26 -1.59,1.28 0.08,0.93 -1.69,-0.25 -1.15,-1.92 -2.86,1.33 -2.9,-1.65 -1.29,0.56 -1.45,-1.01 -0.83,0.53 -2.37,-0.79 0,0 -1.42,-2.03 1.53,-0.53 -0.29,-1.58 2.82,-2.54 1.28,-3.53 -0.69,-1.32 4.87,-4.46 -0.64,-1.24 1.28,0.36 -1.03,-2.57 1.12,-1.33 -0.76,-2.76 1.41,-1.87 -1.02,0.8 -2.61,-2.07 -2.61,1.17 -2.09,-1.06 -2.28,-2.88 -2.51,1.23 -0.67,-2.99 -0.95,0.24 -4.03,-3.28 -0.16,-1.89 -0.84,-0.47 0.31,-2.6 -1.09,-0.5 -0.44,0.69 -0.51,-2 -0.88,1.45 -0.52,-3.18 -1.93,-1.2 0.88,-0.98 -0.89,-0.56 0.59,-0.96 -0.98,-0.69 -0.4,-2.94 -0.96,0.01 1.29,-1.3 -1.02,-0.07 0.42,-1.77 0.83,-0.13 -0.49,-2.61 1.75,-2.31 -1.33,-1.16 0.52,-1.46 0.48,-0.93 0.66,0.58 2.02,-1.06 -1.53,-3.79 0.61,-1.43 1.31,-0.23 1.16,-1.94 4.12,-0.98 0.77,-1.04 -0.42,-1.63 1.6,-2.59 1.5,-0.2 1.73,1.81 0.08,-1.03 z","SL":"m 33.044857,573.7902 2.37,0.79 0.83,-0.53 1.45,1.01 1.29,-0.56 2.9,1.65 2.86,-1.33 1.15,1.92 1.69,0.25 -0.08,-0.93 1.59,-1.28 1,0.26 0.24,-1.17 0.72,0.71 1.44,-0.45 0.36,1.18 1.28,-1.76 2.39,-0.37 4.04,-3.31 1.57,0.77 1.8,-2.42 0.9,0.62 1.1,-1.45 2.18,0.33 0.71,-2.12 0.74,0.87 2.47,-0.9 -0.37,1.37 2.73,-1.84 2.06,1.02 1.81,2.92 0.76,-0.61 1.37,1.05 3.16,-0.3 0.15,1.28 0.76,0.9 1.71,0.02 0.09,1.01 3.4,-1.83 0.47,4.61 1.79,0.3 0.35,1.04 -1.35,0.56 -0.53,3.22 1.65,0.98 -1.19,1.7 -2.51,1.14 0.27,1.22 2.42,1.65 0.09,2.68 4.09,0.94 0.77,1.5 2.18,-0.54 -0.98,7.39 -1.43,1.54 -1.71,-0.06 0.49,0.91 -1.2,0.87 -0.04,1.23 -1.02,-0.96 -1.21,1.91 0.89,1.45 -0.46,1.73 4.21,4.61 0,0 -0.03,1.46 -2.32,-0.03 -2.06,2.78 -3.06,-1.46 -3.08,1.43 -0.87,-1.47 -1.71,0.96 -2.01,-2.1 -1.37,0.27 0.56,-1.27 -0.95,-0.32 -1.09,0.7 0.54,1.66 -2.15,1.76 -1.8,-5.5 0.44,-2.06 -1.39,0.31 -2.47,-2.17 -0.84,0.68 -2.18,-2 -2.08,1.37 -2.08,-1.33 -1.42,0.98 1.53,3.11 -1.69,2.69 -3.55,-1.51 -2.62,0.43 -1.72,-2.24 1.25,-1.82 -0.48,-1.2 -1.81,0.23 -0.4,-3.28 -1.83,-0.89 0.59,-2.06 -3.57,-2.1 -1.66,-1.91 0.21,-1.38 -1.55,-1.14 -0.19,-0.88 1.54,0.63 0.8,-1.58 -1.13,-0.29 0.17,-1.64 -2.93,-1.64 0.79,-2.22 -7.87,-5.01 -2.26,1.18 -1.66,-0.63 -0.69,-5.85 z","SN":"m 409.32486,420.6402 -0.5,-1 -2.83,-0.44 -0.84,-1.83 1.25,-0.12 0.15,-0.9 -2.78,-1.02 1.07,-4.15 -2.44,0.13 -0.02,-0.83 0.86,0.02 1.06,-2.55 -0.27,-2.33 -0.64,-2.06 -1.56,-0.82 0.42,-1.99 -1.58,-3.62 3.14,-0.86 -0.1,-4.29 -1.41,-1.28 0.86,-0.42 -0.72,-2.23 1,-1.18 -0.55,-1.18 -1.57,0.02 -0.56,-3 1.61,-0.52 0.23,-1.43 1.85,-0.98 -0.99,-3.36 2.88,-2.92 -0.23,-1.11 3.72,0.23 3.28,-1.93 -0.35,-0.6 5.59,0.4 1.11,-2.78 1.11,0.79 1.35,-0.45 0.31,1.13 1.31,-1.4 2.06,0.75 2.61,-2.45 0.92,0.72 2.01,-0.83 -1.06,1.6 3.46,-1.94 1.79,-3.6 5.1,1.77 4.67,-3.84 1.19,1.04 0.19,1.84 1.63,-0.99 0.45,1.96 1.93,-0.25 0.87,1.17 0.4,-1.16 1.35,-0.11 -0.35,-1.41 0.62,0.13 0,0 0.38,0.11 0,0 -0.02,-0.73 2.08,0.49 0.74,2.73 1.87,-0.89 0,0 2.16,3.82 2.24,-1.17 2.49,2.75 -1.11,2.53 2.65,1.2 1.41,3.39 -0.39,3.23 -1.07,0.08 -0.14,1.72 1.32,2.47 -1.78,2.3 0.85,0.43 0.3,-1.27 1.36,4.08 3.34,1.16 -0.39,-1.58 1.59,0.18 0.04,-1.3 2.7,-1.5 -0.34,-1.1 3.49,1.17 -0.16,-1.11 1.5,-1.76 1.79,1.95 -0.44,1.22 1.62,-1.07 1.72,1.41 -0.65,0.68 3.62,1.03 0.22,2.02 0.89,0.05 0.4,1.24 1.61,-1.58 1.21,0.14 0.52,1.51 3.97,-0.07 0.56,-0.73 4.73,1.5 1.64,-0.87 0.43,0.81 0.63,-0.81 2.32,0.1 0.97,-1.53 4.55,0.48 3.37,-1.71 0.8,0.32 -0.06,1.73 1.78,0.34 0.37,-2.2 1.48,-0.16 -0.71,-0.86 1.87,-1.39 -0.53,-1.7 1.59,-1 -1.82,-3.13 3.48,-0.12 -0.87,-1.59 1.29,-0.54 0.69,-2.35 2.22,-0.24 -0.69,-0.9 0.52,-1.15 4.85,0.4 2.05,1.2 1.54,-0.47 3.45,1.64 0,0 0.04,0.48 0,0 0.54,0.83 0.57,-1.55 2.94,-2.39 3.76,-0.11 0.44,-1.47 5.33,-0.18 0.41,-1.38 1.48,-0.78 1.83,0.88 1.21,2.21 4.08,-0.3 1.54,-2.58 -0.42,-1.98 2.12,1.6 0,0 -1.2,2.03 1.58,3.66 3.72,0.81 3.66,2.87 4.26,0.69 2.07,1.41 1.38,2.81 -0.91,3.25 0.59,3.09 0.91,0.57 -0.27,3.25 4.11,7.04 -3.17,11.37 0.22,4.01 -0.99,0.5 -0.18,4.07 -3.07,7.84 -0.88,0.48 0.14,2.07 -0.89,0.33 -0.62,3.23 -4.94,5.66 0.47,1.39 -1.79,4.85 -1.89,0.15 -1.46,-0.98 -1.4,0.69 -0.92,-1.93 -1.16,0.3 -4.43,-1.99 1.1,-3.97 1,-0.8 -0.16,-2.63 -4.26,1.82 -1.12,-0.51 2.1,-6.83 -2.19,-2.38 -1.89,0.63 -0.22,-1.33 -2.09,-0.55 0.19,-2.46 -0.58,2.34 -2.41,-1.29 -2.85,1.75 -1.58,-0.83 -0.21,-1.18 -1.24,-0.65 -1.5,0.65 -2.29,-1.66 -0.94,1.61 -0.9,0 0.79,1.2 -0.32,1.3 -1.3,0.61 -0.05,2.13 1.54,1.06 2.63,-0.8 0.21,1.15 -1.61,0.77 0.88,0.59 -0.4,0.53 5.5,1.87 -0.65,3.84 -2.36,-0.37 -0.05,0.92 -2.9,0.88 -2.36,-1.12 -2.12,0.77 -0.6,2.74 -8.63,3.43 -0.74,1.41 -3.01,0.8 -2.56,-1.58 -2.25,1.21 -1.09,1.74 -2.36,-0.29 -0.85,2.45 0.72,2.44 -2.31,0.19 -0.35,1.52 -5.03,-0.82 -2.34,0.87 -0.88,-0.67 -1.25,1.65 -2.72,-1.44 -3.95,2.16 -2.82,-0.46 -2.04,0.92 1.05,2.84 -1.88,2.37 0.72,1.43 -1.82,0.89 -1.88,2.71 -3.28,-1.31 -1.58,-3.01 -1.18,-0.35 0.3,2.26 -3.28,2.02 -0.16,2.75 -2.04,0.49 -0.79,-1.75 -1.99,0.02 -3.31,8.86 -3.64,-0.33 -0.41,-1.18 -2.94,1.88 -3.42,-1.01 -0.71,6.13 -2.58,2.94 -2.46,0.68 0.34,0.92 -8.16,-5.65 -0.58,2.84 -0.96,-1.79 -3.81,1.68 -1.84,3.51 -2.14,-1.95 -10.22,1.99 -1.62,2.6 0.17,2.13 -1.33,-0.54 -1.72,1.33 -0.66,1.88 -2.05,0.08 -0.01,2.89 -1.8,0.8 -1.16,2.24 0.46,2.03 -1.86,0.03 0.27,2.27 -0.75,1.17 0.98,1.47 -0.98,1.08 0.86,0.86 -2.99,-0.4 -0.96,-1.97 1.2,-2.41 -3.45,-2.49 0.37,-1.26 1.32,0.8 -0.71,-2.02 -3.45,-0.18 -0.07,-3.34 -0.97,-1.61 -5.32,0.41 0,0 -0.58,-1.54 -2.83,0.16 -0.07,0.62 -3.12,-2.85 -1.27,0.36 0.37,-3.76 -1.19,-1.14 -0.96,0.44 0.26,-1.24 -1.91,-1.55 0,0 0.29,-0.89 -1.82,-0.35 -0.27,-1.26 2.34,-1.35 1.11,0.83 -0.67,-1.72 1.71,-1.59 -2.13,-2.2 -0.03,-1.45 -2.77,0.6 -1.15,-2.04 0.94,-1.46 2.8,-0.42 -0.2,-2.83 3.89,-2.45 -0.29,-1.19 1.22,-1.29 1.17,0.95 -1.08,0.99 2.18,2.13 -1.17,2.59 0.64,1.72 1.76,-0.06 1.28,-0.49 0.23,-2.05 1.41,-0.23 1.42,1.12 2.46,-0.94 -0.14,-0.74 -1.59,0.07 0.87,-4.61 2.6,1.63 0.6,-2.53 4.06,0.85 0.1,-1.44 3.3,-1.91 0.2,-2.09 -3.72,-1.02 -0.51,-2.22 1.23,-1.15 -0.47,-0.95 -2.54,-0.09 0.81,-2.81 1.8,0.49 1.42,-2.17 -0.13,-0.79 -2.12,0.16 -0.21,-3.16 1.81,1.05 0.69,-1.47 0.68,0.86 -0.21,-1.38 0.58,1.07 2.6,-0.39 0.07,-1.44 1.65,-1.64 1.84,0.52 0.83,-0.95 0.24,1.88 1.34,-0.36 0.22,-2.17 2.49,-3.02 1.72,0.19 -0.22,-0.95 0.87,-0.51 1.09,0.72 5.32,-0.95 1.14,0.68 0.97,-1.68 -1.93,-2.02 -1.03,-5.73 -2.05,1.05 -3.1,-1.33 0.91,-0.69 -0.13,-1.83 -1.55,-0.25 -0.49,0.97 -0.25,-4.63 -1.09,-0.32 0,0 -1.07,0.03 0,0 -0.81,-1.77 -2.98,0.88 -1.04,-0.98 -2.03,0.44 -0.31,-1.55 -1.27,-0.78 z","ST":"m 365.71486,219.2302 2.52,-0.24 -0.88,2.82 3.23,0.37 1.1,3.26 3.03,-1.23 2.8,3.01 3.7,0.87 0.27,1.22 -1.67,2.06 0.77,1.24 2.24,0.03 1.42,1.55 5.7,2.01 2.76,-1.53 5.68,1.43 0.76,-1.83 0.12,4.26 4.4,-2.66 0.41,1.06 2.1,0.69 1.54,5.93 -0.51,1.6 -1.87,0.18 -0.73,3.06 0.84,1.52 -1.48,2.75 0.77,-0.2 -0.21,0.91 1.14,0.79 -0.33,1.55 1.1,0.84 -0.39,4.45 0,0 -0.12,1 0,0 -1.72,1.09 -2.08,-0.67 0.65,5.32 -2.3,4.65 1.75,-0.95 1.19,0.71 -1.46,1.96 1.18,1.88 2.09,-0.52 1.55,-2.14 1.75,2.22 -0.65,0.53 0.71,0.94 3.8,-1.07 -1.38,0.89 1.41,1.11 -2.71,4.93 0.5,0.71 -1.45,0.94 1.7,0.83 -0.48,2.15 0.76,0.85 -1.4,1.29 1.58,2 -1.96,3.13 -1.98,6.68 1.7,1.26 -0.79,0.52 2.39,0.7 -3.19,1.71 -0.05,2.84 -1.25,-0.03 -0.55,1.6 2.76,3.8 0.87,2.9 2.41,1.26 2.92,4.6 1.91,0.46 2.94,2.76 0.97,-0.08 0.71,-1.79 1.15,0.12 0.72,2.02 2.89,1.15 0.25,1.74 4.62,0.36 0.13,-1 1.92,-0.27 0.73,-1.89 0.97,0.08 5.37,2.61 1.55,2.47 4.15,-0.53 0.47,3.38 2.16,0.11 0.19,0.7 1.94,-1.23 2.46,0.42 -0.13,1.29 1.21,0.21 -0.11,2.19 4.62,-0.05 -0.4,2.04 -0.7,-0.01 0.84,0.94 2.55,0.32 2.46,-1.42 1.2,0.21 0.86,1.95 -1.95,0.46 2.61,5.16 -0.95,3.87 1.07,1.75 -0.75,0.63 2.09,2.92 -2.09,0.59 0.51,1.87 -0.81,0.82 -6.09,3.94 0,0 -1.87,0.89 -0.74,-2.73 -2.08,-0.49 0.02,0.73 0,0 -0.38,-0.11 0,0 -0.62,-0.13 0.35,1.41 -1.35,0.11 -0.4,1.16 -0.87,-1.17 -1.93,0.25 -0.45,-1.96 -1.63,0.99 -0.19,-1.84 -1.19,-1.04 -4.67,3.84 -5.1,-1.77 -1.79,3.6 -3.46,1.94 1.06,-1.6 -2.01,0.83 -0.92,-0.72 -2.61,2.45 -2.06,-0.75 -1.31,1.4 -0.31,-1.13 -1.35,0.45 -1.11,-0.79 -1.11,2.78 -5.59,-0.4 0.35,0.6 -3.28,1.93 -3.72,-0.23 0.23,1.11 -2.88,2.92 0.99,3.36 -1.85,0.98 -0.23,1.43 -1.61,0.52 0.56,3 1.57,-0.02 0.55,1.18 -1,1.18 0.72,2.23 -0.86,0.42 1.41,1.28 0.1,4.29 -3.14,0.86 1.58,3.62 -0.42,1.99 1.56,0.82 0.64,2.06 0.27,2.33 -1.06,2.55 -0.86,-0.02 0.02,0.83 2.44,-0.13 -1.07,4.15 2.78,1.02 -0.15,0.9 -1.25,0.12 0.84,1.83 2.83,0.44 0.5,1 0,0 -2.12,5.26 2.35,-0.16 0.27,1.95 -2.89,3.66 -0.95,2.15 0.63,0.76 -1.59,1.63 -0.05,-2.23 -1.45,0.12 -0.48,-1.59 -1.16,1.59 -4.75,-1.77 -4.71,1.04 -0.66,-2.4 -2.35,-0.24 0.02,-2.89 -1.68,-1.07 -1.89,0.49 -1.5,-2.75 -5.89,0.74 -1.48,-0.58 -1.03,1.14 -1.68,-2.58 -2.02,-0.33 -0.15,-2.23 -1.89,-1.85 -2,-0.09 -1.27,1.44 -0.67,-1.42 -2.22,-0.69 -1.83,1.59 -3.71,0.04 -1.53,-1.2 0.34,-1.47 -0.97,-1.84 1.2,-0.27 0.98,-1.65 -0.92,-0.44 -0.05,-2.27 -1.13,0.03 -0.55,-1.76 -3.32,0.55 -0.04,-1.34 -1.56,-0.33 0.89,-2.49 1.08,0.86 1.24,-0.7 2.69,-4.83 1.08,-0.51 -3.85,-3.7 0.78,-0.96 -1.79,-0.3 -0.2,-3.72 -3.33,-0.45 -1.6,-2.54 -4.58,1.4 -0.06,-0.95 -1.69,-0.77 -1.94,1.03 -3.08,0.01 -5.13,-2.72 -0.76,0.95 -3.67,0.28 1.19,-0.76 -2.84,-0.73 -0.22,-3.1 0,0 -0.05,-0.32 0,0 0.68,-1.68 -3.02,-3.88 1.31,-1.75 -2.22,-1.99 -0.95,0.29 0,0 0.03,-0.61 0,0 -0.34,-1.85 0,0 -0.34,0 0,0 0.52,-2.41 2.25,1.08 0.43,-1.16 -1.43,-0.8 0.47,-0.77 -2.28,0.62 -1.85,-2.16 -2.41,1.02 -0.47,-1.66 -2.96,-1.01 -0.68,0.78 -3.4,-0.03 0,0 -1.95,-2.7 -0.04,-4.3 -2.31,-2.57 -0.31,-2.3 -2.38,-1.17 -1.04,-4.36 0.82,-2.55 -0.83,-0.36 0.22,-0.95 3.53,-2.31 1.06,-2.02 -0.06,-1.84 -2.2,-1.27 -0.08,-1.79 2.42,-1.99 -1.89,-0.03 -0.97,-2 -1.34,0.28 -1.46,-3.09 2.05,-1.07 0.34,0.82 1.58,-0.19 2.01,-1.78 -0.47,-1.57 3.29,-0.9 8.22,0.33 3.45,-1.36 5.25,0.32 0.38,-3.01 -2.05,-0.9 0.24,-0.88 2.21,-0.24 3.71,-2.97 0,0 0.55,0 0,0 0.96,-4.01 -2.6,-0.51 -0.37,-2.13 1.02,-1.37 2.93,-0.85 0.64,-0.93 -1.13,-1.31 0,0 -0.58,0 0,0 -0.39,-2.63 -1.56,-0.4 -1.02,-1.82 1.55,-1.32 0,0 -0.02,-0.28 0,0 -3.34,-3.94 3.37,-0.28 2.06,-1.2 0.4,-1.98 -2.53,-1.13 0,0 -0.57,-0.5 0,0 -0.71,0.18 0.03,-1.2 -5.19,-6.3 0.71,-3.44 1.98,-0.77 1.44,0.52 0,0 0.61,0.07 0,0 -4.52,-7.55 0.13,-2.29 2.03,-1.51 0.3,-2.08 -3.61,1.46 -4.96,-8.63 0,0 0,-0.25 0,0 -0.83,-2.32 -1.93,0.26 -0.34,-3.55 -2.34,-3.79 0.7,-6.19 6.44,-1.44 0.84,1.07 1,-1.05 2.74,0.31 3.01,-3.33 0.28,-2.44 0.87,-0.4 5.99,-0.13 -0.03,1.55 3.65,-0.72 4.14,0.76 1.15,1.85 3.3,-1 0.26,1.54 1.15,-0.36 5.83,-2.8 3.31,-3.1 2.91,-0.7 -0.62,-2.13 1.06,-4.75 2.99,0.69 0.21,-1.37 z","SH":"m 181.09486,108.6602 -1.36,0.98 1.24,0.16 -0.62,1.59 -1.15,-1.66 0.89,-1.35 1,0.28 z m -14.01,-41.790004 1.3,0.21 -0.29,0.85 1.34,1.39 -1.94,1.67 -1.64,-1.5 -1.03,-2.79 1.26,-1.53 1,1.7 z m 165.67,-8.51 5.62,1.05 3.79,1.88 5.37,11.14 -4.22,-1.08 -3.22,0.54 -0.12,-0.77 2.21,0 -2.47,-0.87 -1.5,0.96 1.27,0.54 -0.59,0.71 -3.67,-0.07 -1.63,-0.79 0.45,-2.49 -0.95,-1.67 -1.44,-0.48 -2.67,0.98 1.58,1.6 -2.51,-1.5 0.1,-4.49 1.22,-2.81 2,-2.62 1.38,0.24 z m -165.12,-0.29 -0.91,4.28 -1.17,-5.25 2.08,0.97 z m 20.71,-2.08 1.26,0.65 -0.91,0.45 -2.08,-0.96 1.73,-0.14 z m -7.09,-0.58 -0.39,3.48 -1.18,0.58 0.98,0.28 -0.42,0.9 0.84,1.01 -0.91,-0.84 -1.15,1.61 -3.33,0.36 -1.78,-2.27 -0.06,-2.24 7.4,-2.87 z m -9.55,-2.29 1.27,2.23 -1.65,0.13 -2.54,-2.17 2.92,-0.19 z m 11.57,-6.72 -0.55,1.3 -1.12,-0.33 0.33,-0.94 1.34,-0.03 z m -4.67,-2.01 -1.02,2.03 -4,0.6 -2.32,1.82 -1.16,-0.89 0.75,-1.15 6.08,-1.45 1.7,-1.61 -0.03,0.65 z m 3.65,-2.97 -0.78,1.5 -1.72,-0.2 1.84,-2.23 0.66,0.93 z m -21.53,5.04 -0.11,0.9 1.33,0.38 -1.24,0.53 0.96,0.9 -2.42,0.45 -4.45,-6.2 4.47,-5.15 -1.37,2.73 1.47,4.32 1.36,1.14 z m 9.08,-12.85 3.91,1.16 -0.24,1.82 1.03,1.17 -2.04,4.31 -5.29,-0.05 -5.42,-2.37 -0.24,-1.96 2.05,-3.07 6.24,-1.01 z m -5.57,-32.6000004 1.77,0.6 -4.43,0.14 0.29,1 1.71,0.22 0.81,2.06 -3.7,1.92 -1.86,3.2900004 1.11,7.58 3.58,2.32 11.07,-1.05 2.19,-1.26 0,-1.39 2.84,-0.08 3,1.94 3.07,0.17 2.32,-1.48 3.05,1.02 2.47,-0.85 3.12,0.25 6.46,3.36 6.15,-0.11 5.77,2.49 0.89,4.46 1.49,-0.21 1.36,1.18 0.73,-0.67 2.42,0.82 2.48,-4.13 1.71,-0.48 1.75,3.48 -0.02,2.41 1.96,-3.79 2.03,0.02 1.09,-1.66 3.54,-2.07 1.1,-2.15 1.54,-0.06 -1.44,3.07 0.98,2 12.03,3.77 3.84,4.81 1.46,0.06 1.17,-2.09 0.71,0.9 -0.01,-3.72 3.27,1.96 2.01,6.72 3.12,3.56 -0.2,1.54 -0.43,-2.11 -1.85,0.48 0.71,2.76 1.63,-0.88 -1.28,1 1.25,0.36 -0.46,11.66 -4,5.24 -6.03,3.19 -2.31,-0.01 2.07,2.87 3.05,-0.48 1.19,-1 -0.57,-0.1 12.9,-2.44 4.75,3.21 -1.91,2.24 1.3,4.98 -1.87,0.55 -0.41,1.8 -0.77,-0.11 0.92,3.45 -1.54,2.84 2.07,-2.19 1.2,0.43 -0.99,-0.57 0.55,-3.1 1.11,-0.59 -0.15,-1.35 2.17,-3.82 3.4,-0.45 1.04,-1.45 1.77,-0.47 4.68,1.28 5.28,3.73 7.59,2.84 6.6,6.44 5.49,-0.85 8.99,-7.58 5.59,0.22 -2.5,0.46 2.93,0.83 3.45,-1.03 0.55,-1.5 1.56,-0.74 -0.22,1.04 0.59,-0.59 0.85,0.7 -0.38,1.67 -3.15,2.97 0.16,-0.91 -1.38,0.04 0.29,0.94 0.66,-0.25 1.34,16.24 -8.99,6.240004 -5.2,6 -3.19,-0.47 -0.7,-1.85 -1.17,3.45 -2.52,2.83 2.12,5.41 5.44,0.71 0.92,1.38 -0.16,2.16 1.36,0.26 0,0 -0.66,3.64 4.59,1.62 -3.45,1.03 -0.54,-0.96 0.61,-0.89 -2.03,-1.03 -2.29,2.96 -1.78,0.37 -0.99,1.91 -1.87,0.39 -1.46,2.29 1.56,6.33 -0.68,2.57 0,0 -0.27,1.83 0,0 2.98,1.51 0.42,1.87 2.45,1.99 4.63,0.29 -0.19,1.01 1.4,0.56 0.65,3.91 -1.46,2.07 -1.19,6.22 -3.84,0.72 -0.74,-1.26 -1.04,0.18 0.73,3.47 -1.23,2.32 0.67,0.76 -2.41,0.33 -1.96,2.93 -3.47,0.51 -0.61,2.4 -2.49,-0.57 -1.31,0.74 -1.09,7.63 -1.33,1.93 0,0 -0.98,0.46 -5.07,-1.49 -7.8,-5.34 -3,-0.1 -1.44,-0.92 0,0 1.13,-1.65 -2.15,-0.34 -3.28,-3.24 -1.9,-4.12 -1.52,0.93 -1.63,-1.11 -0.71,-5.44 3.07,-1.35 -0.5,-2.85 1.96,-2.29 -1.94,-0.51 0.5,-1.01 -0.9,-1.66 -2.63,-1.54 1.04,-1.35 -0.16,-1.46 1.6,-0.55 0.64,-1.56 0.09,-0.75 -1.62,-0.83 -3.03,2.71 -2.58,-0.75 -0.84,1.04 0.66,0.68 -0.82,2.83 -4.24,-0.34 -1.27,3.73 -4.62,-0.65 -1.02,3.15 -3.46,3.9 -2.31,-0.81 -0.2,-1.96 -1.54,-0.49 -0.09,-1.59 -2.61,8.04 0,0 -3.63,-0.89 -7.85,-5.57 -2.84,-8.25 -5.09,-4.77 -3.92,-8 -3.21,-4.36 -6.67,-2.83 -13.06,0.56 0,0 -0.99,-1.86 -2.09,-0.74 -3.19,-3.9 -1.47,-4.87 -1.33,-1.45 1.3,-1.06 -1.36,0.81 -1.74,-3.01 -1.8,-0.1 4.75,-2.33 2.64,0.53 -0.5,1.1 0.84,-0.01 0.03,-0.82 0.4,0.78 1.59,-0.4 1.7,-2.38 -0.06,-0.66 -1.61,-0.11 1.26,-0.59 -1.92,-2.33 0.77,-0.25 -0.87,-0.01 -1.2,-4.05 -2.03,-0.28 -2.28,1.55 0.24,-1.13 -0.39,1.15 -3.12,-5.670004 2.05,-6.56 -0.11,-5.57 -0.82,-0.94 -2.72,1.12 -2.47,-1.19 -2.24,0.33 -2.03,2.44 -2.1,-0.98 -2.72,-4 0.55,2.11 -1.32,-1.19 1.16,1.97 -1.83,-2.48 1.71,-5.06 0.91,-0.27 -0.43,1.16 1.68,0.73 0.85,-1.52 2.24,-0.45 -0.94,0.37 0.99,-1.98 -1.01,0.57 -1.33,-0.58 -0.31,0.74 -2.74,-0.5 0.8,-2.11 12.95,-2.79 3.2,0.77 3.16,-2.16 2.5,-3.3 2.63,-0.58 0.37,-1.49 1.89,0.8 0.85,-0.71 -1.33,0.41 -1.7,-0.8 0.21,-2 -1.4,-2.4 -1.57,0.95 -1.83,4.58 -0.89,-0.28 0.53,0.36 -1.78,1.02 -3.35,-0.07 -2.45,-1.1 0.75,-1.72 -0.78,-1.37 4.37,-3.78 -0.26,-3.4 0.78,-3.11 0.67,-0.06 -1.44,-0.52 0.61,-1.33 -0.93,1.28 -3.29,0.05 -0.29,-0.75 2.96,-1.54 -0.96,0.24 -1.48,-4.09 -4.42,-2.97 -0.48,-3.33 -3.07,-1.56 -0.25,-0.73 1.16,-0.78 -0.81,-3.38 -5.64,-7.81 -0.43,-4.75 -5.55,0.15 -6.2,3.87 -2.35,-1.31 -0.83,-1.86 -1.53,-0.41 -0.35,1.7 -2.19,1.5 -0.11,12.12 -1.13,-1.11 1.04,-17.71 6.25,-15.6700004 1.13,-0.64 1.61,0.73 z","TH":"m 308.47486,364.3902 3.4,0.03 0.68,-0.78 2.96,1.01 0.47,1.66 2.41,-1.02 1.85,2.16 2.28,-0.62 -0.47,0.77 1.43,0.8 -0.43,1.16 -2.25,-1.08 -0.52,2.41 0,0 0.34,0 0,0 0.34,1.85 0,0 -0.03,0.61 0,0 0.95,-0.29 2.22,1.99 -1.31,1.75 3.02,3.88 -0.68,1.68 0,0 0.05,0.32 0,0 0.22,3.1 2.84,0.73 -1.19,0.76 3.67,-0.28 0.76,-0.95 5.13,2.72 3.08,-0.01 1.94,-1.03 1.69,0.77 0.06,0.95 4.58,-1.4 1.6,2.54 3.33,0.45 0.2,3.72 1.79,0.3 -0.78,0.96 3.85,3.7 -1.08,0.51 -2.69,4.83 -1.24,0.7 -1.08,-0.86 -0.89,2.49 1.56,0.33 0.04,1.34 3.32,-0.55 0.55,1.76 1.13,-0.03 0.05,2.27 0.92,0.44 -0.98,1.65 -1.2,0.27 0.97,1.84 -0.34,1.47 1.53,1.2 3.71,-0.04 1.83,-1.59 2.22,0.69 0.67,1.42 1.27,-1.44 2,0.09 1.89,1.85 0.15,2.23 2.02,0.33 1.68,2.58 1.03,-1.14 1.48,0.58 5.89,-0.74 1.5,2.75 1.89,-0.49 1.68,1.07 -0.02,2.89 2.35,0.24 0.66,2.4 4.71,-1.04 4.75,1.77 1.16,-1.59 0.48,1.59 1.45,-0.12 0.05,2.23 1.59,-1.63 -0.63,-0.76 0.95,-2.15 2.89,-3.66 -0.27,-1.95 -2.35,0.16 2.12,-5.26 0,0 3.44,-1.33 1.27,0.78 0.31,1.55 2.03,-0.44 1.04,0.98 2.98,-0.88 0.81,1.77 0,0 1.07,-0.03 0,0 1.09,0.32 0.25,4.63 0.49,-0.97 1.55,0.25 0.13,1.83 -0.91,0.69 3.1,1.33 2.05,-1.05 1.03,5.73 1.93,2.02 -0.97,1.68 -1.14,-0.68 -5.32,0.95 -1.09,-0.72 -0.87,0.51 0.22,0.95 -1.72,-0.19 -2.49,3.02 -0.22,2.17 -1.34,0.36 -0.24,-1.88 -0.83,0.95 -1.84,-0.52 -1.65,1.64 -0.07,1.44 -2.6,0.39 -0.58,-1.07 0.21,1.38 -0.68,-0.86 -0.69,1.47 -1.81,-1.05 0.21,3.16 2.12,-0.16 0.13,0.79 -1.42,2.17 -1.8,-0.49 -0.81,2.81 2.54,0.09 0.47,0.95 -1.23,1.15 0.51,2.22 3.72,1.02 -0.2,2.09 -3.3,1.91 -0.1,1.44 -4.06,-0.85 -0.6,2.53 -2.6,-1.63 -0.87,4.61 1.59,-0.07 0.14,0.74 -2.46,0.94 -1.42,-1.12 -1.41,0.23 -0.23,2.05 -1.28,0.49 -1.76,0.06 -0.64,-1.72 1.17,-2.59 -2.18,-2.13 1.08,-0.99 -1.17,-0.95 -1.22,1.29 0.29,1.19 -3.89,2.45 0.2,2.83 -2.8,0.42 -0.94,1.46 1.15,2.04 2.77,-0.6 0.03,1.45 2.13,2.2 -1.71,1.59 0.67,1.72 -1.11,-0.83 -2.34,1.35 0.27,1.26 1.82,0.35 -0.29,0.89 0,0 -6.28,3.38 0,-1.31 -2.9,-1.69 -0.44,0.92 -1.28,-0.43 0.7,0.87 -1.56,-0.32 -1.59,1.3 -0.38,-0.64 -5.31,1.49 -1.98,-1.54 -1.42,0.29 -0.72,1.46 -2.42,1.05 -0.09,-2.1 -2.65,-0.48 0.24,-2.95 -1.16,-0.18 -1.39,1.21 0.49,-1.19 -1.93,-1.26 -0.02,-4.95 0.97,0.24 0.35,-0.79 -0.63,-1.19 -5.42,-0.95 0.07,1 -1.63,0.22 0.05,1.77 -1.29,0.14 -0.71,1.38 -0.25,-0.95 -2.5,0.63 0.03,2.97 1.19,1.85 -0.57,3.04 1.69,3.98 -1.47,0.87 0.94,1.53 -0.95,-0.08 0.51,3.07 -1.13,1.25 0.58,0.48 0,0 -0.26,0 0,0 -0.33,2.02 -3.59,-2.44 -0.31,1.99 -0.92,0.32 0.41,-1.08 -2.3,-0.49 -0.81,-1.41 1.56,-3.05 -1.27,-2.25 -1.27,0.4 -0.17,-1.75 -1.68,0.13 -0.23,1.35 -2.62,0.78 -0.46,-1.6 -2.76,-0.53 0.26,1.59 -0.82,0.16 -3.12,-4.44 -1.27,0.35 0,0 -0.48,0.19 0,0 -1.08,0.65 -0.96,-1.6 -0.89,0.85 -1.92,-0.45 -1.71,1.3 -1.22,-0.53 -2.01,2.65 -2.45,-0.63 -0.18,1.84 0.97,0.15 -0.81,2.35 1.66,0.52 1.84,2.23 2.06,0.16 0.17,1.22 0,0 0.35,0 0,0 2.17,0.39 0.07,3.07 -1.53,0.66 -1.36,-1.39 -2.03,1.02 -2.41,-0.98 -0.11,3.97 -0.83,0.67 -1.07,-0.73 0,0 -0.33,0 0,0 -2.29,-1.79 -1.88,0.69 -1.4,-0.71 -0.65,-1.53 0.86,-0.35 -0.79,-1.4 0.59,-0.83 -1.05,0.02 0.82,-2.12 -0.77,-1.49 0.49,-2.58 -2.43,-0.42 -1.09,-2.6 -0.77,-0.17 -1.12,1.55 -0.18,-0.96 -1.3,0.45 0.02,-2 -0.71,0.18 0,0 -0.47,0 0,0 -1.34,-2.81 -3.64,0.78 -0.68,-1.49 1.16,-1.68 -2.01,-0.64 0.68,-0.75 -0.87,0.12 -1.97,-2.69 -0.44,-2.85 -1.79,0.03 -2.95,-1.94 -1.52,0.2 -0.03,-1.99 -1.48,-0.94 -0.3,-1.38 -1.56,0.24 -0.25,0.9 -1.56,-0.95 -0.52,0.95 -2.19,-2.1 -2.4,2.78 0.11,0.92 -1.96,1.04 0,0 -0.2,-1.31 1.44,-2.66 -1.54,-5.49 0.77,-1.28 2.12,0.09 -1.82,-4.86 -3.41,-0.53 -2.99,0.91 -0.3,1.06 1.2,1.54 -0.5,1.19 -5.32,-1.09 0.17,-2.99 2.79,-2.39 -0.92,-1.15 2.02,-3.36 -0.1,-1.67 -1.07,-0.34 0.26,-1.52 1.76,0.04 -0.62,-2.6 0.58,-2.17 1.42,-1.08 0,0 0.41,0.15 0,0 1.01,0.46 0.57,-1.14 1.34,0.26 0.7,-1.84 -1.06,0.44 0.07,-1.75 2.41,-1.69 -0.08,-0.78 -0.75,0.08 0.2,-1.1 -2.46,-2.16 -2.57,1.39 1.03,-2.39 -1.48,-0.1 -0.68,0.93 -0.23,-1.89 3.94,0.78 0.78,-0.9 0.31,0.6 2.17,-0.73 -1.29,-0.45 -0.14,-1.85 -1.36,-1.41 1.26,-3.19 4.04,0.92 1.07,-0.65 1.74,1.78 3.68,-1.52 -0.72,-1.09 1.39,-0.75 -0.61,-0.93 -4.11,-2.46 0.84,-0.95 -0.58,-1.58 1.87,-3.21 -3.51,-2.32 2.95,-1.4 2.1,4.07 0.81,-1.3 -0.61,-2.59 2.23,-3.5 -2.63,-0.68 -1.92,-1.99 -1.09,0.46 -0.61,-1.36 -1.66,0.55 -2.82,-1.13 0.58,-1.67 -1.95,-1.07 0.53,-2.54 -5.3,-0.6 -0.21,-1.61 -1.9,-0.69 0.58,-1.27 -1.49,-3.53 0.2,-2.13 0,0 4.63,-3 0.58,-1.59 1.82,-0.04 0.52,-1.69 1.4,1.94 0.76,-1.7 1.95,0.43 0,0 0.4,0 0,0 2.34,-0.09 -0.79,-1.25 2.04,-0.22 0.83,-1.77 -0.51,-0.67 1.51,-1.66 0.92,1.56 1.07,0.02 0.79,-1.29 3.37,-1.08 0.55,-2.09 2.24,-0.45 2.4,-4.51 0,0 0,-0.61 0,0 -0.65,-1.91 3.63,-0.48 0,0 0.38,0 0,0 3.94,1.96 1.54,1.95 2.67,-0.23 2.87,-2.39 3.23,2.15 0.57,-1.76 -1.71,-0.88 -0.28,-2.32 0.91,0.05 -0.63,-1.35 2.78,-0.88 -0.43,-0.94 z"}};
+function stateCat(code){return code==='BW'||code==='BY'?'A':(code==='SN'?'C':'B');}
+const CATCOL={A:'#AFA9EC',B:'#5DCAA5',C:'#EF9F27'};
+function drawGeo(){
+ const t=T(),cur=$('state').value;
+ let svg=`<svg viewBox="${DE_GEO.vb}" role="img" aria-label="${t.mapTitle}">`;
+ for(const [code,name] of STATES.map(s=>[s[0],s[1]])){svg+=`<path d="${DE_GEO.p[code]}" data-st="${code}" fill="${CATCOL[stateCat(code)]}" tabindex="0" class="${code===cur?'sel':''}"><title>${name}</title></path>`;}
+ // draw selected last for visible outline
+ svg+='</svg>';$('deMap').innerHTML=svg;
+ const sel=$('deMap').querySelector('path.sel');if(sel)sel.parentNode.appendChild(sel);
+ $('mapLegend').innerHTML=`<div><i style="background:${CATCOL.A}"></i>${t.lgA}</div><div><i style="background:${CATCOL.B}"></i>${t.lgB}</div><div><i style="background:${CATCOL.C}"></i>${t.lgC}</div>`;
+ $('deMap').querySelectorAll('path').forEach(p=>{
+  p.addEventListener('mouseenter',()=>stInfo(p.dataset.st));
+  p.addEventListener('focus',()=>stInfo(p.dataset.st));
+  p.addEventListener('click',()=>pickState(p.dataset.st));
+  p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pickState(p.dataset.st);}});
+ });
+ stInfo(cur);
+}
+function stInfo(code){
+ const t=T(),st=STATES.find(s=>s[0]===code),o=readInputs(),cur=o.state;
+ const here=calc({...o,state:code,kiRate:st[2]/100}).net,base=calc(o).net,d=r2(here-base);
+ const pv=(code==='SN'?2.3:1.8)+((o.kids===0&&o.age23)?0.6:0);
+ const loc=lang==='de'?'de-DE':'en-IE';
+ $('stInfo').innerHTML=`<b>${st[1]}</b>${code===cur?` · <span class="muted">${t.stSel}</span>`:''}<table style="width:100%;margin-top:6px">
+ <tr><td class="muted">${t.stChurch}</td><td class="n">${st[2]} %${o.ki?'':' <span class="muted">(—)</span>'}</td></tr>
+ <tr><td class="muted">${t.stCare}</td><td class="n">${pv.toLocaleString(loc)} %</td></tr>
+ <tr><td class="muted">${t.stNet}</td><td class="n"><b>${fmt(here*period)}</b></td></tr>
+ <tr><td></td><td class="n muted">${d===0?t.stSame:(d>0?'+':'')+fmt(d*period)+' '+t.stDiff}</td></tr></table>`;
+}
+function pickState(code){$('state').value=code;render();drawGeo();}
+function openMap(){$('mapModal').hidden=false;drawGeo();$('closeMap').focus();}
+function closeMap(){$('mapModal').hidden=true;$('openMap').focus();}
+$('openMap').addEventListener('click',openMap);
+$('closeMap').addEventListener('click',closeMap);
+$('mapModal').addEventListener('click',e=>{if(e.target.id==='mapModal')closeMap();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('mapModal').hidden)closeMap();});
+
+const STATE_IDS=['gross','cls','kids','c_23','state','c_ki','status','hi','kasse','zb','pkv','c_ag','a_fb','fb','a_bav','bav','a_fac','sg','a_sj','sjg','sj2','sjrv'];
+let stateReady=false;
+function saveState(){if(!stateReady)return;try{const st={};for(const id of STATE_IDS){if(PAGE==='past'&&id==='kasse')continue;const e=$(id);st[id]=e.type==='checkbox'?e.checked:e.value;}
+ const prev=JSON.parse(sessionStorage.getItem('salaryState')||'{}');Object.assign(prev,st);
+ if(PAGE!=='past')prev.zbResolved=zbValue();prev.adv=readRaw().adv;if(PAGE==='past'){prev.pastYear=YEAR;prev.pastAdj=ADJ;}
+ sessionStorage.setItem('salaryState',JSON.stringify(prev));}catch(e){}}
+function loadState(){try{const st=JSON.parse(sessionStorage.getItem('salaryState')||'null');if(!st)return false;
+ for(const id of STATE_IDS){if(!(id in st))continue;if(PAGE==='past'&&id==='kasse')continue;const e=$(id);if(e.type==='checkbox')e.checked=!!st[id];else e.value=st[id];}
+ $('grossR').value=$('gross').value;if(PAGE==='past'&&st.pastYear)YEAR=+st.pastYear;if(PAGE==='past'&&st.pastAdj)ADJ=st.pastAdj;return true;}catch(e){return false;}}
+if(PAGE==='past'){YEAR=2020;}
+$('year').addEventListener('change',()=>{YEAR=+$('year').value;applyLang();});
+document.querySelectorAll('[data-adj]').forEach(b=>b.addEventListener('click',()=>{ADJ=b.dataset.adj;render();}));
+syncKV();
+$('cls').value='1';
+applyLang();
+if(loadState()){syncKV();if(PAGE==='past')$('year').value=String(YEAR);}
+stateReady=true;applyLang();
+</script>
+</body>
+</html>
