@@ -39,11 +39,20 @@ with sync_playwright() as pw:
                 for f in ['index.html','past.html','summary.html','changes.html','privacy.html']:
                     pg.goto(B+l+'/'+f); pg.wait_for_timeout(400)
                     for v in ([0,450,1500,3500,9000] if f!='privacy.html' else [None]):
-                        if v is not None: pg.fill('#grossV',str(v)); pg.wait_for_timeout(120)
+                        if v is not None: pg.evaluate("v=>{const g=document.getElementById('gross');g.value=String(v);g.dispatchEvent(new Event('input',{bubbles:true}));}",v); pg.wait_for_timeout(120)
                         t=pg.inner_text('body')
                         for m in BAD.finditer(t): problems.append(('bad value',scheme,w,l,f,v,t[max(0,m.start()-40):m.end()+20]))
                         o=pg.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth')
                         if o>1: problems.append(('overflow',scheme,w,l,f,o))
+            # Past: no take-home switch on the page, year in the list = year in the text
+            pg.goto(B+'en/past.html'); pg.wait_for_timeout(400)
+            if pg.evaluate("(()=>{const e=document.getElementById('srcSeg');return !!e&&e.offsetParent!==null})()"): problems.append(('past shows net switch',scheme,w))
+            yv=pg.input_value('#year')
+            if yv not in pg.inner_text('#adjOut'): problems.append(('past year mismatch',scheme,w,yv))
+            # settings drawer opens and holds the salary field
+            pg.goto(B+'en/summary.html'); pg.wait_for_timeout(400); pg.click('#setFab'); pg.wait_for_timeout(900)
+            fr=[f for f in pg.frames if 'embed=1' in f.url]
+            if not fr or not fr[0].evaluate("document.getElementById('grossV').offsetParent!==null"): problems.append(('drawer without salary',scheme,w))
             if errs: problems.append(('js errors',scheme,w,errs[:5]))
             ctx.close()
     b.close()

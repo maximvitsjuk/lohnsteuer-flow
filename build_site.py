@@ -95,12 +95,12 @@ for dp,_,fs in os.walk(OUT):
             for m in re.finditer(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>',open(os.path.join(dp,f),encoding='utf-8').read(),re.S):
                 hashes.add("'sha256-"+base64.b64encode(hashlib.sha256(m.group(1).encode('utf-8')).digest()).decode()+"'")
 csp=("default-src 'none'; script-src 'self' "+' '.join(sorted(hashes))+"; style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
-     "connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests")
+     "connect-src 'none'; frame-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests")
 open(os.path.join(OUT,'_headers'),'w').write(f'''*
     Content-Security-Policy: {csp}
     Strict-Transport-Security: max-age=31536000
     X-Content-Type-Options: nosniff
-    X-Frame-Options: DENY
+    X-Frame-Options: SAMEORIGIN
     Referrer-Policy: no-referrer
     Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
     Cross-Origin-Opener-Policy: same-origin

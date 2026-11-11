@@ -106,6 +106,13 @@ input[type=range]{width:100%;margin-top:8px}
 svg text{font-family:inherit}
 table{width:100%;border-collapse:collapse;font-size:14px}
 td,th{padding:7px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+[hidden]{display:none!important}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:12px;align-items:center}.chips span{border:1px solid var(--border);border-radius:999px;padding:2px 10px;color:var(--muted)}
+html:not(.embed) .setcard{display:none!important}#yearCard .fld{margin:0}
+/* settings-only view, shown inside the settings drawer on other pages */
+.embed main>*:not(.setcard),.embed footer,.embed #setChips{display:none!important}
+.embed main{padding:12px 12px 24px;max-width:none}.embed .setcard{margin:0;border:0;box-shadow:none;background:transparent;padding:0}
+.pairrow.single{grid-template-columns:1fr auto}.pairlbl.single{grid-template-columns:1fr}
 .pairrow input.derived{background:transparent;border-style:dashed;color:var(--muted);cursor:default}.pairrow input.derived:focus{outline:none}
 .pairlbl,.pairrow{display:grid;grid-template-columns:1fr 1fr auto;gap:10px 12px;align-items:center}.pairlbl{grid-template-columns:1fr 1fr;margin-bottom:6px}.pairrow .pc{min-width:0}.pairrow .gu{max-width:none}.pairrow input[type=number]{width:100%}
 @media (max-width:600px){.pairlbl .lbl label{font-size:12px}.pairrow{grid-template-columns:1fr 1fr}.pairrow .guseg{grid-column:1/-1;justify-self:start}}
@@ -141,7 +148,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
 </head>
 <body>
 <main>
-<nav class="topnav" aria-label="Pages"><a href="summary.html" data-nav="overview"></a><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a></nav>
+<nav class="topnav" aria-label="Pages"><a href="past.html" data-nav="past"></a><a href="index.html" data-nav="now"></a><a href="changes.html" data-nav="future"></a><a href="summary.html" data-nav="overview"></a></nav>
 <header>
   <div>
     <h1 id="t_title"></h1>
@@ -153,7 +160,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
   </div>
 </header>
 
-<section class="card">
+<section class="card setcard">
   <div class="groups">
     <fieldset class="grp g-wide">
       <legend><span class="num">1</span><span data-t="g1"></span></legend>
@@ -165,9 +172,10 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
         <div class="seg" id="srcSeg" role="group" style="margin-bottom:12px"><button type="button" data-s="g"></button><button type="button" data-s="n"></button></div>
         <div class="pairlbl"><div class="lbl"><label for="gross" data-t="gross"></label><button class="tip" data-tip="gross" aria-expanded="false">?</button></div><div class="lbl" id="netLbl"><label for="netIn" id="netL"></label></div></div>
         <div class="tipbox" id="tip-gross" hidden></div>
-        <div class="pairrow" id="pairRow"><div class="pc"><input type="number" id="gross" min="0" max="30000" step="any" value="3500"></div><div class="pc" id="netCol"><input type="number" id="netIn" min="0" step="any" inputmode="decimal"></div></div>
-        <input type="range" id="grossR" min="0" max="10000" step="50" value="3500" aria-label="gross" style="width:100%;margin-top:10px">
+        <div class="pairrow" id="pairRow"><div class="pc"><input type="number" id="gross" min="0" max="30000" step="any" value="2000"></div><div class="pc" id="netCol"><input type="number" id="netIn" min="0" step="any" inputmode="decimal"></div></div>
+        <input type="range" id="grossR" min="0" max="10000" step="50" value="2000" aria-label="gross" style="width:100%;margin-top:10px">
         <p class="muted" id="netOut" style="margin:6px 0 0;font-size:12px"></p>
+        <div class="chips" id="setChips"></div>
       </div>
     </fieldset>
     <fieldset class="grp">
@@ -221,6 +229,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
     </details>
   </div>
 </section>
+<section class="card" id="yearCard" hidden></section>
 
 <section class="card">
   <div class="viewbar">
@@ -232,7 +241,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin-top:24px;line-
   <div class="cmp" id="cmp" hidden></div>
   <div class="notice" id="notice"></div>
   <div id="detail" class="detail" hidden></div>
-  <p id="perDay" style="margin:10px 0 0;font-size:14px;line-height:1.5"></p>
+  <div id="perDayRow"><div class="lbl" style="align-items:flex-start;gap:10px;margin-top:10px"><p id="perDay" style="margin:0;font-size:14px;line-height:1.5"></p><button class="tip" data-tip="perday" aria-expanded="false">?</button></div><div class="tipbox" id="tip-perday" hidden></div></div>
   <p class="muted" id="kpiHint" style="margin:6px 0 0;font-size:12px"></p>
 </section>
 
@@ -362,7 +371,7 @@ r2:{bav:"Company pension (salary conversion)",bavD:"your future company pension 
 status:"Employment status",hi:"Health insurance",statusOpts:["Employee","Working student (Werkstudent)","Civil servant (Beamter)"],hiOpts:["Public (gesetzlich)","Private"],
 statusNotes:{emp:"You pay health, care, pension and unemployment insurance – all mandatory.",stud:"As a working student you only pay pension insurance. Your student health insurance is paid separately and isn't deducted here.",beamt:"Civil servants pay no social insurance: the state pays your pension and part of medical costs (Beihilfe). You insure the rest privately."},
 g1:"Your income",g2:"About you",g3:"Your insurance",g4:"Display",age:"23 or older",pkv:"Private premium per month (€)",
-tips:{adj:"Wage-adjusted (recommended): your salary is scaled by the average wage of that year (Deutsche Rentenversicherung), so you compare a person in the same position. Inflation-adjusted: scaled by consumer prices (Destatis) – same purchasing power. Same euros: no scaling – useful if you enter what you actually earned back then. Only wage-adjusted shows ‘bracket creep’ (kalte Progression).",kasse:"Pick your public health insurer – the extra contribution (Zusatzbeitrag) is filled in automatically. Can't find it? Choose 'Other' and type the rate from your insurer's website or payslip. Not sure at all? Use the 2026 average.",
+tips:{perday:"How this is calculated: your monthly taxes and social insurance divided by your gross pay give the share of your pay that is deducted. The same share of an 8-hour day (9:00–17:00) gives the time. Per calendar day = monthly deductions × 12 ÷ 365. This is an illustration, not a statistic: your working hours may differ, and pay is not earned hour by hour. Not included: your employer’s share (about 21 % on top of your gross), VAT and other indirect taxes. Contributions are not a pure tax – they give you pension rights and insurance cover. The idea is borrowed from the “Steuerzahlergedenktag” of the Bund der Steuerzahler and from “Daily Bread” of the Where Does My Money Go? project.",adj:"Wage-adjusted (recommended): your salary is scaled by the average wage of that year (Deutsche Rentenversicherung), so you compare a person in the same position. Inflation-adjusted: scaled by consumer prices (Destatis) – same purchasing power. Same euros: no scaling – useful if you enter what you actually earned back then. Only wage-adjusted shows ‘bracket creep’ (kalte Progression).",kasse:"Pick your public health insurer – the extra contribution (Zusatzbeitrag) is filled in automatically. Can't find it? Choose 'Other' and type the rate from your insurer's website or payslip. Not sure at all? Use the 2026 average.",
 fb:"An allowance the tax office registered for you on request (Lohnsteuerermäßigung), e.g. for high commuting or work costs. It appears on your payslip as 'Freibetrag'. It lowers your monthly wage tax.",
 bav:"Part of your gross goes straight into a company pension (betriebliche Altersversorgung). Up to €676/month is tax-free and up to €338/month free of social insurance (2026). Your employer must add 15% of the converted amount if it saves contributions.",
 fac:"Alternative to III/V for married couples: both are in class IV, but the tax is multiplied by a factor below 1 so the monthly tax already reflects joint taxation (splitting). Needs your spouse's gross. Applied for at the tax office; it switches your class to IV here.",
@@ -450,7 +459,7 @@ r2:{bav:"Betriebsrente (Entgeltumwandlung)",bavD:"deine spätere Betriebsrente �
 status:"Beschäftigungsstatus",hi:"Krankenversicherung",statusOpts:["Arbeitnehmer","Werkstudent","Beamter"],hiOpts:["Gesetzlich","Privat"],
 statusNotes:{emp:"Du zahlst Kranken-, Pflege-, Renten- und Arbeitslosenversicherung – alles Pflicht.",stud:"Als Werkstudent zahlst du nur Rentenversicherung. Deine studentische Krankenversicherung zahlst du separat; sie wird hier nicht abgezogen.",beamt:"Beamte zahlen keine Sozialversicherung: Der Dienstherr zahlt die Pension und einen Teil der Krankheitskosten (Beihilfe). Den Rest versicherst du privat."},
 g1:"Dein Einkommen",g2:"Zu dir",g3:"Deine Versicherung",g4:"Anzeige",age:"23 Jahre oder älter",pkv:"Private Prämie pro Monat (€)",
-tips:{adj:"Lohnbereinigt (empfohlen): dein Gehalt wird mit dem Durchschnittslohn des Jahres skaliert (Deutsche Rentenversicherung) – du vergleichst eine Person in gleicher Stellung. Inflationsbereinigt: skaliert mit den Verbraucherpreisen (Destatis) – gleiche Kaufkraft. Gleiche Euro: keine Skalierung – sinnvoll, wenn du dein damaliges echtes Gehalt eingibst. Nur lohnbereinigt zeigt die kalte Progression.",kasse:"Wähle deine Krankenkasse – der Zusatzbeitrag wird automatisch eingesetzt. Nicht dabei? 'Andere' wählen und den Satz von der Website der Kasse oder der Lohnabrechnung eintragen. Gar nicht sicher? Den Durchschnitt 2026 nehmen.",
+tips:{perday:"So wird gerechnet: Deine monatlichen Steuern und Sozialabgaben geteilt durch dein Brutto ergeben den Anteil, der abgezogen wird. Derselbe Anteil eines 8-Stunden-Tages (9–17 Uhr) ergibt die Uhrzeit. Pro Kalendertag = monatliche Abzüge × 12 ÷ 365. Das ist eine Veranschaulichung, keine Statistik: Deine Arbeitszeit kann anders sein, und Lohn entsteht nicht Stunde für Stunde. Nicht enthalten: der Arbeitgeberanteil (rund 21 % zusätzlich zum Brutto), Mehrwertsteuer und andere indirekte Steuern. Sozialbeiträge sind keine reine Steuer – sie bringen dir Rentenansprüche und Versicherungsschutz. Die Idee stammt vom „Steuerzahlergedenktag“ des Bundes der Steuerzahler und von „Daily Bread“ des Projekts Where Does My Money Go?.",adj:"Lohnbereinigt (empfohlen): dein Gehalt wird mit dem Durchschnittslohn des Jahres skaliert (Deutsche Rentenversicherung) – du vergleichst eine Person in gleicher Stellung. Inflationsbereinigt: skaliert mit den Verbraucherpreisen (Destatis) – gleiche Kaufkraft. Gleiche Euro: keine Skalierung – sinnvoll, wenn du dein damaliges echtes Gehalt eingibst. Nur lohnbereinigt zeigt die kalte Progression.",kasse:"Wähle deine Krankenkasse – der Zusatzbeitrag wird automatisch eingesetzt. Nicht dabei? 'Andere' wählen und den Satz von der Website der Kasse oder der Lohnabrechnung eintragen. Gar nicht sicher? Den Durchschnitt 2026 nehmen.",
 fb:"Ein Freibetrag, den das Finanzamt auf Antrag eingetragen hat (Lohnsteuerermäßigung), z. B. für hohe Fahrt- oder Werbungskosten. Steht auf der Lohnabrechnung als 'Freibetrag'. Senkt die monatliche Lohnsteuer.",
 bav:"Ein Teil des Bruttos fließt direkt in eine Betriebsrente (bAV). Bis 676 €/Monat steuerfrei und bis 338 €/Monat sozialversicherungsfrei (2026). Der Arbeitgeber muss 15 % des umgewandelten Betrags dazugeben, soweit er Beiträge spart.",
 fac:"Alternative zu III/V für Ehepaare: beide in Klasse IV, aber die Steuer wird mit einem Faktor unter 1 multipliziert, sodass die Monatssteuer schon dem Splitting entspricht. Braucht das Brutto des Partners. Wird beim Finanzamt beantragt; setzt hier die Klasse auf IV.",
@@ -537,7 +546,7 @@ function applyLang(){
  const set=(id,v)=>{$(id).textContent=v;};
  set('t_title',PAGE==='past'?t.pastTitle:t.title);set('t_sub',PAGE==='past'?t.pastSub:t.sub);
  document.querySelectorAll('[data-nav]').forEach(a=>{a.textContent={overview:t.navOverview,past:t.navPast,now:t.navNow,future:t.navFuture}[a.dataset.nav];a.classList.toggle('on',a.dataset.nav===PAGE||(PAGE==='now'&&a.dataset.nav==='now'));});
- if(PAGE==='past'){$('f_year').hidden=false;const yv=$('year').value||String(YEAR);$('year').innerHTML=E.YEARS.filter(y=>y<2026).reverse().map(y=>`<option value="${y}">${y}</option>`).join('');$('year').value=yv;}set('t_asof',PAGE==='past'?(lang==='de'?'Regeln des gewählten Jahres':'Rules of the selected year'):t.asof);
+ if(PAGE==='past'){$('f_year').hidden=false;const yv=String(YEAR);$('year').innerHTML=E.YEARS.filter(y=>y<2026).reverse().map(y=>`<option value="${y}">${y}</option>`).join('');$('year').value=yv;}set('t_asof',PAGE==='past'?(lang==='de'?'Regeln des gewählten Jahres':'Rules of the selected year'):t.asof);
  document.querySelectorAll('[data-t]').forEach(e=>{e.textContent=t[e.dataset.t]||'';});
  document.querySelectorAll('.tipbox').forEach(b=>{b.textContent=t.tips[b.id.slice(4)]||'';});
  document.querySelectorAll('.tip').forEach(b=>b.setAttribute('aria-label',(lang==='de'?'Erklärung: ':'Explain: ')+(t[b.dataset.tip]||'')));
@@ -616,9 +625,10 @@ function solveGross(){ // smallest gross whose take-home pay reaches the target 
 function paintNet(){const t=T(),now=PAGE==='now',y=unitIsYear(),u=y?(lang==='de'?' / Jahr':' / year'):(lang==='de'?' / Monat':' / month'),src=now&&netMode?'n':'g';
  $('srcSeg').hidden=!now;$('netCol').hidden=!now;$('netLbl').hidden=!now;
  document.querySelectorAll('#srcSeg button').forEach(b=>{b.textContent=b.dataset.s==='g'?t.srcG:t.srcN;b.classList.toggle('on',b.dataset.s===src);b.setAttribute('aria-pressed',b.dataset.s===src);});
- const gl=document.querySelector('label[for="grossV"],label[for="gross"]');if(gl)gl.textContent=t.gross+(now?u+(src==='n'?t.calcTag:''):'');
+ const gl=document.querySelector('label[for="grossV"],label[for="gross"]');if(gl&&now)gl.textContent=t.gross+u+(src==='n'?t.calcTag:'');
  $('netL').textContent=t.netL+u+(src==='g'?t.calcTag:'');
  const row=$('pairRow'),seg=document.querySelector('.guseg');if(seg&&seg.parentNode!==row)row.appendChild(seg);
+ row.classList.toggle('single',!now);document.querySelector('.pairlbl').classList.toggle('single',!now);
  const gv=$('grossV'),ni=$('netIn');
  if(gv){gv.readOnly=src==='n';gv.classList.toggle('derived',src==='n');gv.tabIndex=src==='n'?-1:0;}
  ni.readOnly=src==='g';ni.classList.toggle('derived',src==='g');ni.tabIndex=src==='g'?-1:0;
@@ -628,9 +638,16 @@ function paintNet(){const t=T(),now=PAGE==='now',y=unitIsYear(),u=y?(lang==='de'
  const out=$('netOut');if(!now){out.hidden=true;return;}out.hidden=false;
  out.textContent=src==='n'?(netReach?t.netOut:t.netNo):t.netHintG;}
 document.addEventListener('DOMContentLoaded',()=>setTimeout(paintNet,0));
+function paintChips(){const de=lang==='de',sel=id=>{const e=$(id);return e&&e.selectedOptions[0]?e.selectedOptions[0].textContent:'';},
+ cls=sel('cls').split(' – ')[0],kids=+$('kids').value,ins=$('status').value!=='emp'?sel('status'):sel('hi'),
+ adv=['a_fb','a_bav','a_fac','a_sj'].some(id=>$(id)&&$(id).checked);
+ let k='';if($('hi').value==='pub'&&$('status').value==='emp'&&PAGE==='now'){const kt=sel('kasse');if(kt&&!/^(Weiß nicht|Not sure|Durchschnitt|Average)/.test(kt))k=kt.split(' – ')[0];}
+ const items=[(de?'Klasse ':'Class ')+cls,kids+(de?(kids===1?' Kind':' Kinder'):(kids===1?' child':' children')),sel('state'),ins,k,$('c_ki').checked?(de?'Kirchensteuer':'church tax'):'',adv?(de?'Erweitert':'advanced'):''].filter(Boolean);
+ $('setChips').innerHTML=items.map(x=>'<span>'+esc(x)+'</span>').join('')+'<button type="button" class="setbtn">'+(de?'⚙ Einstellungen ändern':'⚙ Change settings')+'</button>';}
 function render(){
  if(PAGE==='now'&&netMode&&netTarget!=null)solveGross();
- paintNet();
+ paintNet();paintChips();
+ if(PAGE==='past'&&!document.documentElement.classList.contains('embed')){const yc=$('yearCard'),fy=$('f_year');if(fy.parentNode!==yc)yc.appendChild(fy);yc.hidden=false;}
  const o=readInputs(),c=calc(o),t=T(),m=period,g=c.g;
  const P=v=>fmt(v*m),pct=v=>g>0?(v/g*100).toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1})+' %':'—';
  $('kpis').innerHTML=
@@ -647,20 +664,20 @@ function render(){
   if(c.g>0&&ded>0.005){const mins=Math.round(ded/c.g*480),hh=9+Math.floor(mins/60),mm=mins%60,tt=(lang==='de'?hh+':'+String(mm).padStart(2,'0'):hh+':'+String(mm).padStart(2,'0'));
    const day=v=>fmt(v*12/365);
    const parts=[[t.pdTax,c.tax],[t.pdRv,c.rv+(c.sjRv||0)],[t.pdKv,c.kv],[t.pdPv,c.pv],[t.pdAv,c.av],[t.pdPkv,c.pkvOwn||0]].filter(p=>p[1]>0.005).sort((a,b)=>b[1]-a[1]).map(p=>day(p[1])+' '+p[0]).join(', ');
-   el.innerHTML=t.perDay.replace('{t}',tt).replace('{d}',day(ded)).replace('{parts}',parts);el.hidden=false;}
-  else{el.innerHTML='';el.hidden=true;}}
+   el.innerHTML=t.perDay.replace('{t}',tt).replace('{d}',day(ded)).replace('{parts}',parts);$('perDayRow').hidden=false;}
+  else{el.innerHTML='';$('perDayRow').hidden=true;}}
  drawDetail(c,o,m);
  $('bar').innerHTML=g>0?`<div style="width:${c.net/g*100}%;background:var(--net)"></div><div style="width:${c.sv/g*100}%;background:var(--sv)"></div><div style="width:${c.tax/g*100}%;background:var(--tax)"></div><div style="width:${c.bav/g*100}%;background:var(--accent)"></div>`:'';
  const notes=[];if(c.zone==='mini'&&!c.sj)notes.push(yr(t.notes.mini));if(c.zone==='ueb')notes.push(yr(t.notes.ueb));if(g>PY().kvBBG&&(o.kv||o.pv))notes.push(t.notes.cap);
  if(o.cls===6)notes.push(t.notes.cls6);if(o.cls===5)notes.push(t.notes.cls5);$('notice').textContent=notes.join(' ');
  $('statusNote').textContent=t.statusNotes[o.status];
  if($('map2wrap'))$('map2wrap').hidden=PAGE==='past';
- saveState();
+ saveState();if(window.updateTopSummary)updateTopSummary();if(window.parent!==window){try{parent.postMessage({type:'salary-settings'},'*');}catch(e){}}
  if(PAGE==='past'){const raw=readRaw();const now=E.calc({...raw,zb:$('kasse').value==='other'?raw.zb:E.PARAMS[2026].zb},E.PARAMS[2026]);const fA=adjF();const realThen=fA!==1?r2(c.net/fA):c.net;const d=r2(now.net-realThen);
   const cls=d>0.004?'up':(d<-0.004?'down':'');const lab=d>0.004?t.cmpMore:(d<-0.004?t.cmpLess:t.cmpSame);
   const shT=c.g>0?c.net/c.g*100:0,shN=raw.g>0?now.net/(now.g)*100:0,pp=(shN-shT);const pf1=v=>v.toLocaleString(lang==='de'?'de-DE':'en-IE',{maximumFractionDigits:1});
   $('cmp').innerHTML=`<b>${t.cmpTitle}:</b> ${fA!==1?(ADJ==='wage'?t.cmpWageLvl:t.cmpReal)+' – ':''}${YEAR}: ${fmt(realThen*period)} → 2026: ${fmt(now.net*period)} · <span class="${cls}"><b>${d>0?'+':''}${fmt(d*period)}</b> ${lab}</span><br>${t.cmpShare}: ${pf1(shT)} % → ${pf1(shN)} % (${Math.abs(pp)<0.05?'±0':(pp>0?'+':'')+pf1(pp)} ${lang==='de'?'Prozentpunkte':'pp'})<br><span class="muted" style="font-size:12px">${ADJ==='nom'?t.cmpNote:t.cmpNoteAdj}</span>`;
-  $('f_year').parentNode.querySelector('[data-t=gross]').textContent=ADJ==='nom'?t.gross:t.grossToday;
+  (document.querySelector('[data-t=gross]')||{}).textContent=ADJ==='nom'?t.gross:t.grossToday;
   const ga=$('gross').value;$('adjOut').textContent=(ADJ==='nom'?t.adjOutNom:(ADJ==='wage'?t.adjOutWage:t.adjOutCpi)).replace('{g}',fmt(+ga||0)).replace('{gy}',fmt(c.gMain)).replace(/\{y\}/g,YEAR);
   document.querySelectorAll('[data-adj]').forEach(b=>{b.textContent={wage:t.adjWage,cpi:t.adjCpi,nom:t.adjNom}[b.dataset.adj];b.classList.toggle('on',b.dataset.adj===ADJ);});$('cmp').hidden=false;}
  else $('cmp').hidden=true;
@@ -806,6 +823,7 @@ document.querySelectorAll('#srcSeg button').forEach(b=>b.addEventListener('click
 $('netIn').addEventListener('input',()=>{if(!netMode)return;const v=Math.max(0,+$('netIn').value||0);netTarget=unitIsYear()?v/12:v;saveNet();render();});
 document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('.guseg'))setTimeout(render,0);});
 
+window.addEventListener('settingschange',()=>{if(loadState()){syncKV();}render();});
 $('gross').addEventListener('input',()=>{$('grossR').value=$('gross').value;render();});
 $('grossR').addEventListener('input',()=>{$('gross').value=$('grossR').value;render();});
 ['cls','kids','state','zb','c_ki','c_ag','kasse','a_fb','a_bav','a_fac','a_sj','fb','bav','sg','sjg','sj2','sjrv'].forEach(id=>$(id).addEventListener(['zb','fb','bav','sg','sjg'].includes(id)?'input':'change',render));
